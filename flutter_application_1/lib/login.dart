@@ -40,7 +40,6 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 Row(
                   children: [
-                    Text('sembunyikan password'),
                     Checkbox(
                       value: obscureText,
                       onChanged: (value) {
@@ -49,11 +48,14 @@ class _LoginPageState extends State<LoginPage> {
                         });
                       },
                     ),
+                    Text(
+                      'sembunyikan password',
+                    ),
                   ],
                 ),
                 Divider(),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.4,
+                  width: MediaQuery.of(context).size.width,
                   child: TextButton(
                       style: TextButton.styleFrom(
                         primary: Colors.white,
@@ -62,8 +64,19 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () {},
                       child: Text(
                         'MASUK',
-                        // style: TextStyle(
-                        //     color: Colors.white, backgroundColor: Colors.blue)
+                      )),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: TextButton(
+                      style: TextButton.styleFrom(
+                        primary: Colors.white,
+                        backgroundColor: Colors.blue,
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        'DAFTAR',
                       )),
                 )
               ],
