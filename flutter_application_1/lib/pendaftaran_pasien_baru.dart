@@ -31,8 +31,186 @@ class _DaftarPasienBaruState extends State<DaftarPasienBaru> {
           ),
         ),
         body: ListView(
+          padding: EdgeInsets.all(20),
           children: <Widget>[
-            TextFormField(),
+            TextFormField(
+                decoration: InputDecoration(
+              labelText: "NIK: Nomor Induk Kependudukan",
+              fillColor: Colors.white,
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Colors.blue,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Colors.blue,
+                ),
+              ),
+            )),
+            SizedBox(
+              height: 10,
+            ),
+            TextFormField(
+                decoration: InputDecoration(
+              labelText: "Nama Lengkap",
+              fillColor: Colors.white,
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Colors.blue,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Colors.blue,
+                ),
+              ),
+            )),
+            SizedBox(
+              height: 10,
+            ),
+            TextFormField(
+                decoration: InputDecoration(
+              labelText: "Sandi",
+              fillColor: Colors.white,
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Colors.blue,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Colors.blue,
+                ),
+              ),
+            )),
+            SizedBox(
+              height: 10,
+            ),
+            TextFormField(
+                decoration: InputDecoration(
+              labelText: "Ulangi Sandi",
+              fillColor: Colors.white,
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Colors.blue,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Colors.blue,
+                ),
+              ),
+            )),
+            SizedBox(
+              height: 10,
+            ),
+            TextFormField(
+                maxLines: 3,
+                decoration: InputDecoration(
+                  labelText: "Alamat",
+                  fillColor: Colors.white,
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide(
+                      color: Colors.blue,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide(
+                      color: Colors.blue,
+                    ),
+                  ),
+                )),
+            SizedBox(
+              height: 10,
+            ),
+            TextFormField(
+                decoration: InputDecoration(
+              labelText: "Tempat Lahir",
+              fillColor: Colors.white,
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Colors.blue,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Colors.blue,
+                ),
+              ),
+            )),
+            SizedBox(
+              height: 10,
+            ),
+            TextFormField(
+                decoration: InputDecoration(
+              labelText: "Tanggal Lahir",
+              fillColor: Colors.white,
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Colors.blue,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Colors.blue,
+                ),
+              ),
+            )),
+            SizedBox(
+              height: 10,
+            ),
+            TextFormField(
+                decoration: InputDecoration(
+              labelText: "Status Perkawinan",
+              fillColor: Colors.white,
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Colors.blue,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Colors.blue,
+                ),
+              ),
+            )),
+            SizedBox(
+              height: 10,
+            ),
+            TextFormField(
+                decoration: InputDecoration(
+              labelText: "Telepon",
+              fillColor: Colors.white,
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Colors.blue,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Colors.blue,
+                ),
+              ),
+            )),
           ],
         ),
       ),
