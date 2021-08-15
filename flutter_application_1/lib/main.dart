@@ -3,11 +3,18 @@ import 'package:flutter_application_1/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 String user_aktif = "";
+String APIurl;
+void doLogout() async {
+  final prefs = await SharedPreferences.getInstance();
+  prefs.remove("user_id");
+  main();
+}
 
 Future<String> cekLogin() async {
   try {
     final prefs = await SharedPreferences.getInstance();
     String user_id = prefs.getString("user_id") ?? '';
+    print('cek user_id = $user_id');
     return user_id;
   } catch (e) {
     print('error karena $e');
@@ -16,12 +23,15 @@ Future<String> cekLogin() async {
 
 void main() {
   // runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+
   cekLogin().then((String result) {
-    if (result == '')
-      runApp(MyApp());
-    else {
-      user_aktif = result;
+    if (result == '') {
+      print('result = $result');
       runApp(LoginPage());
+    } else {
+      user_aktif = result;
+      runApp(MyApp());
     }
   });
 }
@@ -69,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'You have pushed the button this many times:',
+              user_aktif,
             ),
             Text(
               '$_counter',
@@ -77,12 +87,13 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             TextButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginPage()),
-                  );
+                  doLogout();
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => LoginPage()),
+                  // );
                 },
-                child: Text('login page'))
+                child: Text('Logout'))
           ],
         ),
       ),

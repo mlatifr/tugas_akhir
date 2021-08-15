@@ -2,6 +2,17 @@ import 'package:flutter/material.dart';
 import 'main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+String _username, _password;
+// String cekUserName;
+void doLogin() async {
+  //nantinya ada pengecekan master_user melalui webservice
+  final prefs = await SharedPreferences.getInstance();
+  prefs.setString("user_id", _username);
+  main();
+  // cekUserName = prefs.getString("user_id");
+  // print(cekUserName);
+}
+
 class LoginPage extends StatefulWidget {
   const LoginPage({Key key}) : super(key: key);
 
@@ -10,8 +21,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String _username, _password;
-
   // untuk hide karakter pada paswword
   bool obscureText = false;
 
@@ -65,7 +74,10 @@ class _LoginPageState extends State<LoginPage> {
                         primary: Colors.white,
                         backgroundColor: Colors.blue,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        doLogin();
+                        // print(_username);
+                      },
                       child: Text(
                         'MASUK',
                       )),
