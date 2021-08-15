@@ -1,9 +1,11 @@
+// import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 String user_aktif = "";
-String APIurl;
+String APIurl, keluhan;
 void doLogout() async {
   final prefs = await SharedPreferences.getInstance();
   prefs.remove("user_id");
@@ -36,8 +38,13 @@ void main() {
   });
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   // This widget is the root of your application.
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -93,14 +100,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,33 +107,52 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       drawer: widgetDrawer(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              user_aktif,
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            TextButton(
-                onPressed: () {
-                  doLogout();
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => LoginPage()),
-                  // );
-                },
-                child: Text('Logout'))
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
+      body: ListView(
+        padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
+        children: <Widget>[
+          Column(
+            children: [
+              SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  child: Image.asset('./asset/image/clinic.jpg')),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              Text('Selamat Datang'),
+              Text(user_aktif),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              TextFormField(
+                  maxLines: 8,
+                  onChanged: (value) {
+                    keluhan = value;
+                  },
+                  decoration: InputDecoration(
+                    labelText: "Keluhan",
+                    fillColor: Colors.white,
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: BorderSide(
+                        color: Colors.blue,
+                      ),
+                    ),
+                  )),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: TextButton(
+                    style: TextButton.styleFrom(
+                      primary: Colors.white,
+                      backgroundColor: Colors.blue,
+                    ),
+                    onPressed: () {
+                      doLogin();
+                      // print(_username);
+                    },
+                    child: Text(
+                      'SIMPAN',
+                    )),
+              ),
+            ],
+          )
+        ],
       ),
     );
   }
