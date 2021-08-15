@@ -36,8 +36,7 @@ void main() {
     if (result == 'daftarBaru') {
       print('result = $result');
       runApp(DaftarPasienBaru());
-    }
-    if (result == '') {
+    } else if (result == '' && result != 'daftarBaru') {
       print('result = $result');
       runApp(LoginPage());
     } else {
