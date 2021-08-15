@@ -1,16 +1,14 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 String _username, _password;
-// String cekUserName;
 void doLogin() async {
-  //nantinya ada pengecekan master_user melalui webservice
   final prefs = await SharedPreferences.getInstance();
   prefs.setString("user_id", _username);
   main();
-  // cekUserName = prefs.getString("user_id");
-  // print(cekUserName);
 }
 
 class LoginPage extends StatefulWidget {
@@ -36,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
     return MaterialApp(
       home: Scaffold(
         body: ListView(
-          // padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
+          padding: EdgeInsets.all(20),
           children: <Widget>[
             Column(
               children: [
@@ -68,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 Divider(),
                 SizedBox(
-                  // width: MediaQuery.of(context).size.width,
+                  width: 500,
                   child: TextButton(
                       style: TextButton.styleFrom(
                         primary: Colors.white,
@@ -76,19 +74,22 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       onPressed: () {
                         doLogin();
-                        // print(_username);
                       },
                       child: Text(
                         'MASUK',
                       )),
                 ),
-                // SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                 SizedBox(
-                  // width: MediaQuery.of(context).size.width,
+                    width: 500,
+                    child: Text(
+                      'Belum memiliki akun? \nSilahkan mendaftar',
+                    )),
+                SizedBox(
+                  width: 500,
                   child: TextButton(
                       style: TextButton.styleFrom(
                         primary: Colors.white,
-                        backgroundColor: Colors.blue,
+                        backgroundColor: Colors.blue[300],
                       ),
                       onPressed: () {},
                       child: Text(

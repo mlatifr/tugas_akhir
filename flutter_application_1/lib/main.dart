@@ -108,6 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       drawer: widgetDrawer(),
       body: ListView(
+        shrinkWrap: true,
         padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
         children: <Widget>[
           Column(
@@ -136,7 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   )),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               SizedBox(
-                width: MediaQuery.of(context).size.width,
+                // width: MediaQuery.of(context).size.width,
                 child: TextButton(
                     style: TextButton.styleFrom(
                       primary: Colors.white,
@@ -146,24 +147,31 @@ class _MyHomePageState extends State<MyHomePage> {
                       showDialog<String>(
                         context: context,
                         builder: (BuildContext context) => AlertDialog(
-                          title: const Text(
+                          title: Text(
                             'Anda akan mendaftar dengan keluhan:',
                             style: TextStyle(fontSize: 14),
                           ),
-                          content: ListView(children: <Widget>[
-                            Text(
-                              '$keluhan',
+                          content: TextFormField(
+                              maxLines: 5,
+                              initialValue: keluhan,
                               style: TextStyle(fontSize: 12),
-                            ),
-                          ]),
+                              decoration: InputDecoration(
+                                fillColor: Colors.white,
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                              )),
                           actions: <Widget>[
                             TextButton(
                               onPressed: () => Navigator.pop(context, 'Cancel'),
-                              child: const Text('Batal'),
+                              child: Text('Batal'),
                             ),
                             TextButton(
                               onPressed: () => Navigator.pop(context, 'OK'),
-                              child: const Text('OK'),
+                              child: Text('OK'),
                             ),
                           ],
                         ),
