@@ -147,7 +147,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   )),
               // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               SizedBox(
-                // width: MediaQuery.of(context).size.width,
+                width: MediaQuery.of(context).size.width,
                 child: TextButton(
                     style: TextButton.styleFrom(
                       primary: Colors.white,

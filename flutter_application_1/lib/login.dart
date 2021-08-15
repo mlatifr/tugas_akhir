@@ -19,7 +19,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   // untuk hide karakter pada paswword
-  bool obscureText = false;
+  bool obscureText = true;
 
   // Toggles the password show status
   // ignore: unused_element
