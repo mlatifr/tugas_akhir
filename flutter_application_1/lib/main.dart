@@ -143,8 +143,31 @@ class _MyHomePageState extends State<MyHomePage> {
                       backgroundColor: Colors.blue,
                     ),
                     onPressed: () {
-                      doLogin();
-                      // print(_username);
+                      showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: const Text(
+                            'Anda akan mendaftar dengan keluhan:',
+                            style: TextStyle(fontSize: 14),
+                          ),
+                          content: ListView(children: <Widget>[
+                            Text(
+                              '$keluhan',
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          ]),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'Cancel'),
+                              child: const Text('Batal'),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'OK'),
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        ),
+                      );
                     },
                     child: Text(
                       'SIMPAN',
