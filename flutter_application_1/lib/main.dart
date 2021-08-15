@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/login.dart';
+import 'package:flutter_application_1/pendaftaran_pasien_baru.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: non_constant_identifier_names
@@ -32,6 +33,10 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   cekLogin().then((String result) {
+    if (result == 'daftarBaru') {
+      print('result = $result');
+      runApp(DaftarPasienBaru());
+    }
     if (result == '') {
       print('result = $result');
       runApp(LoginPage());

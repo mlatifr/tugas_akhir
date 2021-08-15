@@ -10,6 +10,12 @@ void doLogin() async {
   main();
 }
 
+void doDaftar() async {
+  final prefs = await SharedPreferences.getInstance();
+  prefs.setString("user_id", 'daftarBaru');
+  main();
+}
+
 class LoginPage extends StatefulWidget {
   const LoginPage({Key key}) : super(key: key);
 
@@ -91,7 +97,9 @@ class _LoginPageState extends State<LoginPage> {
                         primary: Colors.white,
                         backgroundColor: Colors.blue[300],
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        doDaftar();
+                      },
                       child: Text(
                         'DAFTAR',
                       )),
