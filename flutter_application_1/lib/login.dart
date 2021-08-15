@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key key}) : super(key: key);
@@ -9,6 +11,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   String _username, _password;
+
+  // untuk hide karakter pada paswword
   bool obscureText = false;
 
   // Toggles the password show status
@@ -23,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
     return MaterialApp(
       home: Scaffold(
         body: ListView(
-          padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
+          // padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
           children: <Widget>[
             Column(
               children: [
@@ -55,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 Divider(),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width,
+                  // width: MediaQuery.of(context).size.width,
                   child: TextButton(
                       style: TextButton.styleFrom(
                         primary: Colors.white,
@@ -66,9 +70,9 @@ class _LoginPageState extends State<LoginPage> {
                         'MASUK',
                       )),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                // SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width,
+                  // width: MediaQuery.of(context).size.width,
                   child: TextButton(
                       style: TextButton.styleFrom(
                         primary: Colors.white,

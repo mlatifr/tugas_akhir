@@ -1,8 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+String user_aktif = "";
+
+Future<String> cekLogin() async {
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    String user_id = prefs.getString("user_id") ?? '';
+    return user_id;
+  } catch (e) {
+    print('error karena $e');
+  }
+}
 
 void main() {
-  runApp(MyApp());
+  // runApp(MyApp());
+  cekLogin().then((String result) {
+    if (result == '')
+      runApp(MyApp());
+    else {
+      user_aktif = result;
+      runApp(LoginPage());
+    }
+  });
 }
 
 class MyApp extends StatelessWidget {
