@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Pendaftaran'),
     );
   }
 }
@@ -60,6 +60,39 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  Widget widgetDrawer() {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: Text('Selamat datang: ' + user_aktif),
+            decoration: BoxDecoration(
+                // image: DecorationImage(
+                //   fit: BoxFit.cover,
+                //   image: AssetImage('assets/images/clinic.jpg'),
+                // ),
+                ),
+          ),
+          ListTile(
+            title: Text('none'),
+            onTap: () {
+              Navigator.pop(context);
+              // Navigator.push(context,
+              //     MaterialPageRoute(builder: (context) => actorList()));
+            },
+          ),
+          ListTile(
+            title: Text('Logout'),
+            onTap: () {
+              doLogout();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   int _counter = 0;
 
   void _incrementCounter() {
@@ -74,6 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
+      drawer: widgetDrawer(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
