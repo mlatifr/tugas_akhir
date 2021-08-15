@@ -1,9 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// ignore: unused_element
 String _username, _password;
 void doLogin() async {
   final prefs = await SharedPreferences.getInstance();
@@ -23,6 +22,7 @@ class _LoginPageState extends State<LoginPage> {
   bool obscureText = false;
 
   // Toggles the password show status
+  // ignore: unused_element
   void _toggle() {
     setState(() {
       obscureText = !obscureText;

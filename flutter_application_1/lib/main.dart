@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// ignore: non_constant_identifier_names
 String user_aktif = "";
+// ignore: non_constant_identifier_names
 String APIurl, keluhan;
 void doLogout() async {
   final prefs = await SharedPreferences.getInstance();
@@ -12,9 +14,11 @@ void doLogout() async {
   main();
 }
 
+// ignore: missing_return
 Future<String> cekLogin() async {
   try {
     final prefs = await SharedPreferences.getInstance();
+    // ignore: non_constant_identifier_names
     String user_id = prefs.getString("user_id") ?? '';
     print('cek user_id = $user_id');
     return user_id;
@@ -114,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Column(
             children: [
               SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.7,
+                  width: MediaQuery.of(context).size.width * 0.55,
                   child: Image.asset('./asset/image/clinic.jpg')),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               Text('Selamat Datang'),
@@ -126,8 +130,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     keluhan = value;
                   },
                   decoration: InputDecoration(
-                    labelText: "Keluhan",
+                    labelText: "ketik keluhan disini",
                     fillColor: Colors.white,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: BorderSide(
+                        color: Colors.blue,
+                      ),
+                    ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide(
@@ -135,7 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                   )),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               SizedBox(
                 // width: MediaQuery.of(context).size.width,
                 child: TextButton(
