@@ -20,6 +20,7 @@ class _DaftarPasienBaruState extends State<DaftarPasienBaru> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           title: Text('Pendaftaran Pasien Baru'),
