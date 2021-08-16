@@ -16,7 +16,7 @@ class Item {
 List<Item> generateItems(int numberOfItems) {
   return List<Item>.generate(numberOfItems, (int index) {
     return Item(
-      headerValue: 'Panel $index',
+      headerValue: 'Tanggal Periksa $index',
       expandedValue: 'This is item number $index',
     );
   });
@@ -45,16 +45,99 @@ class _RiwayatPeriksaPasienState extends State<RiwayatPeriksaPasien> {
               title: Text(item.headerValue),
             );
           },
-          body: ListTile(
-              title: Text(item.expandedValue),
-              subtitle:
-                  const Text('To delete this panel, tap the trash can icon'),
-              trailing: const Icon(Icons.delete),
-              onTap: () {
-                setState(() {
-                  _data.removeWhere((Item currentItem) => item == currentItem);
-                });
-              }),
+          body: ListView(shrinkWrap: true, children: [
+            Column(
+              children: [
+                TextFormField(
+                    enabled: false,
+                    initialValue: 'tidak ada',
+                    decoration: InputDecoration(
+                      labelText: "keluhan",
+                      fillColor: Colors.white,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                        ),
+                      ),
+                    )),
+                TextFormField(
+                    enabled: false,
+                    initialValue: 'tidak ada',
+                    decoration: InputDecoration(
+                      labelText: "Riwayat Alergi",
+                      fillColor: Colors.white,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                        ),
+                      ),
+                    )),
+                TextFormField(
+                    enabled: false,
+                    initialValue: 'tidak ada',
+                    decoration: InputDecoration(
+                      labelText: "anamnesis",
+                      fillColor: Colors.white,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                        ),
+                      ),
+                    )),
+                Container(
+                  color: Colors.red,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment
+                        .center, //Center Row contents horizontally,
+                    children: [
+                      Text('tindakan mata kanan'),
+                      Text('tindakan mata kiri'),
+                    ],
+                  ),
+                ),
+                TextFormField(
+                    enabled: false,
+                    initialValue: 'tidak ada',
+                    decoration: InputDecoration(
+                      labelText: "Resep",
+                      fillColor: Colors.white,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                        ),
+                      ),
+                    )),
+              ],
+            ),
+          ]),
           isExpanded: item.isExpanded,
         );
       }).toList(),
@@ -79,21 +162,11 @@ class _RiwayatPeriksaPasienState extends State<RiwayatPeriksaPasien> {
           children: <Widget>[
             Column(
               children: [
+                Text('Profil'),
+                Text('Rekam Medis'),
+                Text('Nama'),
+                Text('Usia'),
                 _buildPanel(),
-                Row(
-                  children: <Widget>[
-                    Text('Profil'),
-                    Text('Rekam Medis'),
-                    Text('Nama'),
-                    Text('Usia'),
-                  ],
-                ),
-                Text('tgl visit'),
-                Text('keluhan'),
-                Text('Riwayat Alergi'),
-                Text('anamnesis'),
-                Text('tindakan'),
-                Text('Resep'),
               ],
             ),
           ],
