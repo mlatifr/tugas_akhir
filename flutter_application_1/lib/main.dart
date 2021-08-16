@@ -2,6 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/login.dart';
+import 'package:flutter_application_1/pasien/nomor_antrean_pasien.dart';
+import 'package:flutter_application_1/pasien/nota_pembayaran.dart';
+import 'package:flutter_application_1/pasien/riwayat_periksa.dart';
 import 'package:flutter_application_1/pendaftaran_pasien_baru.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -91,11 +94,31 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
           ),
           ListTile(
-            title: Text('none'),
+            title: Text('Nomor Antrean'),
             onTap: () {
-              Navigator.pop(context);
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: (context) => actorList()));
+              // Navigator.pop(context);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AntreanPasien()));
+            },
+          ),
+          ListTile(
+            title: Text('Nota Pembayaran'),
+            onTap: () {
+              // Navigator.pop(context);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => NotaPembayaranPasien()));
+            },
+          ),
+          ListTile(
+            title: Text('Riwayat Pemeriksaan'),
+            onTap: () {
+              // Navigator.pop(context);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => RiwayatPeriksaPasien()));
             },
           ),
           ListTile(
