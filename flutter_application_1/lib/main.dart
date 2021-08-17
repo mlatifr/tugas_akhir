@@ -37,11 +37,9 @@ void main() {
 
   cekLogin().then((String result) {
     if (result == 'daftarBaru') {
-      print('result = $result');
       runApp(MaterialApp(home: DaftarPasienBaru()));
     } else if (result == '' && result != 'daftarBaru') {
-      print('result = $result');
-      runApp(LoginPage());
+      runApp(MaterialApp(home: LoginPage()));
     } else {
       user_aktif = result;
       runApp(MyApp());

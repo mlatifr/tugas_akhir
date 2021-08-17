@@ -96,13 +96,14 @@ class _LoginPageState extends State<LoginPage> {
                   child: TextButton(
                       style: TextButton.styleFrom(
                         primary: Colors.white,
-                        backgroundColor: Colors.blue[300],
+                        backgroundColor: Colors.blue[200],
                       ),
                       onPressed: () {
                         doDaftar();
                       },
                       child: Text(
                         'DAFTAR',
+                        style: TextStyle(color: Colors.black54),
                       )),
                 )
               ],

@@ -163,8 +163,16 @@ class _DaftarPasienBaruState extends State<DaftarPasienBaru> {
                   children: [
                     Expanded(
                         child: TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Release Date',
+                      enabled: false,
+                      decoration: InputDecoration(
+                        labelText: 'Tanggal Lahir',
+                        fillColor: Colors.white,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
+                        ),
                       ),
                       controller: _controllerdate,
                     )),
