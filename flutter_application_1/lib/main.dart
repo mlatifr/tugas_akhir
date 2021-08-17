@@ -38,7 +38,7 @@ void main() {
   cekLogin().then((String result) {
     if (result == 'daftarBaru') {
       print('result = $result');
-      runApp(DaftarPasienBaru());
+      runApp(MaterialApp(home: DaftarPasienBaru()));
     } else if (result == '' && result != 'daftarBaru') {
       print('result = $result');
       runApp(LoginPage());
@@ -65,6 +65,7 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Pendaftaran'),
+      // home: LoginPage(),
     );
   }
 }

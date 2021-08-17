@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'main.dart';
 
+final _controllerdate = TextEditingController();
 void doLogout() async {
   final prefs = await SharedPreferences.getInstance();
   prefs.remove("user_id");
@@ -155,6 +156,39 @@ class _DaftarPasienBaruState extends State<DaftarPasienBaru> {
             SizedBox(
               height: 10,
             ),
+            Padding(
+                padding: EdgeInsets.all(10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                        child: TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'Release Date',
+                      ),
+                      controller: _controllerdate,
+                    )),
+                    ElevatedButton(
+                        onPressed: () {
+                          showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(2000),
+                                  lastDate: DateTime(2200))
+                              .then((value) {
+                            setState(() {
+                              _controllerdate.text =
+                                  value.toString().substring(0, 10);
+                            });
+                          });
+                        },
+                        child: Icon(
+                          Icons.calendar_today_sharp,
+                          color: Colors.white,
+                          size: 24.0,
+                        ))
+                  ],
+                )),
             TextFormField(
                 decoration: InputDecoration(
               labelText: "Tanggal Lahir",
@@ -212,6 +246,16 @@ class _DaftarPasienBaruState extends State<DaftarPasienBaru> {
                 ),
               ),
             )),
+            TextButton(
+                style: TextButton.styleFrom(
+                  primary: Colors.white,
+                  backgroundColor: Colors.blue,
+                ),
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Harap Isian diperbaiki')));
+                },
+                child: Text("SIMPAN"))
           ],
         ),
       ),
