@@ -24,7 +24,7 @@ class _DaftarPasienBaruState extends State<DaftarPasienBaru> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Pendaftaran Pasien Baru'),
+          title: Center(child: Text('Pendaftaran Pasien Baru')),
           centerTitle: true,
           leading: IconButton(
             icon: Icon(Icons.arrow_back),

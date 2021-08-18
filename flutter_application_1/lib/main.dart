@@ -1,6 +1,5 @@
-// import 'dart:html';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/admin_antrean/admin_antrean_pasien.dart';
 import 'package:flutter_application_1/login.dart';
 import 'package:flutter_application_1/pasien/nomor_antrean_pasien.dart';
 import 'package:flutter_application_1/pasien/nota_pembayaran.dart';
@@ -37,9 +36,14 @@ void main() {
 
   cekLogin().then((String result) {
     if (result == 'daftarBaru') {
+      user_aktif = result;
       runApp(MaterialApp(home: DaftarPasienBaru()));
     } else if (result == '' && result != 'daftarBaru') {
+      user_aktif = result;
       runApp(MaterialApp(home: LoginPage()));
+    } else if (result == 'admin') {
+      user_aktif = result;
+      runApp(MaterialApp(home: AdminAntreanPasien()));
     } else {
       user_aktif = result;
       runApp(MyApp());
