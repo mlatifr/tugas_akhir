@@ -45,99 +45,149 @@ class _RiwayatPeriksaPasienState extends State<RiwayatPeriksaPasien> {
               title: Text(item.headerValue),
             );
           },
-          body: ListView(shrinkWrap: true, children: [
-            Column(
-              children: [
-                TextFormField(
-                    enabled: false,
-                    initialValue: 'tidak ada',
-                    decoration: InputDecoration(
-                      labelText: "keluhan",
-                      fillColor: Colors.white,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          color: Colors.blue,
+          body: Padding(
+            padding: const EdgeInsets.all(25.0),
+            child: Container(
+              color: Colors.green[50],
+              child: Column(
+                children: [
+                  TextFormField(
+                      enabled: false,
+                      initialValue: 'tidak ada',
+                      decoration: InputDecoration(
+                        labelText: "keluhan",
+                        fillColor: Colors.white,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
                         ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          color: Colors.blue,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
                         ),
-                      ),
-                    )),
-                TextFormField(
-                    enabled: false,
-                    initialValue: 'tidak ada',
-                    decoration: InputDecoration(
-                      labelText: "Riwayat Alergi",
-                      fillColor: Colors.white,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          color: Colors.blue,
+                      )),
+                  TextFormField(
+                      enabled: false,
+                      initialValue: 'tidak ada',
+                      decoration: InputDecoration(
+                        labelText: "Riwayat Alergi",
+                        fillColor: Colors.white,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
                         ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          color: Colors.blue,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
                         ),
-                      ),
-                    )),
-                TextFormField(
-                    enabled: false,
-                    initialValue: 'tidak ada',
-                    decoration: InputDecoration(
-                      labelText: "anamnesis",
-                      fillColor: Colors.white,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          color: Colors.blue,
+                      )),
+                  TextFormField(
+                      enabled: false,
+                      initialValue: 'tidak ada',
+                      decoration: InputDecoration(
+                        labelText: "anamnesis",
+                        fillColor: Colors.white,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
                         ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          color: Colors.blue,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
                         ),
-                      ),
-                    )),
-                Container(
-                  color: Colors.red,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment
-                        .center, //Center Row contents horizontally,
+                      )),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text('tindakan mata kanan'),
-                      Text('tindakan mata kiri'),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.42,
+                        child: Container(
+                          color: Colors.yellow,
+                          child: TextFormField(
+                              enabled: false,
+                              initialValue: 'tidak ada',
+                              decoration: InputDecoration(
+                                labelText: "tindakan mata kiri",
+                                fillColor: Colors.white,
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                              )),
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.42,
+                        child: Container(
+                          color: Colors.yellow[50],
+                          child: TextFormField(
+                              enabled: false,
+                              maxLines: 10,
+                              initialValue:
+                                  '1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n 8 \n 9 \n 10',
+                              decoration: InputDecoration(
+                                labelText: "tindakan mata kanan",
+                                fillColor: Colors.white,
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                              )),
+                        ),
+                      ),
                     ],
                   ),
-                ),
-                TextFormField(
-                    enabled: false,
-                    initialValue: 'tidak ada',
-                    decoration: InputDecoration(
-                      labelText: "Resep",
-                      fillColor: Colors.white,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          color: Colors.blue,
+                  TextFormField(
+                      enabled: false,
+                      initialValue: 'tidak ada',
+                      decoration: InputDecoration(
+                        labelText: "Resep",
+                        fillColor: Colors.white,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
                         ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          color: Colors.blue,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
                         ),
-                      ),
-                    )),
-              ],
+                      )),
+                ],
+              ),
             ),
-          ]),
+          ),
           isExpanded: item.isExpanded,
         );
       }).toList(),

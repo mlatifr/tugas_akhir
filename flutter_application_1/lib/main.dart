@@ -37,7 +37,10 @@ void main() {
   cekLogin().then((String result) {
     if (result == 'daftarBaru') {
       user_aktif = result;
-      runApp(MaterialApp(home: DaftarPasienBaru()));
+      runApp(MaterialApp(
+        home: DaftarPasienBaru(),
+        debugShowCheckedModeBanner: false,
+      ));
     } else if (result == '' && result != 'daftarBaru') {
       user_aktif = result;
       runApp(MaterialApp(home: LoginPage()));
