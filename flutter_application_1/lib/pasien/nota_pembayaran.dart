@@ -68,6 +68,69 @@ class _NotaPembayaranPasienState extends State<NotaPembayaranPasien> {
             },
           ),
         ),
+        body: ListView(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Table(
+                    border: TableBorder.all(
+                        color: Colors.black,
+                        style: BorderStyle.solid,
+                        width: 2),
+                    children: [
+                      TableRow(children: [
+                        TableCell(child: Text('Pemeriksaan Mata')),
+                        TableCell(child: Text('')),
+                      ]),
+                      TableRow(children: [
+                        TableCell(child: Text('Mata Kanan')),
+                        TableCell(child: Text('')),
+                      ]),
+                      TableRow(children: [
+                        TableCell(child: Text('1')),
+                        TableCell(child: Text('Rp 3.500.000')),
+                      ]),
+                      TableRow(children: [
+                        TableCell(child: Text('1')),
+                        TableCell(child: Text('Rp 3.500.000')),
+                      ]),
+                      TableRow(children: [
+                        TableCell(child: Text('Mata Kiri')),
+                        TableCell(child: Text('')),
+                      ]),
+                      TableRow(children: [
+                        TableCell(child: Text('1')),
+                        TableCell(child: Text('Rp 3.500.000')),
+                      ]),
+                      TableRow(children: [
+                        TableCell(child: Text('1')),
+                        TableCell(child: Text('Rp 3.500.000')),
+                      ]),
+                      TableRow(children: [
+                        TableCell(child: Text('1')),
+                        TableCell(child: Text('Rp 3.500.000')),
+                      ]),
+                      TableRow(children: [
+                        TableCell(child: Text('1')),
+                        TableCell(child: Text('Rp 3.500.000')),
+                      ]),
+                      TableRow(children: [
+                        TableCell(child: Text('1')),
+                        TableCell(child: Text('Rp 3.500.000')),
+                      ]),
+                      TableRow(children: [
+                        TableCell(child: Text('1')),
+                        TableCell(child: Text('Rp 3.500.000')),
+                      ]),
+                    ],
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
