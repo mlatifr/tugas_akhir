@@ -200,6 +200,7 @@ class _RiwayatPeriksaPasienState extends State<RiwayatPeriksaPasien> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: Text('Riwayat Periksa'),
           leading: new IconButton(
             icon: new Icon(Icons.arrow_back),

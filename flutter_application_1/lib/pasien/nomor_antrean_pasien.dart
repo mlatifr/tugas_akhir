@@ -14,6 +14,7 @@ class _AntreanPasienState extends State<AntreanPasien> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: Text('Antrean'),
           leading: new IconButton(
             icon: new Icon(Icons.arrow_back),

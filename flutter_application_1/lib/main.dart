@@ -7,6 +7,8 @@ import 'package:flutter_application_1/pasien/riwayat_periksa.dart';
 import 'package:flutter_application_1/pendaftaran_pasien_baru.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'dokter/dr_antrean_pasien.dart';
+
 // ignore: non_constant_identifier_names
 String user_aktif = "";
 // ignore: non_constant_identifier_names
@@ -44,9 +46,12 @@ void main() {
     } else if (result == '' && result != 'daftarBaru') {
       user_aktif = result;
       runApp(MaterialApp(home: LoginPage()));
-    } else if (result == 'admin') {
+    } else if (result.contains('admin')) {
       user_aktif = result;
       runApp(MaterialApp(home: AdminAntreanPasien()));
+    } else if (result.contains('dokter')) {
+      user_aktif = result;
+      runApp(MaterialApp(home: DrAntreanPasien()));
     } else {
       user_aktif = result;
       runApp(MyApp());

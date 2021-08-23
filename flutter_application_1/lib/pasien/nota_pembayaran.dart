@@ -60,6 +60,7 @@ class _NotaPembayaranPasienState extends State<NotaPembayaranPasien> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: Text('Nota Pembayaran'),
           leading: new IconButton(
             icon: new Icon(Icons.arrow_back),

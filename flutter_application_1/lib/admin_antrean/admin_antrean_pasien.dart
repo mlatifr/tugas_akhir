@@ -40,7 +40,8 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
           appBar: AppBar(
-            title: Center(child: Text("Antrean Pasien")),
+            centerTitle: true,
+            title: Text("Antrean Pasien"),
           ),
           drawer: widgetDrawer(),
           // body: ListView(
