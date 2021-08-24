@@ -196,6 +196,20 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
     );
   }
 
+  Map<String, bool> valuesRight = {
+    'Auto Refraksi': true,
+    'Trial Lens': false,
+    'Slit Lamp': false,
+    'TOnometri Schiot': false,
+    'Fundoscopy': false,
+  };
+  Map<String, bool> valuesLeft = {
+    'Auto Refraksi': true,
+    'Trial Lens': false,
+    'Slit Lamp': false,
+    'TOnometri Schiot': false,
+    'Fundoscopy': false,
+  };
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -288,6 +302,20 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                                 ),
                               )),
                         ),
+                        // ListView(
+                        //   shrinkWrap: true,
+                        //   children: values.keys.map((String key) {
+                        //     return new CheckboxListTile(
+                        //       title: new Text(key),
+                        //       value: values[key],
+                        //       onChanged: (bool value) {
+                        //         setState(() {
+                        //           values[key] = value;
+                        //         });
+                        //       },
+                        //     );
+                        //   }).toList(),
+                        // ),
                         Padding(
                           padding: const EdgeInsets.all(0.05),
                           child: Row(
@@ -297,54 +325,39 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                                 width: MediaQuery.of(context).size.width * 0.42,
                                 child: Container(
                                   color: Colors.yellow,
-                                  child: TextFormField(
-                                      initialValue: 'tidak ada',
-                                      decoration: InputDecoration(
-                                        labelText: "tindakan mata kiri",
-                                        fillColor: Colors.white,
-                                        enabledBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          borderSide: BorderSide(
-                                            color: Colors.blue,
-                                          ),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          borderSide: BorderSide(
-                                            color: Colors.blue,
-                                          ),
-                                        ),
-                                      )),
+                                  child: Column(
+                                    children:
+                                        valuesRight.keys.map((String key) {
+                                      return new CheckboxListTile(
+                                        title: new Text(key),
+                                        value: valuesRight[key],
+                                        onChanged: (bool value) {
+                                          setState(() {
+                                            valuesRight[key] = value;
+                                          });
+                                        },
+                                      );
+                                    }).toList(),
+                                  ),
                                 ),
                               ),
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.42,
                                 child: Container(
                                   color: Colors.yellow[50],
-                                  child: TextFormField(
-                                      maxLines: 10,
-                                      initialValue:
-                                          '1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n 8 \n 9 \n 10',
-                                      decoration: InputDecoration(
-                                        labelText: "tindakan mata kanan",
-                                        fillColor: Colors.white,
-                                        enabledBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          borderSide: BorderSide(
-                                            color: Colors.blue,
-                                          ),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          borderSide: BorderSide(
-                                            color: Colors.blue,
-                                          ),
-                                        ),
-                                      )),
+                                  child: Column(
+                                    children: valuesLeft.keys.map((String key) {
+                                      return new CheckboxListTile(
+                                        title: new Text(key),
+                                        value: valuesLeft[key],
+                                        onChanged: (bool value) {
+                                          setState(() {
+                                            valuesLeft[key] = value;
+                                          });
+                                        },
+                                      );
+                                    }).toList(),
+                                  ),
                                 ),
                               ),
                             ],
