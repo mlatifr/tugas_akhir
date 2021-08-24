@@ -3,14 +3,14 @@ import 'package:flutter_application_1/admin_antrean/admin_antrean_pasien.dart';
 import 'package:flutter_application_1/dokter/dr_riwayat_periksa.dart';
 import '../main.dart';
 
-class DrAntreanPasien extends StatefulWidget {
-  const DrAntreanPasien({Key key}) : super(key: key);
+class CheckBox extends StatefulWidget {
+  const CheckBox({Key key}) : super(key: key);
 
   @override
-  _DrAntreanPasienState createState() => _DrAntreanPasienState();
+  _CheckBoxState createState() => _CheckBoxState();
 }
 
-class _DrAntreanPasienState extends State<DrAntreanPasien> {
+class _CheckBoxState extends State<CheckBox> {
   Widget widgetDrawer() {
     return Drawer(
       child: ListView(
@@ -54,40 +54,35 @@ class _DrAntreanPasienState extends State<DrAntreanPasien> {
     }
   }
 
+  var _isChecked = true;
+  Map<String, bool> values = {
+    'foo': true,
+    'bar': false,
+  };
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: Text("Antrean Pasien"),
-          ),
-          drawer: widgetDrawer(),
-          body: ListView.builder(
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => DrRiwayatPeriksaPasien(
-                                  namaPasien: '${index + 1}',
-                                )));
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    child: lsTile(index),
-                    //  ListTile(
-                    //   leading: CircleAvatar(),
-                    //   title: Text('Pasien ${index + 1}'),
-                    //   subtitle: Text('sub judul'),
-                    //   trailing: Icon(Icons.check_box),
-                    // ),
-                  ),
-                );
-              })),
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text("Antrean Pasien"),
+        ),
+        drawer: widgetDrawer(),
+        body: new ListView(
+          children: values.keys.map((String key) {
+            return new CheckboxListTile(
+              title: new Text(key),
+              value: values[key],
+              onChanged: (bool value) {
+                setState(() {
+                  values[key] = value;
+                });
+              },
+            );
+          }).toList(),
+        ),
+      ),
     );
   }
 }
