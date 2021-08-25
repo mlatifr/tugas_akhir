@@ -7,6 +7,7 @@ import 'package:flutter_application_1/pasien/riwayat_periksa.dart';
 import 'package:flutter_application_1/pendaftaran_pasien_baru.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'apoteker/apt_antrean_resep.dart';
 import 'dokter/dr_antrean_pasien.dart';
 
 // ignore: non_constant_identifier_names
@@ -52,6 +53,9 @@ void main() {
     } else if (result.contains('dokter')) {
       user_aktif = result;
       runApp(MaterialApp(home: DrAntreanPasien()));
+    } else if (result.contains('apoteker')) {
+      user_aktif = result;
+      runApp(MaterialApp(home: AptAntreanPasien()));
     } else {
       user_aktif = result;
       runApp(MyApp());

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/dokter/dr_riwayat_periksa.dart';
 import '../main.dart';
 
-class DrAntreanPasien extends StatefulWidget {
-  const DrAntreanPasien({Key key}) : super(key: key);
+class AptAntreanPasien extends StatefulWidget {
+  const AptAntreanPasien({Key key}) : super(key: key);
 
   @override
-  _DrAntreanPasienState createState() => _DrAntreanPasienState();
+  _AptAntreanPasienState createState() => _AptAntreanPasienState();
 }
 
-class _DrAntreanPasienState extends State<DrAntreanPasien> {
+class _AptAntreanPasienState extends State<AptAntreanPasien> {
   Widget widgetDrawer() {
     return Drawer(
       child: ListView(
@@ -25,9 +25,12 @@ class _DrAntreanPasienState extends State<DrAntreanPasien> {
                 ),
           ),
           ListTile(
-            title: Text('Cari Pasien'),
+            title: Text('Daftar Stok Obat'),
             onTap: () {
-              Navigator.of(context).pop();
+              // Navigator.push(context,MaterialPageRoute(builder: (context) => SecondRoute()),);
+              // Navigator.pop(context);
+              // Navigator.of(context).pop();
+              // Navigator.of(context).maybePop();
             },
           ),
           ListTile(
@@ -66,7 +69,7 @@ class _DrAntreanPasienState extends State<DrAntreanPasien> {
       home: Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text("Antrean Pasien"),
+            title: Text("Daftar Resep Pasien"),
           ),
           drawer: widgetDrawer(),
           body: ListView.builder(
