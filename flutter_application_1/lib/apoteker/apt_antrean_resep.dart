@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/apoteker/apt_list_stok_obat.dart';
 import 'package:flutter_application_1/dokter/dr_riwayat_periksa.dart';
 import '../main.dart';
 
@@ -27,6 +28,8 @@ class _AptAntreanPasienState extends State<AptAntreanPasien> {
           ListTile(
             title: Text('Daftar Stok Obat'),
             onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AptListObat()));
               // Navigator.push(context,MaterialPageRoute(builder: (context) => SecondRoute()),);
               // Navigator.pop(context);
               // Navigator.of(context).pop();
@@ -77,12 +80,18 @@ class _AptAntreanPasienState extends State<AptAntreanPasien> {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => DrRiwayatPeriksaPasien(
-                                  namaPasien: '${index + 1}',
-                                )));
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => DrRiwayatPeriksaPasien(
+                    //               namaPasien: '${index + 1}',
+                    //             )));
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => DrRiwayatPeriksaPasien(
+                    //               namaPasien: '${index + 1}',
+                    //             )));
                   },
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
