@@ -119,6 +119,12 @@ class _AptListObatState extends State<AptListObat> {
         length: 3,
         child: Scaffold(
           appBar: AppBar(
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
             centerTitle: true,
             title: Text('Daftar Stok Obat'),
             bottom: TabBar(
@@ -131,8 +137,11 @@ class _AptListObatState extends State<AptListObat> {
               ],
             ),
           ),
-          body: TabBarView(
-            children: [FirstScreen(), SecondScreen(), ThirdScreen()],
+          body: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TabBarView(
+              children: [FirstScreen(), SecondScreen(), ThirdScreen()],
+            ),
           ),
         ),
       ),
