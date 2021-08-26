@@ -128,6 +128,12 @@ class _AptListObatState extends State<AptListObat> {
             centerTitle: true,
             title: Text('Daftar Stok Obat'),
             bottom: TabBar(
+              // indicatorColor: Colors.lime,
+              onTap: (value) {
+                setState(() {
+                  // refresh halaman
+                });
+              },
               tabs: [
                 Tab(text: 'STOK'),
                 Tab(
