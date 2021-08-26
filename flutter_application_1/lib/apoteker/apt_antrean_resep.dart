@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/apoteker/apt_list_stok_obat.dart';
+import 'package:flutter_application_1/apoteker/tab_bar.dart';
 import 'package:flutter_application_1/dokter/dr_riwayat_periksa.dart';
 import '../main.dart';
 
@@ -30,6 +31,17 @@ class _AptAntreanPasienState extends State<AptAntreanPasien> {
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => AptListObat()));
+              // Navigator.push(context,MaterialPageRoute(builder: (context) => SecondRoute()),);
+              // Navigator.pop(context);
+              // Navigator.of(context).pop();
+              // Navigator.of(context).maybePop();
+            },
+          ),
+          ListTile(
+            title: Text('Tab Bar'),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => TabBarTest()));
               // Navigator.push(context,MaterialPageRoute(builder: (context) => SecondRoute()),);
               // Navigator.pop(context);
               // Navigator.of(context).pop();

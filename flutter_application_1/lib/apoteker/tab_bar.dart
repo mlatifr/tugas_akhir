@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class AptListObat extends StatefulWidget {
-  const AptListObat({Key key}) : super(key: key);
+class TabBarTest extends StatefulWidget {
+  const TabBarTest({Key key}) : super(key: key);
 
   @override
-  _AptListObatState createState() => _AptListObatState();
+  _TabBarTestState createState() => _TabBarTestState();
 }
 
 Widget WgGridViewBuilderStok() {
@@ -63,8 +63,9 @@ Widget WgGridViewBuilderNama() {
 
 final List<Map> obatStoks =
     List.generate(10, (index) => {"id": index, "name": "Stok $index"}).toList();
-final List<Map> obatKadaluarsas = List.generate(
-    10, (index) => {"id": index, "name": "${index + 1} Januari 2021"}).toList();
+final List<Map> obatKadaluarsas =
+    List.generate(10, (index) => {"id": index, "name": "Kadaluarsa $index"})
+        .toList();
 final List<Map> obatNamas =
     List.generate(10, (index) => {"id": index, "name": "Nama $index"}).toList();
 
@@ -110,7 +111,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
   }
 }
 
-class _AptListObatState extends State<AptListObat> {
+class _TabBarTestState extends State<TabBarTest> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -132,33 +133,23 @@ class _AptListObatState extends State<AptListObat> {
               Container(
                 constraints: BoxConstraints(maxHeight: 150.0),
                 child: Material(
-                  // color: Colors.lightBlue[50],
+                  color: Colors.indigo,
                   child: TabBar(
-                    unselectedLabelColor: Colors.lightBlue[100],
-                    labelColor: const Color(0xFF3baee7),
-                    unselectedLabelStyle: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 10,
-                      // color: Colors.red,
-                    ),
-                    labelStyle: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                    ),
-                    indicatorColor: Color(0xFF3baee7),
                     tabs: [
-                      Tab(text: 'STOK'),
-                      Tab(
-                        text: 'KADALUARSA',
-                      ),
-                      Tab(text: 'NAMA'),
+                      Tab(icon: Icon(Icons.directions_car)),
+                      Tab(icon: Icon(Icons.directions_transit)),
+                      Tab(icon: Icon(Icons.directions_bike)),
                     ],
                   ),
                 ),
               ),
               Expanded(
                 child: TabBarView(
-                  children: [FirstScreen(), SecondScreen(), ThirdScreen()],
+                  children: [
+                    Icon(Icons.directions_car),
+                    Icon(Icons.directions_transit),
+                    Icon(Icons.directions_bike),
+                  ],
                 ),
               ),
             ],
