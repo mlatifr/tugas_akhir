@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/apoteker/apt_input_obat.dart';
 import 'package:flutter_application_1/apoteker/apt_list_stok_obat.dart';
 import 'package:flutter_application_1/apoteker/tab_bar.dart';
-import 'package:flutter_application_1/dokter/dr_riwayat_periksa.dart';
 import '../main.dart';
 
 class AptAntreanPasien extends StatefulWidget {
+  
   const AptAntreanPasien({Key key}) : super(key: key);
 
   @override
@@ -49,6 +50,17 @@ class _AptAntreanPasienState extends State<AptAntreanPasien> {
             },
           ),
           ListTile(
+            title: Text('Input Obat'),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AptInputObat()));
+              // Navigator.push(context,MaterialPageRoute(builder: (context) => SecondRoute()),);
+              // Navigator.pop(context);
+              // Navigator.of(context).pop();
+              // Navigator.of(context).maybePop();
+            },
+          ),
+          ListTile(
             title: Text('Logout'),
             onTap: () {
               doLogout();
@@ -62,6 +74,10 @@ class _AptAntreanPasienState extends State<AptAntreanPasien> {
   Widget lsTile(int index) {
     if (index <= 4) {
       return ListTile(
+        onTap: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AptInputObat()));
+        },
         leading: CircleAvatar(),
         title: Text('Pasien ${index + 1}'),
         subtitle: Text('sub judul'),
@@ -69,6 +85,10 @@ class _AptAntreanPasienState extends State<AptAntreanPasien> {
       );
     } else {
       return ListTile(
+        onTap: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AptInputObat()));
+        },
         leading: CircleAvatar(),
         title: Text('Pasien ${index + 1}'),
         subtitle: Text('sub judul'),
