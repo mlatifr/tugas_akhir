@@ -5,7 +5,6 @@ import 'package:flutter_application_1/apoteker/tab_bar.dart';
 import '../main.dart';
 
 class AptAntreanPasien extends StatefulWidget {
-  
   const AptAntreanPasien({Key key}) : super(key: key);
 
   @override
@@ -76,7 +75,11 @@ class _AptAntreanPasienState extends State<AptAntreanPasien> {
       return ListTile(
         onTap: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => AptInputObat()));
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AptInputObat(
+                        namaPasien: '$index',
+                      )));
         },
         leading: CircleAvatar(),
         title: Text('Pasien ${index + 1}'),
@@ -87,7 +90,11 @@ class _AptAntreanPasienState extends State<AptAntreanPasien> {
       return ListTile(
         onTap: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => AptInputObat()));
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AptInputObat(
+                        namaPasien: '$index',
+                      )));
         },
         leading: CircleAvatar(),
         title: Text('Pasien ${index + 1}'),

@@ -71,6 +71,45 @@ class _AptInputObatState extends State<AptInputObat> {
     );
   }
 
+  Widget pasienNull() {
+    if (widget.namaPasien == null) {
+      return Column(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width * 0.9,
+            padding: EdgeInsets.all(10),
+            child: TextFormField(
+              decoration: const InputDecoration(
+                // icon: Icon(Icons.search),
+                labelText: 'Nama Pasien',
+              ),
+              onChanged: (value) {
+                _txtcari = value;
+                bacaData(value);
+              },
+            ),
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width * 0.9,
+            padding: EdgeInsets.all(10),
+            child: TextFormField(
+              decoration: const InputDecoration(
+                // icon: Icon(Icons.search),
+                labelText: 'Alamat',
+              ),
+              onChanged: (value) {
+                _txtcari = value;
+                bacaData(value);
+              },
+            ),
+          )
+        ],
+      );
+    } else {
+      return SizedBox();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -89,6 +128,7 @@ class _AptInputObatState extends State<AptInputObat> {
           children: [
             Column(
               children: [
+                pasienNull(),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.9,
                   padding: EdgeInsets.all(10),
