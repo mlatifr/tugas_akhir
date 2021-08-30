@@ -48,6 +48,18 @@ class _AptInputObatState extends State<AptInputObat> {
     // bacaData();
   }
 
+  var list = ["one", "two", "three", "four"];
+  Widget getTextWidgets(List<dynamic> strings) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.3,
+      color: Colors.greenAccent,
+      padding: EdgeInsets.all(5.0),
+      child: ListView(
+          children:
+              strings.map((item) => Container(child: Text(item))).toList()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -62,26 +74,95 @@ class _AptInputObatState extends State<AptInputObat> {
           title: Text('Input Obat: ${widget.namaPasien}'),
           centerTitle: true,
         ),
-        body: ListView(
-          children: [
-            TextFormField(
-              decoration: const InputDecoration(
-                icon: Icon(Icons.search),
-                labelText: 'Cari Obat',
+        body: Padding(
+          padding: EdgeInsets.all(10.0),
+          child: ListView(
+            children: [
+              // getTextWidgets(lsObat),
+              TextFormField(
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.search),
+                  labelText: 'Cari Obat',
+                ),
+                onChanged: (value) {
+                  _txtcari = value;
+                  bacaData(value);
+                },
               ),
-              onChanged: (value) {
-                _txtcari = value;
-                bacaData(value);
-              },
-            ),
-            ListView.builder(
-                physics: ScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: 1,
-                itemBuilder: (context, index) {
-                  return Text('${[index]}');
-                }),
-          ],
+              Container(
+                height: MediaQuery.of(context).size.height * 0.3,
+                color: Colors.greenAccent,
+                padding: EdgeInsets.all(5.0),
+                child: ListView.separated(
+                  physics: ScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: 20,
+                  itemBuilder: (context, index) {
+                    return Text('${[index + 1]}');
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return Divider();
+                  },
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 10),
+                child: TextButton(
+                    style: TextButton.styleFrom(
+                      primary: Colors.white,
+                      backgroundColor: Colors.blue,
+                    ),
+                    onPressed: () {
+                      // doLogin();
+                    },
+                    child: Text(
+                      'Tambah',
+                    )),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 25),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.shopping_cart,
+                      semanticLabel: 'Keranjang',
+                    ),
+                    Text('Keranjang'),
+                  ],
+                ),
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.3,
+                color: Colors.greenAccent,
+                padding: EdgeInsets.all(5.0),
+                child: ListView.separated(
+                  physics: ScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: 20,
+                  itemBuilder: (context, index) {
+                    return Text('${[index + 1]}');
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return Divider();
+                  },
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 10),
+                child: TextButton(
+                    style: TextButton.styleFrom(
+                      primary: Colors.white,
+                      backgroundColor: Colors.blue,
+                    ),
+                    onPressed: () {
+                      // doLogin();
+                    },
+                    child: Text(
+                      'Simpan',
+                    )),
+              ),
+            ],
+          ),
         ),
       ),
     );
