@@ -48,7 +48,18 @@ class _AptInputObatState extends State<AptInputObat> {
     // bacaData();
   }
 
-  var list = ["one", "two", "three", "four"];
+  var lsObatOne = [
+    "obat one",
+    "obat two",
+    "obat three",
+    "obat four",
+    "obat four",
+    "obat four",
+    "obat four",
+    "obat four",
+    "obat four",
+    "obat four"
+  ];
   Widget getTextWidgets(List<dynamic> strings) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.3,
@@ -74,95 +85,138 @@ class _AptInputObatState extends State<AptInputObat> {
           title: Text('Input Obat: ${widget.namaPasien}'),
           centerTitle: true,
         ),
-        body: Padding(
-          padding: EdgeInsets.all(10.0),
-          child: ListView(
-            children: [
-              // getTextWidgets(lsObat),
-              TextFormField(
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.search),
-                  labelText: 'Cari Obat',
-                ),
-                onChanged: (value) {
-                  _txtcari = value;
-                  bacaData(value);
-                },
-              ),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.3,
-                color: Colors.greenAccent,
-                padding: EdgeInsets.all(5.0),
-                child: ListView.separated(
-                  physics: ScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: 20,
-                  itemBuilder: (context, index) {
-                    return Text('${[index + 1]}');
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return Divider();
-                  },
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 10),
-                child: TextButton(
-                    style: TextButton.styleFrom(
-                      primary: Colors.white,
-                      backgroundColor: Colors.blue,
+        body: ListView(
+          children: [
+            Column(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  padding: EdgeInsets.all(10),
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      icon: Icon(Icons.search),
+                      labelText: 'Cari Obat',
                     ),
-                    onPressed: () {
-                      // doLogin();
+                    onChanged: (value) {
+                      _txtcari = value;
+                      bacaData(value);
                     },
-                    child: Text(
-                      'Tambah',
-                    )),
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 25),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.shopping_cart,
-                      semanticLabel: 'Keranjang',
-                    ),
-                    Text('Keranjang'),
-                  ],
+                  ),
                 ),
-              ),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.3,
-                color: Colors.greenAccent,
-                padding: EdgeInsets.all(5.0),
-                child: ListView.separated(
-                  physics: ScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: 20,
-                  itemBuilder: (context, index) {
-                    return Text('${[index + 1]}');
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return Divider();
-                  },
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 10),
-                child: TextButton(
-                    style: TextButton.styleFrom(
-                      primary: Colors.white,
-                      backgroundColor: Colors.blue,
-                    ),
-                    onPressed: () {
-                      // doLogin();
+                Container(
+                  padding: EdgeInsets.all(10),
+                  height: MediaQuery.of(context).size.height * 0.2,
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  color: Colors.greenAccent[100],
+                  child: ListView.separated(
+                    physics: ScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: lsObatOne.length,
+                    itemBuilder: (context, index) {
+                      return Text('${lsObatOne[index]}');
                     },
-                    child: Text(
-                      'Simpan',
-                    )),
-              ),
-            ],
-          ),
+                    separatorBuilder: (BuildContext context, int index) {
+                      return Divider();
+                    },
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: TextButton(
+                      style: TextButton.styleFrom(
+                        primary: Colors.white,
+                        backgroundColor: Colors.blue,
+                      ),
+                      onPressed: () {
+                        // doLogin();
+                      },
+                      child: Text(
+                        'Tambah',
+                      )),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  color: Colors.lightGreen,
+                  padding: EdgeInsets.all(10),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.shopping_cart,
+                        semanticLabel: 'Keranjang',
+                      ),
+                      Text('Keranjang'),
+                    ],
+                  ),
+                ),
+                Container(
+                  // padding: EdgeInsets.all(10),
+                  // height: MediaQuery.of(context).size.height * 0.36,
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  color: Colors.greenAccent[200],
+                  child: Table(
+                      border: TableBorder
+                          .all(), // Allows to add a border decoration around your table
+                      children: [
+                        TableRow(children: [
+                          Text('Nama'),
+                          Text('Satuan'),
+                          Text('Jumlah'),
+                          Text('Aturan Pakai'),
+                          Text('Hapus'),
+                        ]),
+                      ]),
+                ),
+                Container(
+                  // padding: EdgeInsets.all(10),
+                  height: MediaQuery.of(context).size.height * 0.36,
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  color: Colors.greenAccent[100],
+                  child: ListView.separated(
+                    physics: ScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: lsObat.length,
+                    itemBuilder: (context, index) {
+                      return Table(
+                          border: TableBorder
+                              .all(), // Allows to add a border decoration around your table
+                          children: [
+                            TableRow(children: [
+                              Text(
+                                '${lsObat[index]}',
+                              ),
+                              Text(''),
+                              Text('3x1'),
+                              Text('Setelah maem'),
+                              Icon(
+                                Icons.delete,
+                                color: Colors.red[200],
+                              ),
+                            ]),
+                          ]);
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return Divider();
+                    },
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  // padding: EdgeInsets.only(top: 10),
+                  child: TextButton(
+                      style: TextButton.styleFrom(
+                        primary: Colors.white,
+                        backgroundColor: Colors.blue,
+                      ),
+                      onPressed: () {
+                        // doLogin();
+                      },
+                      child: Text(
+                        'Simpan',
+                      )),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
