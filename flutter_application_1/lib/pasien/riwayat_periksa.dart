@@ -23,14 +23,39 @@ List<Item> generateItems(int numberOfItems) {
 }
 
 class RiwayatPeriksaPasien extends StatefulWidget {
-  const RiwayatPeriksaPasien({Key key}) : super(key: key);
+  RiwayatPeriksaPasien({Key key}) : super(key: key);
 
   @override
   _RiwayatPeriksaPasienState createState() => _RiwayatPeriksaPasienState();
 }
 
 class _RiwayatPeriksaPasienState extends State<RiwayatPeriksaPasien> {
-  final List<Item> _data = generateItems(8);
+  @override
+  // untuk membaca data diawal build page nya
+  void initState() {
+    super.initState();
+    // bacaData();
+  }
+  // Future getProjectDetails() async {
+  //   List<Item> _data = await generateItems(30);
+  //   return _data;
+  // }
+
+  // Widget ftrBuilder() {
+  //   return FutureBuilder(
+  //     builder: (context, snapshot) {
+  //       if (snapshot.connectionState == ConnectionState.waiting &&
+  //           snapshot.hasData == null) {
+  //         return CircularProgressIndicator();
+  //       } else {
+  //         return Text('done');
+  //       }
+  //     },
+  //     future: getProjectDetails(),
+  //   );
+  // }
+
+  List<Item> _data = generateItems(1000);
   Widget _buildPanel() {
     return ExpansionPanelList(
       expansionCallback: (int index, bool isExpanded) {
@@ -39,14 +64,19 @@ class _RiwayatPeriksaPasienState extends State<RiwayatPeriksaPasien> {
         });
       },
       children: _data.map<ExpansionPanel>((Item item) {
+        print('render expansion');
         return ExpansionPanel(
+          canTapOnHeader: true,
           headerBuilder: (BuildContext context, bool isExpanded) {
             return ListTile(
-              title: Text(item.headerValue),
+              title: Text(
+                item.headerValue,
+                textAlign: TextAlign.center,
+              ),
             );
           },
           body: Padding(
-            padding: const EdgeInsets.all(25.0),
+            padding: EdgeInsets.all(25.0),
             child: Container(
               color: Colors.green[50],
               child: Column(
@@ -196,6 +226,7 @@ class _RiwayatPeriksaPasienState extends State<RiwayatPeriksaPasien> {
 
   @override
   Widget build(BuildContext context) {
+    print('render navbar');
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -213,10 +244,7 @@ class _RiwayatPeriksaPasienState extends State<RiwayatPeriksaPasien> {
           children: <Widget>[
             Column(
               children: [
-                Text('Profil'),
-                Text('Rekam Medis'),
-                Text('Nama'),
-                Text('Usia'),
+                // ftrBuilder(),
                 _buildPanel(),
               ],
             ),
