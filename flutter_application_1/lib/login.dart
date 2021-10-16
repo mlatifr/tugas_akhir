@@ -1,10 +1,27 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 // ignore: unused_element
 String _username, _password;
+Future<String> cekLogin() async {
+  print('cek login function');
+  final response = await http
+      .post(Uri.parse("https://192.168.1.8/tugas_akhir/login.php"), body: {
+    'id': 'pasien',
+    'sandi': '',
+  });
+  print(response.body + 'response body adalah');
+  if (response.statusCode == 200) {
+    print('berhasil login');
+  } else {
+    throw Exception('Failed to read API');
+  }
+}
+
 void doLogin() async {
+  //simmpan user login ke alikasi(sahredPReferences or Cookies)
   final prefs = await SharedPreferences.getInstance();
   prefs.setString("user_id", _username);
   main();
@@ -70,6 +87,20 @@ class _LoginPageState extends State<LoginPage> {
                       'sembunyikan password',
                     ),
                   ],
+                ),
+                SizedBox(
+                  width: 500,
+                  child: TextButton(
+                      style: TextButton.styleFrom(
+                        primary: Colors.white,
+                        backgroundColor: Colors.blue,
+                      ),
+                      onPressed: () {
+                        cekLogin();
+                      },
+                      child: Text(
+                        'cek login',
+                      )),
                 ),
                 Divider(),
                 SizedBox(

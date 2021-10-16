@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/admin_antrean/admin_antrean_pasien.dart';
 import 'package:flutter_application_1/login.dart';
@@ -8,11 +9,13 @@ import 'package:flutter_application_1/pasien/pendaftaran_pasien_baru.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'apoteker/apt_antrean_resep.dart';
 import 'dokter/dr_antrean_pasien.dart';
+import 'dart:async';
 
 // ignore: non_constant_identifier_names
 String user_aktif = "";
 // ignore: non_constant_identifier_names
-String APIurl, keluhan;
+String keluhan;
+String APIurl = "https://192.168.1.8/tugas_akhir/";
 void doLogout() async {
   final prefs = await SharedPreferences.getInstance();
   prefs.remove("user_id");
@@ -32,8 +35,21 @@ Future<String> cekLogin() async {
   }
 }
 
+// untuk allow certificates login
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
+
 void main() {
   // runApp(MyApp());
+
+  HttpOverrides.global =
+      new MyHttpOverrides(); // untuk allow certificates login
   WidgetsFlutterBinding.ensureInitialized();
 
   cekLogin().then((String result) {
