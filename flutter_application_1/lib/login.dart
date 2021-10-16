@@ -7,14 +7,13 @@ import 'package:http/http.dart' as http;
 String _username, _password;
 Future<String> cekLogin() async {
   print('cek login function');
-  final response = await http
-      .post(Uri.parse("https://192.168.1.8/tugas_akhir/login.php"), body: {
-    'id': 'pasien',
-    'sandi': '',
+  final response = await http.post(Uri.parse(APIurl + "login.php"), body: {
+    'id': _username,
+    'sandi': _password,
   });
-  print(response.body + 'response body adalah');
+  print('response body adalah \n $_username' + response.body);
   if (response.statusCode == 200) {
-    print('berhasil login');
+    // print('berhasil login');
   } else {
     throw Exception('Failed to read API');
   }
@@ -70,6 +69,9 @@ class _LoginPageState extends State<LoginPage> {
                   decoration: InputDecoration(labelText: 'username'),
                 ),
                 TextFormField(
+                  onChanged: (value) {
+                    _password = value;
+                  },
                   decoration: const InputDecoration(labelText: 'Password'),
                   obscureText: obscureText,
                 ),
