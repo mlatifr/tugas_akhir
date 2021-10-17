@@ -1,34 +1,52 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 // ignore: unused_element
-String _username, _password;
-Future<String> cekLogin() async {
-  print('cek login function');
+String _username, _password, _userid;
+Future<String> fetchData() async {
+  // print('cek login function');
   final response = await http.post(Uri.parse(APIurl + "login.php"), body: {
     'id': _username,
     'sandi': _password,
+    // 'id': 'pasien1',
+    // 'sandi': 'pasien1',
   });
-  print('response body adalah \n $_username' + response.body);
+  // print('response body adalah \n $_username \n' + response.body);
   if (response.statusCode == 200) {
-    // print('berhasil login');
+    return response.body;
   } else {
     throw Exception('Failed to read API');
   }
 }
 
+// tahap 2 API 1
+bacaData() {
+  Future<String> data = fetchData();
+  data.then((value) {
+    //Mengubah json menjadi Array
+    Map json = jsonDecode(value);
+    // print('json id nya adalah =' + json['id'].toString());
+    _userid = json['id'].toString();
+  });
+  doLogin();
+  // print('user id= \n $_userid');
+}
+
 void doLogin() async {
   //simmpan user login ke alikasi(sahredPReferences or Cookies)
   final prefs = await SharedPreferences.getInstance();
-  prefs.setString("user_id", _username);
+  prefs.setString("_username", _username);
+  prefs.setString("_userid", _userid);
   main();
 }
 
 void doDaftar() async {
   final prefs = await SharedPreferences.getInstance();
-  prefs.setString("user_id", 'daftarBaru');
+  prefs.setString("username", 'daftarBaru');
   main();
 }
 
@@ -98,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                         backgroundColor: Colors.blue,
                       ),
                       onPressed: () {
-                        cekLogin();
+                        bacaData();
                       },
                       child: Text(
                         'cek login',
@@ -113,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                         backgroundColor: Colors.blue,
                       ),
                       onPressed: () {
-                        doLogin();
+                        bacaData();
                       },
                       child: Text(
                         'MASUK',

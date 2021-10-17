@@ -12,13 +12,13 @@ import 'dokter/dr_antrean_pasien.dart';
 import 'dart:async';
 
 // ignore: non_constant_identifier_names
-String user_aktif = "";
+String username = "";
 // ignore: non_constant_identifier_names
 String keluhan;
 String APIurl = "https://192.168.1.8/tugas_akhir/";
 void doLogout() async {
   final prefs = await SharedPreferences.getInstance();
-  prefs.remove("user_id");
+  prefs.remove("_username");
   main();
 }
 
@@ -27,9 +27,9 @@ Future<String> cekLogin() async {
   try {
     final prefs = await SharedPreferences.getInstance();
     // ignore: non_constant_identifier_names
-    String user_id = prefs.getString("user_id") ?? '';
-    print('cek user_id = $user_id');
-    return user_id;
+    String _username = prefs.getString("_username") ?? '';
+    // print('cek _username = $_username');
+    return _username;
   } catch (e) {
     print('error karena $e');
   }
@@ -54,25 +54,25 @@ void main() {
 
   cekLogin().then((String result) {
     if (result == 'daftarBaru') {
-      user_aktif = result;
+      username = result;
       runApp(MaterialApp(
         home: DaftarPasienBaru(),
         debugShowCheckedModeBanner: false,
       ));
     } else if (result == '' && result != 'daftarBaru') {
-      user_aktif = result;
+      username = result;
       runApp(MaterialApp(home: LoginPage()));
     } else if (result.contains('admin')) {
-      user_aktif = result;
+      username = result;
       runApp(MaterialApp(home: AdminAntreanPasien()));
     } else if (result.contains('dokter')) {
-      user_aktif = result;
+      username = result;
       runApp(MaterialApp(home: DrAntreanPasien()));
     } else if (result.contains('apoteker')) {
-      user_aktif = result;
+      username = result;
       runApp(MaterialApp(home: AptAntreanPasien()));
     } else {
-      user_aktif = result;
+      username = result;
       runApp(MyApp());
     }
   });
@@ -115,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Text('Selamat datang: ' + user_aktif),
+            child: Text('Selamat datang: ' + username),
             decoration: BoxDecoration(
                 // image: DecorationImage(
                 //   fit: BoxFit.cover,
@@ -180,7 +180,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Image.asset('./asset/image/clinic.jpg')),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               Text('Selamat Datang'),
-              Text(user_aktif),
+              Text(username),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               TextFormField(
                   maxLines: 8,

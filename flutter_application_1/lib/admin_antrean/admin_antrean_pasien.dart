@@ -15,7 +15,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Text('Selamat datang: ' + user_aktif),
+            child: Text('Selamat datang: ' + username),
             decoration: BoxDecoration(
                 // image: DecorationImage(
                 //   fit: BoxFit.cover,
