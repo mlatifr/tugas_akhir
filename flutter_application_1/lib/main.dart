@@ -14,11 +14,36 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 // ignore: non_constant_identifier_names
-String username = "";
+String username, userid = "";
 // ignore: non_constant_identifier_names
 String keluhan, status_antrean;
 int antrean_sekarang, antrean_terakhir, batas_antrean;
 String APIurl = "https://192.168.1.8/tugas_akhir/";
+
+//untuk memasukan keluhan + nomor antrean: pasien_input_keluhan.php
+Future<String> fetchDataKeluhan() async {
+  final response =
+      await http.post(Uri.parse(APIurl + "pasien_input_keluhan.php"), body: {
+    'keluhan': keluhan,
+    'no_antrean': (antrean_sekarang + 1).toString(),
+    'user_klinik_id': userid.toString()
+  });
+  if (response.statusCode == 200) {
+    return response.body;
+  } else {
+    throw Exception('Failed to read API');
+  }
+}
+
+bacaDataKeluhan() {
+  Future<String> data = fetchDataKeluhan();
+  data.then((value) {
+    // ignore: unused_local_variable
+    Map json = jsonDecode(value);
+    print(json);
+  });
+}
+
 // untuk mengecek antrean
 Future<String> fetchDataAntreanSekarang() async {
   final response =
@@ -39,17 +64,24 @@ bacaDataAntrean() {
     antrean_sekarang = json['antrean_sekarang'];
     antrean_terakhir = json['antrean_terakhir'];
     batas_antrean = json['batas_antrean'];
-    print('''json: $json
-status_antrean: $status_antrean 
-antrean_sekarang: $antrean_sekarang
-antrean_terakhir: $antrean_terakhir
-batas_antrean: $batas_antrean''');
+    //     print('''json: $json
+    // status_antrean: $status_antrean
+    // antrean_sekarang: $antrean_sekarang
+    // antrean_terakhir: $antrean_terakhir
+    // batas_antrean: $batas_antrean''');
   });
+}
+
+void getUserId() async {
+  final prefs = await SharedPreferences.getInstance();
+  userid = prefs.getString("userid");
+  print('user id main: $userid');
 }
 
 void doLogout() async {
   final prefs = await SharedPreferences.getInstance();
   prefs.remove("_username");
+  prefs.remove("userid");
   main();
 }
 
@@ -78,7 +110,6 @@ class MyHttpOverrides extends HttpOverrides {
 
 void main() {
   // runApp(MyApp());
-
   HttpOverrides.global =
       new MyHttpOverrides(); // untuk allow certificates login
   WidgetsFlutterBinding.ensureInitialized();
@@ -243,6 +274,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       backgroundColor: Colors.blue,
                     ),
                     onPressed: () {
+                      print('userid: $userid');
+                      getUserId();
                       bacaDataAntrean();
                       showDialog<String>(
                         context: context,
@@ -271,7 +304,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                             TextButton(
                               onPressed: () {
-                                bacaDataAntrean();
+                                bacaDataKeluhan();
                                 Navigator.pop(context, 'OK');
                               },
                               child: Text('OK'),

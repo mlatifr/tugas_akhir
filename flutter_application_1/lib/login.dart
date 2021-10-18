@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 // ignore: unused_element
-String _username, _password, _userid;
+String _username, _password, userid;
 Future<String> fetchData() async {
   // print('cek login function');
   final response = await http.post(Uri.parse(APIurl + "login.php"), body: {
@@ -29,7 +29,7 @@ bacaData() {
     //Mengubah json menjadi Array
     Map json = jsonDecode(value);
     // print('json id nya adalah =' + json['id'].toString());
-    _userid = json['id'].toString();
+    userid = json['id'].toString();
   });
   doLogin();
   // print('user id= \n $_userid');
@@ -39,7 +39,9 @@ void doLogin() async {
   //simmpan user login ke alikasi(sahredPReferences or Cookies)
   final prefs = await SharedPreferences.getInstance();
   prefs.setString("_username", _username);
-  prefs.setString("_userid", _userid);
+  print('$userid: milik login');
+  prefs.setString("userid", userid);
+  print('$userid: milik login2');
   main();
 }
 
