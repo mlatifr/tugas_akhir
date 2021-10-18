@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -107,20 +106,6 @@ class _LoginPageState extends State<LoginPage> {
                       'sembunyikan password',
                     ),
                   ],
-                ),
-                SizedBox(
-                  width: 500,
-                  child: TextButton(
-                      style: TextButton.styleFrom(
-                        primary: Colors.white,
-                        backgroundColor: Colors.blue,
-                      ),
-                      onPressed: () {
-                        bacaData();
-                      },
-                      child: Text(
-                        'cek login',
-                      )),
                 ),
                 Divider(),
                 SizedBox(
