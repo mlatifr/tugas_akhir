@@ -11,6 +11,7 @@ List lsObat = [
   '8 matamu',
   '9 mata-mata',
 ];
+// ignore: unused_element
 var _txtcari;
 List hasilCari = ['kosong'];
 bacaData(pCari) {
@@ -32,6 +33,7 @@ tampilkanData() {
   }
 }
 
+// ignore: must_be_immutable
 class AptInputObat extends StatefulWidget {
   var namaPasien;
   AptInputObat({Key key, this.namaPasien}) : super(key: key);

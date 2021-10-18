@@ -10,12 +10,43 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'apoteker/apt_antrean_resep.dart';
 import 'dokter/dr_antrean_pasien.dart';
 import 'dart:async';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 // ignore: non_constant_identifier_names
 String username = "";
 // ignore: non_constant_identifier_names
-String keluhan;
+String keluhan, status_antrean;
+int antrean_sekarang, antrean_terakhir, batas_antrean;
 String APIurl = "https://192.168.1.8/tugas_akhir/";
+// untuk mengecek antrean
+Future<String> fetchDataAntreanSekarang() async {
+  final response =
+      await http.post(Uri.parse(APIurl + "pasien_view_antrean_sekarang.php"));
+  if (response.statusCode == 200) {
+    return response.body;
+  } else {
+    throw Exception('Failed to read API');
+  }
+}
+
+bacaDataAntrean() {
+  Future<String> data = fetchDataAntreanSekarang();
+  data.then((value) {
+    // ignore: unused_local_variable
+    Map json = jsonDecode(value);
+    status_antrean = json['status_antrean'];
+    antrean_sekarang = json['antrean_sekarang'];
+    antrean_terakhir = json['antrean_terakhir'];
+    batas_antrean = json['batas_antrean'];
+    print('''json: $json
+status_antrean: $status_antrean 
+antrean_sekarang: $antrean_sekarang
+antrean_terakhir: $antrean_terakhir
+batas_antrean: $batas_antrean''');
+  });
+}
+
 void doLogout() async {
   final prefs = await SharedPreferences.getInstance();
   prefs.remove("_username");
@@ -212,6 +243,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       backgroundColor: Colors.blue,
                     ),
                     onPressed: () {
+                      bacaDataAntrean();
                       showDialog<String>(
                         context: context,
                         builder: (BuildContext context) => AlertDialog(
@@ -238,7 +270,10 @@ class _MyHomePageState extends State<MyHomePage> {
                               child: Text('Batal'),
                             ),
                             TextButton(
-                              onPressed: () => Navigator.pop(context, 'OK'),
+                              onPressed: () {
+                                bacaDataAntrean();
+                                Navigator.pop(context, 'OK');
+                              },
                               child: Text('OK'),
                             ),
                           ],

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+// ignore: unused_import
 import 'package:flutter_application_1/admin_antrean/admin_antrean_pasien.dart';
+// ignore: unused_import
 import 'package:flutter_application_1/dokter/dr_riwayat_periksa.dart';
 import '../main.dart';
 
@@ -17,7 +19,7 @@ class _CheckBoxState extends State<CheckBox> {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Text('Selamat datang: ' + user_aktif),
+            child: Text('Selamat datang: ' + username),
             decoration: BoxDecoration(
                 // image: DecorationImage(
                 //   fit: BoxFit.cover,
@@ -54,6 +56,7 @@ class _CheckBoxState extends State<CheckBox> {
     }
   }
 
+  // ignore: unused_field
   var _isChecked = true;
   Map<String, bool> values = {
     'foo': true,
