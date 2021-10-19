@@ -198,8 +198,13 @@ class _MyHomePageState extends State<MyHomePage> {
             title: Text('Nomor Antrean'),
             onTap: () {
               // Navigator.pop(context);
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AntreanPasien()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AntreanPasien(
+                            nomor_antrean: antrean_terakhir,
+                            antrean_sekarang: no_antrean,
+                          )));
             },
           ),
           ListTile(
@@ -321,8 +326,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              AntreanPasien()));
+                                          builder: (context) => AntreanPasien(
+                                                nomor_antrean: antrean_terakhir,
+                                                antrean_sekarang: no_antrean,
+                                              )));
                                 }
                               },
                               child: Text('OK'),
