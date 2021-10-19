@@ -39,9 +39,9 @@ void doLogin() async {
   //simmpan user login ke alikasi(sahredPReferences or Cookies)
   final prefs = await SharedPreferences.getInstance();
   prefs.setString("_username", _username);
-  print('$userid: milik login');
+  // print('$userid: milik login');
   prefs.setString("userid", userid);
-  print('$userid: milik login2');
+  // print('$userid: milik login2');
   main();
 }
 

@@ -64,7 +64,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
   }
 
 // tahap 2 API 1
-  bacaDataAntrean() {
+  AdminBacaDataAntrean() {
     Future<String> data = fetchDataAntrean();
     data.then((value) {
       //Mengubah json menjadi Array
@@ -103,6 +103,56 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
     );
   }
 
+  Widget widgetListAntrean(int index) {
+    return Dismissible(
+      onDismissed: (direction) {
+        if (direction == DismissDirection.endToStart) {
+          print('end to start');
+        } else {
+          print('else');
+        }
+      },
+      confirmDismiss: (direction) {
+        return showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text('Konfirmasi'),
+                content: Text('Apakah ingin menghapus antrian ini?'),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop(true);
+                      },
+                      child: Text('Yes')),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop(false);
+                      },
+                      child: Text('No')),
+                ],
+              );
+            });
+      },
+      key: Key(index.toString()),
+      direction: DismissDirection.endToStart,
+      background: Container(
+        color: Colors.red,
+        child: Icon(
+          Icons.delete,
+          size: 25,
+        ),
+        alignment: Alignment.centerRight,
+        padding: EdgeInsets.only(right: 10),
+      ),
+      child: ListTile(
+        leading: CircleAvatar(),
+        title: Text('${index + 1}'),
+        subtitle: Text('sub judul'),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -113,58 +163,18 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
             title: Text("Antrean Pasien"),
           ),
           drawer: widgetDrawer(),
-          body: ListView.builder(
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return Dismissible(
-                  onDismissed: (direction) {
-                    if (direction == DismissDirection.endToStart) {
-                      print('end to start');
-                    } else {
-                      print('else');
-                    }
-                  },
-                  confirmDismiss: (direction) {
-                    return showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text('Konfirmasi'),
-                            content:
-                                Text('Apakah ingin menghapus antrian ini?'),
-                            actions: [
-                              TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop(true);
-                                  },
-                                  child: Text('Yes')),
-                              TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop(false);
-                                  },
-                                  child: Text('No')),
-                            ],
-                          );
-                        });
-                  },
-                  key: Key(index.toString()),
-                  direction: DismissDirection.endToStart,
-                  background: Container(
-                    color: Colors.red,
-                    child: Icon(
-                      Icons.delete,
-                      size: 25,
-                    ),
-                    alignment: Alignment.centerRight,
-                    padding: EdgeInsets.only(right: 10),
-                  ),
-                  child: ListTile(
-                    leading: CircleAvatar(),
-                    title: Text('${index + 1}'),
-                    subtitle: Text('sub judul'),
-                  ),
-                );
-              })),
+          body: Column(
+            children: [
+              TextButton(
+                  onPressed: AdminBacaDataAntrean, child: Text('tombol')),
+              ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: 10,
+                  itemBuilder: (context, index) {
+                    return widgetListAntrean(index);
+                  }),
+            ],
+          )),
     );
   }
 }
