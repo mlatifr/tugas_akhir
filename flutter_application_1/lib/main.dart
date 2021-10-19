@@ -15,8 +15,9 @@ import 'dart:convert';
 
 // ignore: non_constant_identifier_names
 String username, userid = "";
+var keluhan = TextEditingController();
 // ignore: non_constant_identifier_names
-String keluhan, status_antrean;
+String status_antrean, navigateToNomorAntrean;
 int antrean_sekarang, antrean_terakhir, batas_antrean;
 String APIurl = "https://192.168.1.8/tugas_akhir/";
 
@@ -24,7 +25,7 @@ String APIurl = "https://192.168.1.8/tugas_akhir/";
 Future<String> fetchDataKeluhan() async {
   final response =
       await http.post(Uri.parse(APIurl + "pasien_input_keluhan.php"), body: {
-    'keluhan': keluhan,
+    'keluhan': keluhan.text,
     'no_antrean': (antrean_sekarang + 1).toString(),
     'user_klinik_id': userid.toString()
   });
@@ -40,6 +41,11 @@ bacaDataKeluhan() {
   data.then((value) {
     // ignore: unused_local_variable
     Map json = jsonDecode(value);
+    if (json['result'] == 'success') {
+      navigateToNomorAntrean = 'success';
+    } else {
+      print(json);
+    }
     print(json);
   });
 }
@@ -246,9 +252,7 @@ class _MyHomePageState extends State<MyHomePage> {
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               TextFormField(
                   maxLines: 8,
-                  onChanged: (value) {
-                    keluhan = value;
-                  },
+                  controller: keluhan,
                   decoration: InputDecoration(
                     labelText: "ketik keluhan disini",
                     fillColor: Colors.white,
@@ -286,7 +290,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           content: TextFormField(
                               maxLines: 5,
-                              initialValue: keluhan,
+                              controller: keluhan,
                               style: TextStyle(fontSize: 12),
                               decoration: InputDecoration(
                                 fillColor: Colors.white,
@@ -305,7 +309,16 @@ class _MyHomePageState extends State<MyHomePage> {
                             TextButton(
                               onPressed: () {
                                 bacaDataKeluhan();
-                                Navigator.pop(context, 'OK');
+                                Navigator.pop(context);
+                                keluhan.clear();
+                                // Navigator.pop(context, 'OK');
+                                if (navigateToNomorAntrean == 'success') {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              AntreanPasien()));
+                                }
                               },
                               child: Text('OK'),
                             ),
