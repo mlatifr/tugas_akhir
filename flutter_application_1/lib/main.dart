@@ -18,15 +18,16 @@ String username, userid = "";
 var keluhan = TextEditingController();
 // ignore: non_constant_identifier_names
 String status_antrean, navigateToNomorAntrean;
-int antrean_sekarang, antrean_terakhir, batas_antrean;
+int no_antrean, antrean_terakhir, batas_antrean;
 String APIurl = "https://192.168.1.8/tugas_akhir/";
 
 //untuk memasukan keluhan + nomor antrean: pasien_input_keluhan.php
 Future<String> fetchDataKeluhan() async {
+  print("antrean_terakhir: $antrean_terakhir");
   final response =
       await http.post(Uri.parse(APIurl + "pasien_input_keluhan.php"), body: {
     'keluhan': keluhan.text,
-    'no_antrean': (antrean_sekarang + 1).toString(),
+    'no_antrean': antrean_terakhir.toString(),
     'user_klinik_id': userid.toString()
   });
   if (response.statusCode == 200) {
@@ -47,34 +48,6 @@ bacaDataKeluhan() {
       print(json);
     }
     print(json);
-  });
-}
-
-// untuk mengecek antrean
-Future<String> fetchDataAntreanSekarang() async {
-  final response =
-      await http.post(Uri.parse(APIurl + "pasien_view_antrean_sekarang.php"));
-  if (response.statusCode == 200) {
-    return response.body;
-  } else {
-    throw Exception('Failed to read API');
-  }
-}
-
-bacaDataAntrean() {
-  Future<String> data = fetchDataAntreanSekarang();
-  data.then((value) {
-    // ignore: unused_local_variable
-    Map json = jsonDecode(value);
-    status_antrean = json['status_antrean'];
-    antrean_sekarang = json['antrean_sekarang'];
-    antrean_terakhir = json['antrean_terakhir'];
-    batas_antrean = json['batas_antrean'];
-    //     print('''json: $json
-    // status_antrean: $status_antrean
-    // antrean_sekarang: $antrean_sekarang
-    // antrean_terakhir: $antrean_terakhir
-    // batas_antrean: $batas_antrean''');
   });
 }
 
@@ -177,6 +150,36 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+// untuk mengecek antrean
+  Future<String> fetchDataAntreanSekarang() async {
+    final response =
+        await http.post(Uri.parse(APIurl + "pasien_view_antrean_sekarang.php"));
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('Failed to read API');
+    }
+  }
+
+  bacaDataAntrean() {
+    Future<String> data = fetchDataAntreanSekarang();
+    data.then((value) {
+      // ignore: unused_local_variable
+      setState(() {
+        Map json = jsonDecode(value);
+        status_antrean = json['status_antrean'];
+        no_antrean = json['antrean_sekarang'];
+        antrean_terakhir = json['antrean_terakhir'];
+        batas_antrean = json['batas_antrean'];
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   Widget widgetDrawer() {
     return Drawer(
       child: ListView(
@@ -281,6 +284,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       print('userid: $userid');
                       getUserId();
                       bacaDataAntrean();
+                      print(
+                          "antrean_terakhir tombol simpan: $antrean_terakhir");
                       showDialog<String>(
                         context: context,
                         builder: (BuildContext context) => AlertDialog(
