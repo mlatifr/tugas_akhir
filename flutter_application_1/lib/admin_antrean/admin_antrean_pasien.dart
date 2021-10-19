@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import '../main.dart';
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class AdminAntreanPasien extends StatefulWidget {
   const AdminAntreanPasien({Key key}) : super(key: key);
@@ -9,6 +13,30 @@ class AdminAntreanPasien extends StatefulWidget {
 }
 
 class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
+  Future<String> fetchDataAntrean() async {
+    // print('cek login function');
+    final response =
+        await http.post(Uri.parse(APIurl + "admin_v_antrean.php"), body: {
+      'tgl_visit': '2021-10',
+    });
+    // print('response body adalah \n $_username \n' + response.body);
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('Failed to read API');
+    }
+  }
+
+// tahap 2 API 1
+  bacaDataAntrean() {
+    Future<String> data = fetchDataAntrean();
+    data.then((value) {
+      //Mengubah json menjadi Array
+      Map json = jsonDecode(value);
+      print(json);
+    });
+  }
+
   Widget widgetDrawer() {
     return Drawer(
       child: ListView(
@@ -36,6 +64,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
 
   @override
   Widget build(BuildContext context) {
+    bacaDataAntrean();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -44,38 +73,6 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
             title: Text("Antrean Pasien"),
           ),
           drawer: widgetDrawer(),
-          // body: ListView(
-          //   children: [
-          //     Padding(
-          //         padding: EdgeInsets.all(10),
-          //         child: Row(
-          //           mainAxisAlignment: MainAxisAlignment.start,
-          //           children: [
-          //             Expanded(
-          //                 child: TextFormField(
-          //               enabled: false,
-          //               decoration: InputDecoration(
-          //                 labelText: 'Tanggal Lahir',
-          //                 fillColor: Colors.white,
-          //                 enabledBorder: OutlineInputBorder(
-          //                   borderRadius: BorderRadius.circular(10.0),
-          //                   borderSide: BorderSide(
-          //                     color: Colors.blue,
-          //                   ),
-          //                 ),
-          //               ),
-          //             )),
-          //             ElevatedButton(
-          //                 onPressed: () {},
-          //                 child: Icon(
-          //                   Icons.calendar_today_sharp,
-          //                   color: Colors.white,
-          //                   size: 24.0,
-          //                 ))
-          //           ],
-          //         )),
-          //   ],
-          // ),
           body: ListView.builder(
               itemCount: 10,
               itemBuilder: (context, index) {
