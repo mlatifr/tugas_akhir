@@ -5,6 +5,42 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
+class AdminVAntrean {
+  var visit_id,
+      vhu_id,
+      pasien_id,
+      tgl_visit,
+      username,
+      nomor_antrean,
+      status_antrean,
+      keluhan;
+  AdminVAntrean(
+      {this.visit_id,
+      this.vhu_id,
+      this.pasien_id,
+      this.tgl_visit,
+      this.username,
+      this.nomor_antrean,
+      this.status_antrean,
+      this.keluhan});
+
+  // untuk convert dari jSon
+  factory AdminVAntrean.fromJson(Map<String, dynamic> json) {
+    return new AdminVAntrean(
+      visit_id: json['visit_id'],
+      vhu_id: json['vhu_id'],
+      pasien_id: json['pasien_id'],
+      tgl_visit: json['tgl_visit'],
+      username: json['username'],
+      nomor_antrean: json['nomor_antrean'],
+      status_antrean: json['status_antrean'],
+      keluhan: json['keluhan'],
+    );
+  }
+}
+
+List<AdminVAntrean> AVAs = [];
+
 class AdminAntreanPasien extends StatefulWidget {
   const AdminAntreanPasien({Key key}) : super(key: key);
 
@@ -34,6 +70,11 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
       //Mengubah json menjadi Array
       Map json = jsonDecode(value);
       print(json);
+      for (var i in json['data']) {
+        AdminVAntrean ava = AdminVAntrean.fromJson(i);
+        AVAs.add(ava);
+      }
+      setState(() {});
     });
   }
 
@@ -64,7 +105,6 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
 
   @override
   Widget build(BuildContext context) {
-    bacaDataAntrean();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
