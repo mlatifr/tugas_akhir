@@ -87,6 +87,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
       setState(() {});
     });
   }
+
 //
   Widget widgetDrawer() {
     return Drawer(
@@ -165,6 +166,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
       ),
       child: ListTile(
         onTap: () {
+          print(AVAs[index].visit_id.toString());
           showDialog<String>(
             context: context,
             builder: (BuildContext context) => AlertDialog(
@@ -226,21 +228,21 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                             });
                           },
                           onTap: () {
-                            showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime(2000),
-                                    lastDate: DateTime(2200))
-                                .then((value) {
-                              setState(() {
-                                controllerdate.text =
-                                    value.toString().substring(0, 10);
-                                print(value.toString());
-                                AdminBacaDataAntrean();
-                              });
-                            });
+                            // showDatePicker(
+                            //         context: context,
+                            //         initialDate: DateTime.now(),
+                            //         firstDate: DateTime(2000),
+                            //         lastDate: DateTime(2200))
+                            //     .then((value) {
+                            //   setState(() {
+                            //     controllerdate.text =
+                            //         value.toString().substring(0, 10);
+                            //     print(value.toString());
+                            //     AdminBacaDataAntrean();
+                            //   });
+                            // });
                           },
-                          enabled: true,
+                          enabled: false,
                           decoration: InputDecoration(
                             labelText: 'Tanggal Visit',
                             fillColor: Colors.white,
@@ -252,6 +254,27 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                             ),
                           ),
                         )),
+                        ElevatedButton(
+                            onPressed: () {
+                              showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(2000),
+                                      lastDate: DateTime(2200))
+                                  .then((value) {
+                                setState(() {
+                                  controllerdate.text =
+                                      value.toString().substring(0, 10);
+                                  print(value.toString());
+                                  AdminBacaDataAntrean();
+                                });
+                              });
+                            },
+                            child: Icon(
+                              Icons.calendar_today_sharp,
+                              color: Colors.white,
+                              size: 24.0,
+                            ))
                       ],
                     )),
                 ListView.builder(
