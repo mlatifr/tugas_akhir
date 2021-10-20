@@ -164,7 +164,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
             context: context,
             builder: (BuildContext context) => AlertDialog(
               title: Text(
-                'username atau password tidak sesuai',
+                'mengubah antrean pasien menjadi sudah',
                 style: TextStyle(fontSize: 14),
               ),
               actions: <Widget>[
@@ -172,7 +172,13 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                   onPressed: () {
                     Navigator.pop(context, 'Cancel');
                   },
-                  child: Text('OK'),
+                  child: Text('Batal'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context, 'Sudah');
+                  },
+                  child: Text('Sudah'),
                 ),
               ],
             ),
@@ -195,12 +201,21 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
             title: Text("Antrean Pasien"),
           ),
           drawer: widgetDrawer(),
-          body: ListView.builder(
-              shrinkWrap: true,
-              itemCount: AVAs.length,
-              itemBuilder: (context, index) {
-                return widgetListAntrean(index);
-              })),
+          body: SingleChildScrollView(
+            physics: ScrollPhysics(),
+            child: Column(
+              children: [
+                Text('input tgl antrean'),
+                ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: AVAs.length,
+                    itemBuilder: (context, index) {
+                      return widgetListAntrean(index);
+                    }),
+              ],
+            ),
+          )),
     );
   }
 }
