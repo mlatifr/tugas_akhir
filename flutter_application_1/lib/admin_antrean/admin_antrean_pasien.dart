@@ -49,6 +49,12 @@ class AdminAntreanPasien extends StatefulWidget {
 }
 
 class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
+  @override
+  void initState() {
+    super.initState();
+    AdminBacaDataAntrean();
+  }
+
   Future<String> fetchDataAntrean() async {
     // print('cek login function');
     final response =
@@ -91,6 +97,14 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                 //   image: AssetImage('assets/images/clinic.jpg'),
                 // ),
                 ),
+          ),
+          ListTile(
+            title: Text('Refresh'),
+            onTap: () {
+              setState(() {
+                AdminBacaDataAntrean();
+              });
+            },
           ),
           ListTile(
             title: Text('Logout'),
@@ -147,8 +161,8 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
       ),
       child: ListTile(
         leading: CircleAvatar(),
-        title: Text('${index + 1}'),
-        subtitle: Text('sub judul'),
+        title: Text('${AVAs[index].username}'),
+        subtitle: Text('${AVAs[index].tgl_visit}'),
       ),
     );
   }
@@ -163,18 +177,12 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
             title: Text("Antrean Pasien"),
           ),
           drawer: widgetDrawer(),
-          body: Column(
-            children: [
-              TextButton(
-                  onPressed: AdminBacaDataAntrean, child: Text('tombol')),
-              ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return widgetListAntrean(index);
-                  }),
-            ],
-          )),
+          body: ListView.builder(
+              shrinkWrap: true,
+              itemCount: AVAs.length,
+              itemBuilder: (context, index) {
+                return widgetListAntrean(index);
+              })),
     );
   }
 }
