@@ -42,7 +42,7 @@ bacaDataKeluhan() {
   data.then((value) {
     // ignore: unused_local_variable
     Map json = jsonDecode(value);
-    if (json['result'] == 'success') {
+    if (json['result'].toString() == 'success') {
       navigateToNomorAntrean = 'success';
     } else {
       print(json);
@@ -299,6 +299,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             style: TextStyle(fontSize: 14),
                           ),
                           content: TextFormField(
+                              enabled: false,
                               maxLines: 5,
                               controller: keluhan,
                               style: TextStyle(fontSize: 12),
@@ -321,7 +322,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                 bacaDataKeluhan();
                                 Navigator.pop(context);
                                 keluhan.clear();
-                                // Navigator.pop(context, 'OK');
                                 if (navigateToNomorAntrean == 'success') {
                                   Navigator.push(
                                       context,
