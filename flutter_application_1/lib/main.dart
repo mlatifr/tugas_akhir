@@ -21,36 +21,6 @@ String status_antrean, navigateToNomorAntrean;
 int no_antrean, antrean_terakhir, batas_antrean;
 String APIurl = "https://192.168.1.8/tugas_akhir/";
 
-//untuk memasukan keluhan + nomor antrean: pasien_input_keluhan.php
-Future<String> fetchDataKeluhan() async {
-  print("antrean_terakhir: $antrean_terakhir");
-  final response =
-      await http.post(Uri.parse(APIurl + "pasien_input_keluhan.php"), body: {
-    'keluhan': keluhan.text,
-    'no_antrean': antrean_terakhir.toString(),
-    'user_klinik_id': userid.toString()
-  });
-  if (response.statusCode == 200) {
-    return response.body;
-  } else {
-    throw Exception('Failed to read API');
-  }
-}
-
-bacaDataKeluhan() {
-  Future<String> data = fetchDataKeluhan();
-  data.then((value) {
-    // ignore: unused_local_variable
-    Map json = jsonDecode(value);
-    if (json['result'].toString() == 'success') {
-      navigateToNomorAntrean = 'success';
-    } else {
-      print(json);
-    }
-    print(json);
-  });
-}
-
 void getUserId() async {
   final prefs = await SharedPreferences.getInstance();
   userid = prefs.getString("userid");
@@ -150,6 +120,39 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+//untuk memasukan keluhan + nomor antrean: pasien_input_keluhan.php
+  Future<String> fetchDataKeluhan() async {
+    print("antrean_terakhir: $antrean_terakhir");
+    final response =
+        await http.post(Uri.parse(APIurl + "pasien_input_keluhan.php"), body: {
+      'keluhan': keluhan.text,
+      'no_antrean': antrean_terakhir.toString(),
+      'user_klinik_id': userid.toString()
+    });
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('Failed to read API');
+    }
+  }
+
+  bacaDataKeluhan() {
+    Future<String> data = fetchDataKeluhan();
+    data.then((value) {
+      // ignore: unused_local_variable
+      Map json = jsonDecode(value);
+      if (json['result'].toString() == 'success') {
+        setState(() {
+          navigateToNomorAntrean = null;
+          navigateToNomorAntrean = 'success';
+        });
+      } else {
+        print(json);
+      }
+      print(json);
+    });
+  }
+
 // untuk mengecek antrean
   Future<String> fetchDataAntreanSekarang() async {
     final response =
@@ -324,7 +327,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                   bacaDataKeluhan();
                                   Navigator.pop(context);
                                   keluhan.clear();
+                                  print(
+                                      "navigateToNomorAntrean :$navigateToNomorAntrean");
                                   if (navigateToNomorAntrean == 'success') {
+                                    print(
+                                        "navigateToNomorAntrean 2:$navigateToNomorAntrean");
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
