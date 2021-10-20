@@ -112,7 +112,7 @@ void main() {
     } else if (result.contains('apoteker')) {
       username = result;
       runApp(MaterialApp(home: AptAntreanPasien()));
-    } else {
+    } else if (result != null || result != '') {
       username = result;
       runApp(MyApp());
     }

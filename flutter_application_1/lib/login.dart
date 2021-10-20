@@ -23,15 +23,39 @@ Future<String> fetchData() async {
 }
 
 // tahap 2 API 1
-bacaData() {
+bacaData(context) {
   Future<String> data = fetchData();
   data.then((value) {
     //Mengubah json menjadi Array
     Map json = jsonDecode(value);
+    // print(json);
     // print('json id nya adalah =' + json['id'].toString());
     userid = json['id'].toString();
+    if (json['result'].toString().contains('success')) {
+      // print(json);
+      doLogin();
+    } else {
+      showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text(
+            'username atau password tidak sesuai',
+            style: TextStyle(fontSize: 14),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context, 'Cancel');
+              },
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+      // print('salah : \n');
+      // print(json.toString());
+    }
   });
-  doLogin();
   // print('user id= \n $_userid');
 }
 
@@ -59,6 +83,14 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  @override
+  void initState() {
+    super.initState();
+    _username = null;
+    userid = null;
+    _password = null;
+  }
+
   // untuk hide karakter pada paswword
   bool obscureText = true;
 
@@ -118,7 +150,14 @@ class _LoginPageState extends State<LoginPage> {
                         backgroundColor: Colors.blue,
                       ),
                       onPressed: () {
-                        bacaData();
+                        print(_username.toString() +
+                            ' ' +
+                            _password.toString() +
+                            ' ' +
+                            userid.toString());
+                        if (_username != null && _password != null) {
+                          bacaData(context);
+                        }
                       },
                       child: Text(
                         'MASUK',
