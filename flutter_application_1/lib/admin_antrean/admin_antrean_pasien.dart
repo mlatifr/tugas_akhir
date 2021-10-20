@@ -3,6 +3,8 @@ import '../main.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+var controllerdate = TextEditingController();
+
 class AdminVAntrean {
   var visit_id,
       vhu_id,
@@ -55,10 +57,12 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
   }
 
   Future<String> fetchDataAntrean() async {
+    print(controllerdate.text);
     // print('cek login function');
     final response =
         await http.post(Uri.parse(APIurl + "admin_v_antrean.php"), body: {
-      'tgl_visit': '2021-10',
+      'tgl_visit': controllerdate.text.toString().substring(0, 10),
+      // 'tgl_visit': '2021-10-21',
     });
     // print('response body adalah \n $_username \n' + response.body);
     if (response.statusCode == 200) {
@@ -70,6 +74,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
 
 // tahap 2 API 1
   AdminBacaDataAntrean() {
+    AVAs.clear();
     Future<String> data = fetchDataAntrean();
     data.then((value) {
       //Mengubah json menjadi Array
@@ -205,7 +210,50 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
             physics: ScrollPhysics(),
             child: Column(
               children: [
-                Text('input tgl antrean'),
+                Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                            child: TextFormField(
+                          controller: controllerdate,
+                          onChanged: (value) {
+                            setState(() {
+                              controllerdate.text = value.toString();
+                              print(value.toString());
+                              AdminBacaDataAntrean();
+                            });
+                          },
+                          onTap: () {
+                            showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(2000),
+                                    lastDate: DateTime(2200))
+                                .then((value) {
+                              setState(() {
+                                controllerdate.text =
+                                    value.toString().substring(0, 10);
+                                print(value.toString());
+                                AdminBacaDataAntrean();
+                              });
+                            });
+                          },
+                          enabled: true,
+                          decoration: InputDecoration(
+                            labelText: 'Tanggal Visit',
+                            fillColor: Colors.white,
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ),
+                        )),
+                      ],
+                    )),
                 ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
