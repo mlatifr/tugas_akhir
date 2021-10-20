@@ -52,6 +52,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
   @override
   void initState() {
     super.initState();
+    AVAs = [];
     AdminBacaDataAntrean();
   }
 
