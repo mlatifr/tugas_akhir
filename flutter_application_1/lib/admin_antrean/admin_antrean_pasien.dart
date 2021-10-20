@@ -159,6 +159,25 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
         padding: EdgeInsets.only(right: 10),
       ),
       child: ListTile(
+        onTap: () {
+          showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              title: Text(
+                'username atau password tidak sesuai',
+                style: TextStyle(fontSize: 14),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context, 'Cancel');
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            ),
+          );
+        },
         leading: CircleAvatar(),
         title: Text('${AVAs[index].username}'),
         subtitle: Text('${AVAs[index].tgl_visit}'),
