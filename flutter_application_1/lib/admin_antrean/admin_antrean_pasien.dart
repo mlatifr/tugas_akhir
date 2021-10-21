@@ -260,6 +260,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
     );
   }
 
+  // ignore: missing_return
   Widget widgetStatusAntrean(int index) {
     if (AVAs[index].status_antrean.toString() == 'belum') {
       return CircleAvatar(child: Icon(Icons.watch_later_outlined));
