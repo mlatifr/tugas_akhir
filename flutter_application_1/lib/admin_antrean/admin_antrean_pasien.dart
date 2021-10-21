@@ -96,13 +96,13 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
     });
   }
 
-  Future<String> fetchDataStatusAntrean(index) async {
+  Future<String> fetchDataStatusAntrean(index, String status) async {
     // print(controllerdate.text);
     // print('cek login function');
     final response =
         await http.post(Uri.parse(APIurl + "admin_status_antrean.php"), body: {
       'visit_id': AVAs[index].visit_id.toString(),
-      'status': 'sudah'
+      'status': status
       // 'tgl_visit': '2021-10-21',
     });
     // print('response body adalah \n $_username \n' + response.body);
@@ -150,11 +150,11 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
   Widget widgetListAntrean(int index) {
     return Dismissible(
       onDismissed: (direction) {
-        if (direction == DismissDirection.endToStart) {
-          print('end to start');
-        } else {
-          print('else');
-        }
+        // if (direction == DismissDirection.endToStart) {
+        //   print('end to start');
+        // } else {
+        //   print('else');
+        // }
       },
       confirmDismiss: (direction) {
         return showDialog(
@@ -196,31 +196,64 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
             context: context,
             builder: (BuildContext context) => AlertDialog(
               title: Text(
-                'mengubah antrean pasien menjadi sudah',
+                'mengubah status antrean pasien:',
                 style: TextStyle(fontSize: 14),
               ),
               actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context, 'Cancel');
-                  },
-                  child: Text('Batal'),
+                Row(
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        fetchDataStatusAntrean(index, 'batal');
+                        setState(() {
+                          AdminBacaDataAntrean();
+                        });
+                        Navigator.pop(context, 'batal antre');
+                      },
+                      child: Text('batal antre',
+                          style: TextStyle(color: Colors.black26)),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        fetchDataStatusAntrean(index, 'belum');
+                        setState(() {
+                          AdminBacaDataAntrean();
+                        });
+                        Navigator.pop(context, 'belum');
+                      },
+                      child: Text(
+                        'belum',
+                        style: TextStyle(color: Colors.black26),
+                      ),
+                    ),
+                  ],
                 ),
-                TextButton(
-                  onPressed: () {
-                    fetchDataStatusAntrean(index);
-                    setState(() {
-                      AdminBacaDataAntrean();
-                    });
-                    Navigator.pop(context, 'Sudah');
-                  },
-                  child: Text('Sudah'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context, 'Cancel');
+                      },
+                      child: Text('Cancel'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        fetchDataStatusAntrean(index, 'sudah');
+                        setState(() {
+                          AdminBacaDataAntrean();
+                        });
+                        Navigator.pop(context, 'Sudah');
+                      },
+                      child: Text('Sudah'),
+                    ),
+                  ],
                 ),
               ],
             ),
           );
         },
-        leading: CircleAvatar(child: widgetStatusAntrean(index)),
+        leading: widgetStatusAntrean(index),
         title: Text('${AVAs[index].username}'),
         subtitle: Text('${AVAs[index].tgl_visit}'),
       ),
@@ -229,9 +262,16 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
 
   Widget widgetStatusAntrean(int index) {
     if (AVAs[index].status_antrean.toString() == 'belum') {
-      return Icon(Icons.watch_later_outlined);
-    } else {
-      return Icon(Icons.check);
+      return CircleAvatar(child: Icon(Icons.watch_later_outlined));
+    } else if (AVAs[index].status_antrean.toString() == 'sudah') {
+      return CircleAvatar(child: Icon(Icons.check));
+    } else if (AVAs[index].status_antrean.toString() == 'batal') {
+      return CircleAvatar(
+          backgroundColor: Colors.red[100],
+          child: Icon(
+            Icons.cancel,
+            color: Colors.white,
+          ));
     }
   }
 
