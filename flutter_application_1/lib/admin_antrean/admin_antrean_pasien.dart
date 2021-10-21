@@ -200,7 +200,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
           );
         },
         leading: CircleAvatar(),
-        title: Text('no:${index + 1} ' + '${AVAs[index].username}'),
+        title: Text('${AVAs[index].username}'),
         subtitle: Text('${AVAs[index].tgl_visit}'),
       ),
     );
