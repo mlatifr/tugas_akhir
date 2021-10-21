@@ -79,11 +79,14 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
     data.then((value) {
       //Mengubah json menjadi Array
       Map json = jsonDecode(value);
-      print(json);
-      for (var i in json['data']) {
-        AdminVAntrean ava = AdminVAntrean.fromJson(i);
-        AVAs.add(ava);
-      }
+      // print(json);
+      print('json to string: ' + json['result'].toString());
+      if (json['result'].toString() == 'success') {
+        for (var i in json['data']) {
+          AdminVAntrean ava = AdminVAntrean.fromJson(i);
+          AVAs.add(ava);
+        }
+      } else {}
       setState(() {});
     });
   }
