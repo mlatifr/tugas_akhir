@@ -96,12 +96,13 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
     });
   }
 
-  Future<String> fetchDataStatusAntrean() async {
+  Future<String> fetchDataStatusAntrean(index) async {
     // print(controllerdate.text);
     // print('cek login function');
     final response =
-        await http.post(Uri.parse(APIurl + "admin_v_antrean.php"), body: {
-      'tgl_visit': controllerdate.text.toString().substring(0, 10),
+        await http.post(Uri.parse(APIurl + "admin_status_antrean.php"), body: {
+      'visit_id': AVAs[index].visit_id.toString(),
+      'status': 'sudah'
       // 'tgl_visit': '2021-10-21',
     });
     // print('response body adalah \n $_username \n' + response.body);
@@ -110,25 +111,6 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
     } else {
       throw Exception('Failed to read API');
     }
-  }
-
-// tahap 2 API 1
-  AdminBacaDataStatusAntrean() {
-    AVAs.clear();
-    Future<String> data = fetchDataStatusAntrean();
-    data.then((value) {
-      //Mengubah json menjadi Array
-      Map json = jsonDecode(value);
-      // print(json);
-      print('json to string: ' + json['result'].toString());
-      if (json['result'].toString() == 'success') {
-        for (var i in json['data']) {
-          AdminVAntrean ava = AdminVAntrean.fromJson(i);
-          AVAs.add(ava);
-        }
-      } else {}
-      setState(() {});
-    });
   }
 
 //
@@ -226,6 +208,10 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                 ),
                 TextButton(
                   onPressed: () {
+                    fetchDataStatusAntrean(index);
+                    setState(() {
+                      AdminBacaDataAntrean();
+                    });
                     Navigator.pop(context, 'Sudah');
                   },
                   child: Text('Sudah'),
