@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import '../main.dart';
 import 'dart:convert';
@@ -49,11 +50,15 @@ class AdminAntreanPasien extends StatefulWidget {
 }
 
 class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
+  Timer _timerForInter; // <- Put this line on top of _MyAppState class
   @override
   void initState() {
-    super.initState();
+    var i = 1;
     AVAs = [];
-    AdminBacaDataAntrean();
+    _timerForInter = Timer.periodic(Duration(seconds: 5), (result) {
+      AdminBacaDataAntrean();
+    });
+    super.initState();
   }
 
   Future<String> fetchDataAntrean() async {
@@ -195,7 +200,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
           );
         },
         leading: CircleAvatar(),
-        title: Text('${AVAs[index].username}'),
+        title: Text('no:${index + 1} ' + '${AVAs[index].username}'),
         subtitle: Text('${AVAs[index].tgl_visit}'),
       ),
     );
