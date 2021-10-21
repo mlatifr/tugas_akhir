@@ -201,6 +201,20 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
     );
   }
 
+  Widget widgetLbuilderCekAntrean() {
+    if (AVAs.length > 0) {
+      return ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: AVAs.length,
+          itemBuilder: (context, index) {
+            return widgetListAntrean(index);
+          });
+    } else {
+      return Text('data tidak ditemukan');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -229,21 +243,6 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                               print(value.toString());
                               AdminBacaDataAntrean();
                             });
-                          },
-                          onTap: () {
-                            // showDatePicker(
-                            //         context: context,
-                            //         initialDate: DateTime.now(),
-                            //         firstDate: DateTime(2000),
-                            //         lastDate: DateTime(2200))
-                            //     .then((value) {
-                            //   setState(() {
-                            //     controllerdate.text =
-                            //         value.toString().substring(0, 10);
-                            //     print(value.toString());
-                            //     AdminBacaDataAntrean();
-                            //   });
-                            // });
                           },
                           enabled: false,
                           decoration: InputDecoration(
@@ -280,13 +279,14 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                             ))
                       ],
                     )),
-                ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: AVAs.length,
-                    itemBuilder: (context, index) {
-                      return widgetListAntrean(index);
-                    }),
+                widgetLbuilderCekAntrean()
+                // ListView.builder(
+                //     physics: NeverScrollableScrollPhysics(),
+                //     shrinkWrap: true,
+                //     itemCount: AVAs.length,
+                //     itemBuilder: (context, index) {
+                //       return widgetListAntrean(index);
+                //     }),
               ],
             ),
           )),
