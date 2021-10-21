@@ -20,7 +20,7 @@ var keluhan = TextEditingController();
 String status_antrean, navigateToNomorAntrean;
 int no_antrean, antrean_terakhir, batas_antrean;
 String APIurl = "https://192.168.1.8/tugas_akhir/";
-
+// String APIurl = "https://192.168.43.5/tugas_akhir/";
 void getUserId() async {
   final prefs = await SharedPreferences.getInstance();
   userid = prefs.getString("userid");
@@ -136,14 +136,24 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  bacaDataKeluhan() {
+  bacaDataKeluhan(context) {
+    navigateToNomorAntrean = null;
     Future<String> data = fetchDataKeluhan();
     data.then((value) {
       // ignore: unused_local_variable
       Map json = jsonDecode(value);
       if (json['result'].toString() == 'success') {
+        Navigator.pop(context);
+        keluhan.clear();
+        print("navigateToNomorAntrean 2:$navigateToNomorAntrean");
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => AntreanPasien(
+                      nomor_antrean: antrean_terakhir,
+                      antrean_sekarang: no_antrean,
+                    )));
         setState(() {
-          navigateToNomorAntrean = null;
           navigateToNomorAntrean = 'success';
         });
       } else {
@@ -180,6 +190,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
+    bacaDataAntrean();
+    setState(() {});
     super.initState();
   }
 
@@ -295,58 +307,62 @@ class _MyHomePageState extends State<MyHomePage> {
                       print(
                           "antrean_terakhir tombol simpan: $antrean_terakhir");
                       if (antrean_terakhir != null) {
-                        showDialog<String>(
-                          context: context,
-                          builder: (BuildContext context) => AlertDialog(
-                            title: Text(
-                              'Anda akan mendaftar dengan keluhan:',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            content: TextFormField(
-                                enabled: false,
-                                maxLines: 5,
-                                controller: keluhan,
-                                style: TextStyle(fontSize: 12),
-                                decoration: InputDecoration(
-                                  fillColor: Colors.white,
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    borderSide: BorderSide(
-                                      color: Colors.blue,
+                        setState(() {
+                          showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: Text(
+                                'Anda akan mendaftar dengan keluhan:',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                              content: TextFormField(
+                                  enabled: false,
+                                  maxLines: 5,
+                                  controller: keluhan,
+                                  style: TextStyle(fontSize: 12),
+                                  decoration: InputDecoration(
+                                    fillColor: Colors.white,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      borderSide: BorderSide(
+                                        color: Colors.blue,
+                                      ),
                                     ),
-                                  ),
-                                )),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(context, 'Cancel'),
-                                child: Text('Batal'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  bacaDataKeluhan();
-                                  Navigator.pop(context);
-                                  keluhan.clear();
-                                  print(
-                                      "navigateToNomorAntrean :$navigateToNomorAntrean");
-                                  if (navigateToNomorAntrean == 'success') {
+                                  )),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(context, 'Cancel'),
+                                  child: Text('Batal'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    bacaDataKeluhan(context);
                                     print(
-                                        "navigateToNomorAntrean 2:$navigateToNomorAntrean");
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => AntreanPasien(
-                                                  nomor_antrean:
-                                                      antrean_terakhir,
-                                                  antrean_sekarang: no_antrean,
-                                                )));
-                                  }
-                                },
-                                child: Text('OK'),
-                              ),
-                            ],
-                          ),
-                        );
+                                        "navigateToNomorAntrean :$navigateToNomorAntrean");
+                                    // if (navigateToNomorAntrean == 'success') {
+                                    //   Navigator.pop(context);
+                                    //   keluhan.clear();
+                                    //   print(
+                                    //       "navigateToNomorAntrean 2:$navigateToNomorAntrean");
+                                    //   Navigator.push(
+                                    //       context,
+                                    //       MaterialPageRoute(
+                                    //           builder: (context) =>
+                                    //               AntreanPasien(
+                                    //                 nomor_antrean:
+                                    //                     antrean_terakhir,
+                                    //                 antrean_sekarang:
+                                    //                     no_antrean,
+                                    //               )));
+                                    // }
+                                  },
+                                  child: Text('OK'),
+                                ),
+                              ],
+                            ),
+                          );
+                        });
                       }
                     },
                     child: Text(

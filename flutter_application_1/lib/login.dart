@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 // ignore: unused_element
 String _username, _password, userid;
-Future<String> fetchData() async {
+Future<String> fetchDataLogin() async {
   // print('cek login function');
   final response = await http.post(Uri.parse(APIurl + "login.php"), body: {
     'id': _username,
@@ -20,43 +20,6 @@ Future<String> fetchData() async {
   } else {
     throw Exception('Failed to read API');
   }
-}
-
-// tahap 2 API 1
-bacaData(context) {
-  Future<String> data = fetchData();
-  data.then((value) {
-    //Mengubah json menjadi Array
-    Map json = jsonDecode(value);
-    // print(json);
-    // print('json id nya adalah =' + json['id'].toString());
-    userid = json['id'].toString();
-    if (json['result'].toString().contains('success')) {
-      // print(json);
-      doLogin();
-    } else {
-      showDialog<String>(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: Text(
-            'username atau password tidak sesuai',
-            style: TextStyle(fontSize: 14),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context, 'Cancel');
-              },
-              child: Text('OK'),
-            ),
-          ],
-        ),
-      );
-      // print('salah : \n');
-      // print(json.toString());
-    }
-  });
-  // print('user id= \n $_userid');
 }
 
 void doLogin() async {
@@ -83,6 +46,51 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  // tahap 2 API 1
+  bacaDataLogin(context) {
+    Future<String> data = fetchDataLogin();
+    data.then((value) {
+      //Mengubah json menjadi Array
+      Map json = jsonDecode(value);
+      // print(json);
+      // print('json id nya adalah =' + json['id'].toString());
+
+      if (json['result'].toString().contains('success')) {
+        // print(json);
+        setState(() {
+          userid = json['id'].toString();
+        });
+        print(_username.toString() +
+            ' ' +
+            _password.toString() +
+            ' ' +
+            userid.toString());
+        doLogin();
+      } else {
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: Text(
+              'username atau password tidak sesuai',
+              style: TextStyle(fontSize: 14),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context, 'Cancel');
+                },
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+        // print('salah : \n');
+        // print(json.toString());
+      }
+    });
+    // print('user id= \n $_userid');
+  }
+
   @override
   void initState() {
     super.initState();
@@ -155,8 +163,56 @@ class _LoginPageState extends State<LoginPage> {
                             _password.toString() +
                             ' ' +
                             userid.toString());
-                        if (_username != null && _password != null) {
-                          bacaData(context);
+                        if (_password == null) {
+                          showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: Text(
+                                'username / password tidak ditemukan ',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, 'Ok'),
+                                  child: Text('Ok'),
+                                ),
+                              ],
+                            ),
+                          );
+                        } else if (_username == null) {
+                          showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: Text(
+                                'username / password tidak ditemukan ',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, 'Ok'),
+                                  child: Text('Ok'),
+                                ),
+                              ],
+                            ),
+                          );
+                        } else if (_username == null && _password == null) {
+                          showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: Text(
+                                'username / password tidak ditemukan ',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, 'Ok'),
+                                  child: Text('Ok'),
+                                ),
+                              ],
+                            ),
+                          );
+                        } else if (_username != null && _password != null) {
+                          bacaDataLogin(context);
                         }
                       },
                       child: Text(
