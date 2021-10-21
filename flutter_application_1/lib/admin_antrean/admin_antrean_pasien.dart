@@ -50,10 +50,10 @@ class AdminAntreanPasien extends StatefulWidget {
 }
 
 class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
+  // ignore: unused_field
   Timer _timerForInter; // <- Put this line on top of _MyAppState class
   @override
   void initState() {
-    var i = 1;
     AVAs = [];
     _timerForInter = Timer.periodic(Duration(seconds: 5), (result) {
       AdminBacaDataAntrean();
@@ -62,7 +62,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
   }
 
   Future<String> fetchDataAntrean() async {
-    print(controllerdate.text);
+    // print(controllerdate.text);
     // print('cek login function');
     final response =
         await http.post(Uri.parse(APIurl + "admin_v_antrean.php"), body: {
@@ -81,6 +81,41 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
   AdminBacaDataAntrean() {
     AVAs.clear();
     Future<String> data = fetchDataAntrean();
+    data.then((value) {
+      //Mengubah json menjadi Array
+      Map json = jsonDecode(value);
+      // print(json);
+      print('json to string: ' + json['result'].toString());
+      if (json['result'].toString() == 'success') {
+        for (var i in json['data']) {
+          AdminVAntrean ava = AdminVAntrean.fromJson(i);
+          AVAs.add(ava);
+        }
+      } else {}
+      setState(() {});
+    });
+  }
+
+  Future<String> fetchDataStatusAntrean() async {
+    // print(controllerdate.text);
+    // print('cek login function');
+    final response =
+        await http.post(Uri.parse(APIurl + "admin_v_antrean.php"), body: {
+      'tgl_visit': controllerdate.text.toString().substring(0, 10),
+      // 'tgl_visit': '2021-10-21',
+    });
+    // print('response body adalah \n $_username \n' + response.body);
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('Failed to read API');
+    }
+  }
+
+// tahap 2 API 1
+  AdminBacaDataStatusAntrean() {
+    AVAs.clear();
+    Future<String> data = fetchDataStatusAntrean();
     data.then((value) {
       //Mengubah json menjadi Array
       Map json = jsonDecode(value);
@@ -199,11 +234,19 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
             ),
           );
         },
-        leading: CircleAvatar(),
+        leading: CircleAvatar(child: widgetStatusAntrean(index)),
         title: Text('${AVAs[index].username}'),
         subtitle: Text('${AVAs[index].tgl_visit}'),
       ),
     );
+  }
+
+  Widget widgetStatusAntrean(int index) {
+    if (AVAs[index].status_antrean.toString() == 'belum') {
+      return Icon(Icons.watch_later_outlined);
+    } else {
+      return Icon(Icons.check);
+    }
   }
 
   Widget widgetLbuilderCekAntrean() {
