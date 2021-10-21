@@ -92,7 +92,9 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
           AVAs.add(ava);
         }
       } else {}
-      setState(() {});
+      setState(() {
+        widgetLbuilderCekAntrean();
+      });
     });
   }
 
