@@ -280,13 +280,6 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                       ],
                     )),
                 widgetLbuilderCekAntrean()
-                // ListView.builder(
-                //     physics: NeverScrollableScrollPhysics(),
-                //     shrinkWrap: true,
-                //     itemCount: AVAs.length,
-                //     itemBuilder: (context, index) {
-                //       return widgetListAntrean(index);
-                //     }),
               ],
             ),
           )),
