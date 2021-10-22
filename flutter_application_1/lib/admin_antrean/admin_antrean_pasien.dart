@@ -501,7 +501,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                               ;
                             },
                             child: Icon(
-                              Icons.calendar_today_sharp,
+                              Icons.check,
                               color: Colors.white,
                               size: 24.0,
                             ))
