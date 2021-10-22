@@ -55,8 +55,9 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
   @override
   void initState() {
     AVAs = [];
-    _timerForInter = Timer.periodic(Duration(seconds: 5), (result) {
+    _timerForInter = Timer.periodic(Duration(seconds: 15), (result) {
       setState(() {
+        print('timer');
         AdminBacaDataAntrean();
       });
     });
@@ -82,6 +83,29 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
 // tahap 2 API 1
   AdminBacaDataAntrean() {
     AVAs.clear();
+    Future<String> data = fetchDataAntrean();
+    data.then((value) {
+      //Mengubah json menjadi Array
+      Map json = jsonDecode(value);
+      // print(json);
+      print('json to string: ' + json['result'].toString());
+      if (json['result'].toString() == 'success') {
+        for (var i in json['data']) {
+          AdminVAntrean ava = AdminVAntrean.fromJson(i);
+          AVAs.add(ava);
+        }
+      } else {}
+      setState(() {
+        widgetLbuilderCekAntrean();
+      });
+    });
+  }
+
+  AdminKlikBacaDataAntrean() {
+    AVAs.clear();
+    setState(() {
+      widgetLbuilderCekAntrean();
+    });
     Future<String> data = fetchDataAntrean();
     data.then((value) {
       //Mengubah json menjadi Array
@@ -210,7 +234,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                       onPressed: () {
                         fetchDataStatusAntrean(index, 'batal');
                         setState(() {
-                          AdminBacaDataAntrean();
+                          AdminKlikBacaDataAntrean();
                         });
                         Navigator.pop(context, 'batal antre');
                       },
@@ -221,7 +245,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                       onPressed: () {
                         fetchDataStatusAntrean(index, 'belum');
                         setState(() {
-                          AdminBacaDataAntrean();
+                          AdminKlikBacaDataAntrean();
                         });
                         Navigator.pop(context, 'belum');
                       },
@@ -245,7 +269,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                       onPressed: () {
                         fetchDataStatusAntrean(index, 'sudah');
                         setState(() {
-                          AdminBacaDataAntrean();
+                          AdminKlikBacaDataAntrean();
                         });
                         Navigator.pop(context, 'Sudah');
                       },
