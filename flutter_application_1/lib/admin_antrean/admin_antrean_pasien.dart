@@ -65,8 +65,6 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
   }
 
   Future<String> fetchDataAntrean() async {
-    // print(controllerdate.text);
-    // print('cek login function');
     final response =
         await http.post(Uri.parse(APIurl + "admin_v_antrean.php"), body: {
       'tgl_visit': controllerdate.text.toString().substring(0, 10),
