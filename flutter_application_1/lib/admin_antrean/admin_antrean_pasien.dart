@@ -403,7 +403,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                 Padding(
                     padding: EdgeInsets.all(10),
                     child: Row(
-                      // mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Expanded(
                             child: TextField(
