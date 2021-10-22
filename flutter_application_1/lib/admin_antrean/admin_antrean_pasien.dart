@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../main.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 var controllerdate = TextEditingController();
+var controllerAntreanSekarang = TextEditingController();
+var controllerBatasAntrean = TextEditingController();
 
 class AdminVAntrean {
   var visit_id,
@@ -41,6 +44,7 @@ class AdminVAntrean {
 }
 
 List<AdminVAntrean> AVAs = [];
+var antreanSekarang, batasAntrean;
 
 class AdminAntreanPasien extends StatefulWidget {
   const AdminAntreanPasien({Key key}) : super(key: key);
@@ -92,6 +96,40 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
           AdminVAntrean ava = AdminVAntrean.fromJson(i);
           AVAs.add(ava);
         }
+      } else {}
+      setState(() {
+        widgetLbuilderCekAntrean();
+      });
+    });
+  }
+
+  Future<String> fetchDataAntreanSekarang() async {
+    final response =
+        await http.post(Uri.parse(APIurl + "admin_upd_antrean_now.php"), body: {
+      'antrean_sekarang': controllerAntreanSekarang.text.toString(),
+      'batas_antrean': controllerBatasAntrean.text.toString(),
+      // 'tgl_visit': '2021-10-21',
+    });
+    // print('response body adalah \n $_username \n' + response.body);
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('Failed to read API');
+    }
+  }
+
+  // tahap 2 API 1
+  AdminBacaDataAntreanSekarang() {
+    AVAs.clear();
+    Future<String> data = fetchDataAntreanSekarang();
+    data.then((value) {
+      //Mengubah json menjadi Array
+      Map json = jsonDecode(value);
+      // print(json);
+      print('json to string: ' + json['result'].toString());
+      if (json['result'].toString() == 'success') {
+        antreanSekarang = json['antrean_sekarang'].toString();
+        batasAntrean = json['batas_antrean'].toString();
       } else {}
       setState(() {
         widgetLbuilderCekAntrean();
@@ -330,6 +368,115 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
             physics: ScrollPhysics(),
             child: Column(
               children: [
+                Row(
+                  children: [
+                    Expanded(
+                        child: Text(
+                      "antrean sekarang: \n",
+                      style: TextStyle(fontSize: 12),
+                      textAlign: TextAlign.center,
+                    )),
+                    Expanded(
+                        child: Text(
+                      antreanSekarang.toString(),
+                      style: TextStyle(fontSize: 14, color: Colors.blueAccent),
+                      textAlign: TextAlign.center,
+                    )),
+                    Expanded(
+                        child: Text(
+                      "batas antrean : \n",
+                      style: TextStyle(fontSize: 12),
+                      textAlign: TextAlign.center,
+                    )),
+                    Expanded(
+                        child: Text(
+                      batasAntrean.toString(),
+                      style: TextStyle(fontSize: 14, color: Colors.blueAccent),
+                      textAlign: TextAlign.center,
+                    )),
+                  ],
+                ),
+                Divider(
+                  color: Colors.blue,
+                  thickness: 2,
+                ),
+                Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Row(
+                      // mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                            child: TextField(
+                          controller: controllerAntreanSekarang,
+                          onChanged: (value) {
+                            setState(() {
+                              controllerAntreanSekarang.text = value;
+                              controllerAntreanSekarang.selection =
+                                  TextSelection.fromPosition(TextPosition(
+                                      offset: controllerAntreanSekarang
+                                          .text.length));
+                              print(value.toString());
+                            });
+                          },
+                          enabled: true,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          decoration: InputDecoration(
+                            labelText: 'Antrean Sekarang',
+                            fillColor: Colors.white,
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ),
+                        )),
+                        Expanded(
+                            child: TextField(
+                          controller: controllerBatasAntrean,
+                          onChanged: (value) {
+                            setState(() {
+                              controllerBatasAntrean.text = value;
+                              controllerBatasAntrean.selection =
+                                  TextSelection.fromPosition(TextPosition(
+                                      offset:
+                                          controllerBatasAntrean.text.length));
+                              print(value.toString());
+                            });
+                          },
+                          enabled: true,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          decoration: InputDecoration(
+                            labelText: 'Batas Antrean',
+                            fillColor: Colors.white,
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ),
+                        )),
+                        ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                AdminBacaDataAntreanSekarang();
+                              });
+                              ;
+                            },
+                            child: Icon(
+                              Icons.calendar_today_sharp,
+                              color: Colors.white,
+                              size: 24.0,
+                            ))
+                      ],
+                    )),
                 Padding(
                     padding: EdgeInsets.all(10),
                     child: Row(
@@ -341,11 +488,18 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                           onChanged: (value) {
                             setState(() {
                               controllerdate.text = value.toString();
+                              controllerdate.selection =
+                                  TextSelection.fromPosition(TextPosition(
+                                      offset: controllerdate.text.length));
                               print(value.toString());
                               AdminBacaDataAntrean();
                             });
                           },
                           enabled: false,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
                           decoration: InputDecoration(
                             labelText: 'Tanggal Visit',
                             fillColor: Colors.white,
