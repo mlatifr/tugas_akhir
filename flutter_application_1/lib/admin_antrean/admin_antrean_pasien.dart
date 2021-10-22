@@ -58,6 +58,12 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
   Timer _timerForInter; // <- Put this line on top of _MyAppState class
   @override
   void initState() {
+    DateTime now = new DateTime.now();
+    DateTime date = new DateTime(now.year, now.month, now.day);
+    print(date);
+    controllerdate.text = date.toString().substring(0, 10);
+    AdminBacaDataAntrean();
+    AdminBacaDataAntreanSekarangAwal();
     AVAs = [];
     _timerForInter = Timer.periodic(Duration(seconds: 15), (result) {
       setState(() {
@@ -66,6 +72,30 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
       });
     });
     super.initState();
+  }
+
+  Future<String> fetchDataAntreanSekarangAwal() async {
+    final response =
+        await http.post(Uri.parse(APIurl + "pasien_view_antrean_sekarang.php"));
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('Failed to read API');
+    }
+  }
+
+  AdminBacaDataAntreanSekarangAwal() {
+    AVAs.clear();
+    Future<String> data = fetchDataAntreanSekarangAwal();
+    data.then((value) {
+      //Mengubah json menjadi Array
+      Map json = jsonDecode(value);
+      // print(json);
+      setState(() {
+        antreanSekarang = json['antrean_sekarang'].toString();
+        batasAntrean = json['batas_antrean'].toString();
+      });
+    });
   }
 
   Future<String> fetchDataAntrean() async {
@@ -435,7 +465,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                           ),
                         )),
                         Expanded(
-                            child: TextField(
+                            child: TextFormField(
                           controller: controllerBatasAntrean,
                           onChanged: (value) {
                             setState(() {

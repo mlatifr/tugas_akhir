@@ -306,7 +306,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       bacaDataAntrean();
                       print(
                           "antrean_terakhir tombol simpan: $antrean_terakhir");
-                      if (antrean_terakhir != null) {
+                      if (antrean_terakhir != null &&
+                          batas_antrean <= antrean_terakhir) {
                         setState(() {
                           showDialog<String>(
                             context: context,
@@ -360,6 +361,18 @@ class _MyHomePageState extends State<MyHomePage> {
                                   child: Text('OK'),
                                 ),
                               ],
+                            ),
+                          );
+                        });
+                      } else {
+                        setState(() {
+                          showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: Text(
+                                'antrean penuh \n batas_antrean: $batas_antrean \n antrean_terakhir $antrean_terakhir',
+                                style: TextStyle(fontSize: 14),
+                              ),
                             ),
                           );
                         });
