@@ -191,7 +191,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     bacaDataAntrean();
-    setState(() {});
     super.initState();
   }
 
@@ -306,71 +305,85 @@ class _MyHomePageState extends State<MyHomePage> {
                       bacaDataAntrean();
                       print(
                           "antrean_terakhir tombol simpan: $antrean_terakhir");
-                      if (antrean_terakhir != null &&
-                          batas_antrean <= antrean_terakhir) {
-                        setState(() {
-                          showDialog<String>(
-                            context: context,
-                            builder: (BuildContext context) => AlertDialog(
-                              title: Text(
-                                'Anda akan mendaftar dengan keluhan:',
-                                style: TextStyle(fontSize: 14),
-                              ),
-                              content: TextFormField(
-                                  enabled: false,
-                                  maxLines: 5,
-                                  controller: keluhan,
-                                  style: TextStyle(fontSize: 12),
-                                  decoration: InputDecoration(
-                                    fillColor: Colors.white,
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: BorderSide(
-                                        color: Colors.blue,
+                      if (antrean_terakhir != null) {
+                        if (batas_antrean > antrean_terakhir) {
+                          setState(() {
+                            showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title: Text(
+                                  'Anda akan mendaftar dengan keluhan:',
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                                content: TextFormField(
+                                    enabled: false,
+                                    maxLines: 5,
+                                    controller: keluhan,
+                                    style: TextStyle(fontSize: 12),
+                                    decoration: InputDecoration(
+                                      fillColor: Colors.white,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        borderSide: BorderSide(
+                                          color: Colors.blue,
+                                        ),
                                       ),
-                                    ),
-                                  )),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(context, 'Cancel'),
-                                  child: Text('Batal'),
+                                    )),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'Cancel'),
+                                    child: Text('Batal'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      bacaDataKeluhan(context);
+                                      print(
+                                          "navigateToNomorAntrean :$navigateToNomorAntrean");
+                                      // if (navigateToNomorAntrean == 'success') {
+                                      //   Navigator.pop(context);
+                                      //   keluhan.clear();
+                                      //   print(
+                                      //       "navigateToNomorAntrean 2:$navigateToNomorAntrean");
+                                      //   Navigator.push(
+                                      //       context,
+                                      //       MaterialPageRoute(
+                                      //           builder: (context) =>
+                                      //               AntreanPasien(
+                                      //                 nomor_antrean:
+                                      //                     antrean_terakhir,
+                                      //                 antrean_sekarang:
+                                      //                     no_antrean,
+                                      //               )));
+                                      // }
+                                    },
+                                    child: Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          });
+                        } else {
+                          setState(() {
+                            showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title: Text(
+                                  'antrean penuh \n batas_antrean: $batas_antrean \n antrean_terakhir $antrean_terakhir',
+                                  style: TextStyle(fontSize: 14),
                                 ),
-                                TextButton(
-                                  onPressed: () {
-                                    bacaDataKeluhan(context);
-                                    print(
-                                        "navigateToNomorAntrean :$navigateToNomorAntrean");
-                                    // if (navigateToNomorAntrean == 'success') {
-                                    //   Navigator.pop(context);
-                                    //   keluhan.clear();
-                                    //   print(
-                                    //       "navigateToNomorAntrean 2:$navigateToNomorAntrean");
-                                    //   Navigator.push(
-                                    //       context,
-                                    //       MaterialPageRoute(
-                                    //           builder: (context) =>
-                                    //               AntreanPasien(
-                                    //                 nomor_antrean:
-                                    //                     antrean_terakhir,
-                                    //                 antrean_sekarang:
-                                    //                     no_antrean,
-                                    //               )));
-                                    // }
-                                  },
-                                  child: Text('OK'),
-                                ),
-                              ],
-                            ),
-                          );
-                        });
+                              ),
+                            );
+                          });
+                        }
                       } else {
                         setState(() {
                           showDialog<String>(
                             context: context,
                             builder: (BuildContext context) => AlertDialog(
                               title: Text(
-                                'antrean penuh \n batas_antrean: $batas_antrean \n antrean_terakhir $antrean_terakhir',
+                                'antrean_terakhir $antrean_terakhir',
                                 style: TextStyle(fontSize: 14),
                               ),
                             ),
