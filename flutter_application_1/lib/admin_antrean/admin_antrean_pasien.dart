@@ -56,7 +56,9 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
   void initState() {
     AVAs = [];
     _timerForInter = Timer.periodic(Duration(seconds: 5), (result) {
-      AdminBacaDataAntrean();
+      setState(() {
+        AdminBacaDataAntrean();
+      });
     });
     super.initState();
   }
@@ -151,35 +153,35 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
 
   Widget widgetListAntrean(int index) {
     return Dismissible(
-      onDismissed: (direction) {
-        // if (direction == DismissDirection.endToStart) {
-        //   print('end to start');
-        // } else {
-        //   print('else');
-        // }
-      },
-      confirmDismiss: (direction) {
-        return showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Text('Konfirmasi'),
-                content: Text('Apakah ingin menghapus antrian ini?'),
-                actions: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop(true);
-                      },
-                      child: Text('Yes')),
-                  TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop(false);
-                      },
-                      child: Text('No')),
-                ],
-              );
-            });
-      },
+      // onDismissed: (direction) {
+      //   // if (direction == DismissDirection.endToStart) {
+      //   //   print('end to start');
+      //   // } else {
+      //   //   print('else');
+      //   // }
+      // },
+      // confirmDismiss: (direction) {
+      //   return showDialog(
+      //       context: context,
+      //       builder: (context) {
+      //         return AlertDialog(
+      //           title: Text('Konfirmasi'),
+      //           content: Text('Apakah ingin menghapus antrian ini?'),
+      //           actions: [
+      //             TextButton(
+      //                 onPressed: () {
+      //                   Navigator.of(context).pop(true);
+      //                 },
+      //                 child: Text('Yes')),
+      //             TextButton(
+      //                 onPressed: () {
+      //                   Navigator.of(context).pop(false);
+      //                 },
+      //                 child: Text('No')),
+      //           ],
+      //         );
+      //       });
+      // },
       key: Key(index.toString()),
       direction: DismissDirection.endToStart,
       background: Container(
