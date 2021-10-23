@@ -56,6 +56,15 @@ class AdminAntreanPasien extends StatefulWidget {
 class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
   // ignore: unused_field
   Timer _timerForInter; // <- Put this line on top of _MyAppState class
+  void functionTimerRefresh() {
+    _timerForInter = Timer.periodic(Duration(seconds: 15), (result) {
+      setState(() {
+        print('timer');
+        AdminBacaDataAntrean();
+      });
+    });
+  }
+
   @override
   void initState() {
     DateTime now = new DateTime.now();
@@ -65,12 +74,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
     AdminBacaDataAntrean();
     AdminBacaDataAntreanSekarangAwal();
     AVAs = [];
-    _timerForInter = Timer.periodic(Duration(seconds: 15), (result) {
-      setState(() {
-        print('timer');
-        AdminBacaDataAntrean();
-      });
-    });
+    functionTimerRefresh();
     super.initState();
   }
 
