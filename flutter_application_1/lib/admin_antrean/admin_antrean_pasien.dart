@@ -347,9 +347,12 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
             ),
           );
         },
-        leading: widgetStatusAntrean(index),
+        leading: CircleAvatar(
+          child: Text("${index + 1}"),
+        ),
         title: Text('${AVAs[index].username}'),
         subtitle: Text('${AVAs[index].tgl_visit}'),
+        trailing: widgetStatusAntrean(index),
       ),
     );
   }
@@ -357,12 +360,13 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
   // ignore: missing_return
   Widget widgetStatusAntrean(int index) {
     if (AVAs[index].status_antrean.toString() == 'belum') {
-      return CircleAvatar(child: Icon(Icons.watch_later_outlined));
+      return CircleAvatar(radius: 15, child: Icon(Icons.watch_later_outlined));
     } else if (AVAs[index].status_antrean.toString() == 'sudah') {
-      return CircleAvatar(child: Icon(Icons.check));
+      return CircleAvatar(radius: 15, child: Icon(Icons.check));
     } else if (AVAs[index].status_antrean.toString() == 'batal') {
       return CircleAvatar(
-          backgroundColor: Colors.red[100],
+          radius: 15,
+          backgroundColor: Colors.red[400],
           child: Icon(
             Icons.cancel,
             color: Colors.white,
@@ -436,63 +440,67 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Expanded(
+                            flex: 5,
                             child: TextField(
-                          controller: controllerAntreanSekarang,
-                          onChanged: (value) {
-                            setState(() {
-                              controllerAntreanSekarang.text = value;
-                              controllerAntreanSekarang.selection =
-                                  TextSelection.fromPosition(TextPosition(
-                                      offset: controllerAntreanSekarang
-                                          .text.length));
-                              print(value.toString());
-                            });
-                          },
-                          enabled: true,
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          decoration: InputDecoration(
-                            labelText: 'Antrean Sekarang',
-                            fillColor: Colors.white,
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                color: Colors.blue,
+                              controller: controllerAntreanSekarang,
+                              onChanged: (value) {
+                                setState(() {
+                                  controllerAntreanSekarang.text = value;
+                                  controllerAntreanSekarang.selection =
+                                      TextSelection.fromPosition(TextPosition(
+                                          offset: controllerAntreanSekarang
+                                              .text.length));
+                                  print(value.toString());
+                                });
+                              },
+                              enabled: true,
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              decoration: InputDecoration(
+                                labelText: 'Antrean Sekarang',
+                                fillColor: Colors.white,
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.blue,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        )),
+                            )),
+                        Expanded(flex: 1, child: SizedBox()),
                         Expanded(
+                            flex: 3,
                             child: TextFormField(
-                          controller: controllerBatasAntrean,
-                          onChanged: (value) {
-                            setState(() {
-                              controllerBatasAntrean.text = value;
-                              controllerBatasAntrean.selection =
-                                  TextSelection.fromPosition(TextPosition(
-                                      offset:
-                                          controllerBatasAntrean.text.length));
-                              print(value.toString());
-                            });
-                          },
-                          enabled: true,
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          decoration: InputDecoration(
-                            labelText: 'Batas Antrean',
-                            fillColor: Colors.white,
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                color: Colors.blue,
+                              controller: controllerBatasAntrean,
+                              onChanged: (value) {
+                                setState(() {
+                                  controllerBatasAntrean.text = value;
+                                  controllerBatasAntrean.selection =
+                                      TextSelection.fromPosition(TextPosition(
+                                          offset: controllerBatasAntrean
+                                              .text.length));
+                                  print(value.toString());
+                                });
+                              },
+                              enabled: true,
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              decoration: InputDecoration(
+                                labelText: 'Batas Antrean',
+                                fillColor: Colors.white,
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.blue,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        )),
+                            )),
+                        Expanded(flex: 1, child: SizedBox()),
                         ElevatedButton(
                             onPressed: () {
                               setState(() {
