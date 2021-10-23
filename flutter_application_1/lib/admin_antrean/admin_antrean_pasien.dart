@@ -74,6 +74,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
     AdminBacaDataAntrean();
     AdminBacaDataAntreanSekarangAwal();
     AVAs = [];
+    functionTimerRefresh();
     super.initState();
   }
 
@@ -296,7 +297,6 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                     ElevatedButton(
                       onPressed: () {
                         fetchDataStatusAntrean(index, 'sudah');
-
                         Navigator.pop(context, 'sudah');
                       },
                       child: Text('Sudah'),

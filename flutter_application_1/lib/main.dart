@@ -247,6 +247,14 @@ class _MyHomePageState extends State<MyHomePage> {
           ListTile(
             title: Text('Logout'),
             onTap: () {
+              print(
+                  "antrean_sekarang= $antrean_sekarang antrean_terakhir= $antrean_terakhir");
+              if (antrean_sekarang != null) {
+                antrean_sekarang = 0;
+                antrean_terakhir = 0;
+                print(
+                    "antrean_sekarang= $antrean_sekarang antrean_terakhir= $antrean_terakhir");
+              }
               doLogout();
             },
           ),

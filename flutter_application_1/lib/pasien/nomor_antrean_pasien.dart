@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AntreanPasien extends StatefulWidget {
-  final nomor_antrean, antrean_sekarang;
-  const AntreanPasien({Key key, this.nomor_antrean, this.antrean_sekarang})
+  var nomor_antrean, antrean_sekarang;
+  AntreanPasien({Key key, this.nomor_antrean, this.antrean_sekarang})
       : super(key: key);
 
   @override
@@ -10,6 +10,11 @@ class AntreanPasien extends StatefulWidget {
 }
 
 class _AntreanPasienState extends State<AntreanPasien> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
