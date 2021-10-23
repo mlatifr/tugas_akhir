@@ -18,7 +18,7 @@ String username, userid = "";
 var keluhan = TextEditingController();
 // ignore: non_constant_identifier_names
 String status_antrean, navigateToNomorAntrean;
-int no_antrean, antrean_terakhir, batas_antrean;
+int antrean_sekarang, antrean_terakhir, batas_antrean;
 String APIurl = "https://192.168.1.8/tugas_akhir/";
 // String APIurl = "https://192.168.43.5/tugas_akhir/";
 void getUserId() async {
@@ -138,6 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   bacaDataKeluhan(context) {
     navigateToNomorAntrean = null;
+    antrean_terakhir = antrean_terakhir + 1;
     Future<String> data = fetchDataKeluhan();
     data.then((value) {
       // ignore: unused_local_variable
@@ -151,7 +152,7 @@ class _MyHomePageState extends State<MyHomePage> {
             MaterialPageRoute(
                 builder: (context) => AntreanPasien(
                       nomor_antrean: antrean_terakhir,
-                      antrean_sekarang: no_antrean,
+                      antrean_sekarang: antrean_sekarang,
                     )));
         setState(() {
           navigateToNomorAntrean = 'success';
@@ -181,7 +182,9 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         Map json = jsonDecode(value);
         status_antrean = json['status_antrean'];
-        no_antrean = json['antrean_sekarang'];
+        //antrean yg sedang di dalam ruang periksa
+        antrean_sekarang = json['antrean_sekarang'];
+        //no pendaftar visit pasien terakhir
         antrean_terakhir = json['antrean_terakhir'];
         batas_antrean = json['batas_antrean'];
       });
@@ -217,7 +220,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   MaterialPageRoute(
                       builder: (context) => AntreanPasien(
                             nomor_antrean: antrean_terakhir,
-                            antrean_sekarang: no_antrean,
+                            antrean_sekarang: antrean_sekarang,
                           )));
             },
           ),

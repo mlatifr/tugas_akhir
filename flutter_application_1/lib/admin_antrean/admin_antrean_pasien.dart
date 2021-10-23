@@ -74,7 +74,6 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
     AdminBacaDataAntrean();
     AdminBacaDataAntreanSekarangAwal();
     AVAs = [];
-    functionTimerRefresh();
     super.initState();
   }
 
@@ -188,23 +187,16 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
           AVAs.add(ava);
         }
       } else {}
-      setState(() {
-        widgetLbuilderCekAntrean();
-      });
+      setState(() {});
     });
   }
 
   Future<String> fetchDataStatusAntrean(index, String status) async {
-    // print(controllerdate.text);
-    // print('cek login function');
-    final response =
-        await http.post(Uri.parse(APIurl + "admin_status_antrean.php"), body: {
-      'visit_id': AVAs[index].visit_id.toString(),
-      'status': status
-      // 'tgl_visit': '2021-10-21',
-    });
-    // print('response body adalah \n $_username \n' + response.body);
+    final response = await http.post(
+        Uri.parse(APIurl + "admin_status_antrean.php"),
+        body: {'visit_id': AVAs[index].visit_id.toString(), 'status': status});
     if (response.statusCode == 200) {
+      AdminKlikBacaDataAntrean();
       return response.body;
     } else {
       throw Exception('Failed to read API');
@@ -237,6 +229,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
           ListTile(
             title: Text('Logout'),
             onTap: () {
+              _timerForInter.cancel();
               doLogout();
             },
           ),
@@ -247,35 +240,6 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
 
   Widget widgetListAntrean(int index) {
     return Dismissible(
-      // onDismissed: (direction) {
-      //   // if (direction == DismissDirection.endToStart) {
-      //   //   print('end to start');
-      //   // } else {
-      //   //   print('else');
-      //   // }
-      // },
-      // confirmDismiss: (direction) {
-      //   return showDialog(
-      //       context: context,
-      //       builder: (context) {
-      //         return AlertDialog(
-      //           title: Text('Konfirmasi'),
-      //           content: Text('Apakah ingin menghapus antrian ini?'),
-      //           actions: [
-      //             TextButton(
-      //                 onPressed: () {
-      //                   Navigator.of(context).pop(true);
-      //                 },
-      //                 child: Text('Yes')),
-      //             TextButton(
-      //                 onPressed: () {
-      //                   Navigator.of(context).pop(false);
-      //                 },
-      //                 child: Text('No')),
-      //           ],
-      //         );
-      //       });
-      // },
       key: Key(index.toString()),
       direction: DismissDirection.endToStart,
       background: Container(
@@ -303,9 +267,6 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                     TextButton(
                       onPressed: () {
                         fetchDataStatusAntrean(index, 'batal');
-                        setState(() {
-                          AdminKlikBacaDataAntrean();
-                        });
                         Navigator.pop(context, 'batal antre');
                       },
                       child: Text('batal antre',
@@ -314,9 +275,6 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                     TextButton(
                       onPressed: () {
                         fetchDataStatusAntrean(index, 'belum');
-                        setState(() {
-                          AdminKlikBacaDataAntrean();
-                        });
                         Navigator.pop(context, 'belum');
                       },
                       child: Text(
@@ -338,10 +296,8 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                     ElevatedButton(
                       onPressed: () {
                         fetchDataStatusAntrean(index, 'sudah');
-                        setState(() {
-                          AdminKlikBacaDataAntrean();
-                        });
-                        Navigator.pop(context, 'Sudah');
+
+                        Navigator.pop(context, 'sudah');
                       },
                       child: Text('Sudah'),
                     ),
@@ -507,9 +463,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                         Expanded(flex: 1, child: SizedBox()),
                         ElevatedButton(
                             onPressed: () {
-                              setState(() {
-                                AdminBacaDataAntreanSekarang();
-                              });
+                              AdminBacaDataAntreanSekarang();
                               ;
                             },
                             child: Icon(
@@ -566,6 +520,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                                       value.toString().substring(0, 10);
                                   print(value.toString());
                                   AdminBacaDataAntrean();
+                                  functionTimerRefresh();
                                 });
                               });
                             },
