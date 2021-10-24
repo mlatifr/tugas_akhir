@@ -151,8 +151,8 @@ class _MyHomePageState extends State<MyHomePage> {
             context,
             MaterialPageRoute(
                 builder: (context) => AntreanPasien(
-                      nomor_antrean: antrean_terakhir,
-                      antrean_sekarang: antrean_sekarang,
+                      user_klinik_id: '3',
+                      tgl_visit: '2021-10-23',
                     )));
         setState(() {
           navigateToNomorAntrean = 'success';
@@ -214,13 +214,15 @@ class _MyHomePageState extends State<MyHomePage> {
           ListTile(
             title: Text('Nomor Antrean'),
             onTap: () {
+              DateTime now = new DateTime.now();
+              DateTime date = new DateTime(now.year, now.month, now.day);
               // Navigator.pop(context);
               Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => AntreanPasien(
-                            nomor_antrean: antrean_terakhir,
-                            antrean_sekarang: antrean_sekarang,
+                            user_klinik_id: '3',
+                            tgl_visit: date.toString().substring(0, 10),
                           )));
             },
           ),
@@ -352,22 +354,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                       bacaDataKeluhan(context);
                                       print(
                                           "navigateToNomorAntrean :$navigateToNomorAntrean");
-                                      // if (navigateToNomorAntrean == 'success') {
-                                      //   Navigator.pop(context);
-                                      //   keluhan.clear();
-                                      //   print(
-                                      //       "navigateToNomorAntrean 2:$navigateToNomorAntrean");
-                                      //   Navigator.push(
-                                      //       context,
-                                      //       MaterialPageRoute(
-                                      //           builder: (context) =>
-                                      //               AntreanPasien(
-                                      //                 nomor_antrean:
-                                      //                     antrean_terakhir,
-                                      //                 antrean_sekarang:
-                                      //                     no_antrean,
-                                      //               )));
-                                      // }
                                     },
                                     child: Text('OK'),
                                   ),

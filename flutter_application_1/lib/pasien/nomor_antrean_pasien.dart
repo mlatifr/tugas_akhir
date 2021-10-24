@@ -55,7 +55,10 @@ class _AntreanPasienState extends State<AntreanPasien> {
             PVAs.add(pva);
           }
         } else {}
-        setState(() {});
+        setState(() {
+          print('jumhlas data antre: ');
+          print('jumhlas data antre: ' + PVAs.length.toString());
+        });
       });
     });
   }
@@ -63,6 +66,7 @@ class _AntreanPasienState extends State<AntreanPasien> {
   @override
   void initState() {
     PVAs.clear();
+    bacaDataTglVstPsien();
     super.initState();
   }
 
@@ -81,34 +85,26 @@ class _AntreanPasienState extends State<AntreanPasien> {
             },
           ),
         ),
-        body: ListView(
-          children: [
-            Center(
-                child: Text(
-              "nomor antrean anda: \n",
-              style: TextStyle(fontSize: 30),
-              textAlign: TextAlign.center,
-            )),
-            Center(
-                child: Text(
-              widget.user_klinik_id.toString(),
-              style: TextStyle(fontSize: 88, color: Colors.blueAccent),
-              textAlign: TextAlign.center,
-            )),
-            Center(
-                child: Text(
-              'antrean saat ini: ',
-              style: TextStyle(fontSize: 25),
-              textAlign: TextAlign.center,
-            )),
-            Center(
-                child: Text(
-              widget.tgl_visit.toString(),
-              style: TextStyle(color: Colors.black38, fontSize: 50),
-              textAlign: TextAlign.center,
-            ))
-          ],
-        ),
+        body: FutureBuilder(
+            future: fetchDataTglVstPsien(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: PVAs.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          Text(PVAs[index].no_antre.toString() +
+                              ': index: $index'),
+                        ],
+                      );
+                    });
+              } else {
+                return Center(child: CircularProgressIndicator());
+              }
+            }),
       ),
     );
   }
