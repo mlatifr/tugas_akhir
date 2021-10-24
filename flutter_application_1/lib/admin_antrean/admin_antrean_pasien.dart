@@ -57,9 +57,12 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
   // ignore: unused_field
   Timer _timerForInter; // <- Put this line on top of _MyAppState class
   void functionTimerRefresh() {
+    var timerCount = 1;
+    print('didalam functionTimerRefresh');
     _timerForInter = Timer.periodic(Duration(seconds: 15), (result) {
       setState(() {
-        print('timer');
+        timerCount++;
+        print('timer: ${timerCount}');
         AdminBacaDataAntrean();
       });
     });
@@ -75,6 +78,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
     AdminBacaDataAntreanSekarangAwal();
     AVAs = [];
     functionTimerRefresh();
+    print('initStaate');
     super.initState();
   }
 
@@ -520,7 +524,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                                       value.toString().substring(0, 10);
                                   print(value.toString());
                                   AdminBacaDataAntrean();
-                                  functionTimerRefresh();
+                                  print('elevatedButton');
                                 });
                               });
                             },
