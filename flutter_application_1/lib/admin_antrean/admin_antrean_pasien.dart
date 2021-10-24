@@ -57,12 +57,8 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
   // ignore: unused_field
   Timer _timerForInter; // <- Put this line on top of _MyAppState class
   void functionTimerRefresh() {
-    var timerCount = 1;
-    // print('didalam functionTimerRefresh');
     _timerForInter = Timer.periodic(Duration(seconds: 15), (result) {
       setState(() {
-        timerCount++;
-        print('timer: ${timerCount}');
         AdminBacaDataAntrean();
       });
     });
