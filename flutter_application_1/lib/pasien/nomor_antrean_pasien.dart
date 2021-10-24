@@ -21,8 +21,9 @@ class PsienVNoAntr {
 List<PsienVNoAntr> PVAs = [];
 
 class AntreanPasien extends StatefulWidget {
-  final user_klinik_id, tgl_visit;
-  AntreanPasien({Key key, this.user_klinik_id, this.tgl_visit})
+  final user_klinik_id, tgl_visit, antrean_sekarang;
+  AntreanPasien(
+      {Key key, this.user_klinik_id, this.tgl_visit, this.antrean_sekarang})
       : super(key: key);
 
   @override
@@ -88,17 +89,56 @@ class _AntreanPasienState extends State<AntreanPasien> {
         body: FutureBuilder(
             future: fetchDataTglVstPsien(),
             builder: (context, snapshot) {
+              print(PVAs.length);
               if (snapshot.hasData) {
                 return ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
+                    // physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: PVAs.length,
                     itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          Text(PVAs[index].no_antre.toString() +
-                              ': index: $index'),
-                        ],
+                      return Center(
+                        child: Column(
+                          // physics: NeverScrollableScrollPhysics(),
+                          // shrinkWrap: true,
+                          children: [
+                            Text(
+                              "nomor antrean anda:",
+                              style: TextStyle(fontSize: 30),
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              PVAs[index].no_antre.toString(),
+                              style: TextStyle(
+                                  fontSize: 88, color: Colors.blueAccent),
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              'Tanggal Visit:',
+                              style: TextStyle(fontSize: 25),
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              PVAs[index].tgl_visit.toString(),
+                              style: TextStyle(
+                                  color: Colors.black38, fontSize: 25),
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              'antrean saat ini:',
+                              style: TextStyle(fontSize: 25),
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              widget.antrean_sekarang.toString(),
+                              style: TextStyle(
+                                  color: Colors.black38, fontSize: 50),
+                              textAlign: TextAlign.center,
+                            ),
+                            Divider(
+                              thickness: 8,
+                            )
+                          ],
+                        ),
                       );
                     });
               } else {

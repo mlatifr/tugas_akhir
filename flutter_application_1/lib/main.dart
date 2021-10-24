@@ -13,6 +13,8 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+DateTime now = new DateTime.now();
+DateTime date = new DateTime(now.year, now.month, now.day);
 // ignore: non_constant_identifier_names
 String username, userid = "";
 var keluhan = TextEditingController();
@@ -151,9 +153,9 @@ class _MyHomePageState extends State<MyHomePage> {
             context,
             MaterialPageRoute(
                 builder: (context) => AntreanPasien(
-                      user_klinik_id: '3',
-                      tgl_visit: '2021-10-23',
-                    )));
+                    user_klinik_id: userid,
+                    tgl_visit: date.toString().substring(0, 10),
+                    antrean_sekarang: antrean_sekarang.toString())));
         setState(() {
           navigateToNomorAntrean = 'success';
         });
@@ -214,16 +216,14 @@ class _MyHomePageState extends State<MyHomePage> {
           ListTile(
             title: Text('Nomor Antrean'),
             onTap: () {
-              DateTime now = new DateTime.now();
-              DateTime date = new DateTime(now.year, now.month, now.day);
               // Navigator.pop(context);
               Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => AntreanPasien(
-                            user_klinik_id: '3',
-                            tgl_visit: date.toString().substring(0, 10),
-                          )));
+                          user_klinik_id: userid,
+                          tgl_visit: date.toString().substring(0, 10),
+                          antrean_sekarang: antrean_sekarang.toString())));
             },
           ),
           ListTile(
