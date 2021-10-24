@@ -58,7 +58,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
   Timer _timerForInter; // <- Put this line on top of _MyAppState class
   void functionTimerRefresh() {
     var timerCount = 1;
-    print('didalam functionTimerRefresh');
+    // print('didalam functionTimerRefresh');
     _timerForInter = Timer.periodic(Duration(seconds: 15), (result) {
       setState(() {
         timerCount++;
@@ -78,7 +78,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
     AdminBacaDataAntreanSekarangAwal();
     AVAs = [];
     functionTimerRefresh();
-    print('initStaate');
+    // print('initStaate');
     super.initState();
   }
 
@@ -128,7 +128,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
       //Mengubah json menjadi Array
       Map json = jsonDecode(value);
       // print(json);
-      print('json to string: ' + json['result'].toString());
+      // print('json to string: ' + json['result'].toString());
       if (json['result'].toString() == 'success') {
         for (var i in json['data']) {
           AdminVAntrean ava = AdminVAntrean.fromJson(i);
@@ -164,7 +164,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
       //Mengubah json menjadi Array
       Map json = jsonDecode(value);
       // print(json);
-      print('json to string: ' + json['result'].toString());
+      // print('json to string: ' + json['result'].toString());
       if (json['result'].toString() == 'success') {
         antreanSekarang = json['antrean_sekarang'].toString();
         batasAntrean = json['batas_antrean'].toString();
@@ -185,7 +185,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
       //Mengubah json menjadi Array
       Map json = jsonDecode(value);
       // print(json);
-      print('json to string: ' + json['result'].toString());
+      // print('json to string: ' + json['result'].toString());
       if (json['result'].toString() == 'success') {
         for (var i in json['data']) {
           AdminVAntrean ava = AdminVAntrean.fromJson(i);
@@ -258,7 +258,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
       ),
       child: ListTile(
         onTap: () {
-          print(AVAs[index].visit_id.toString());
+          // print(AVAs[index].visit_id.toString());
           showDialog<String>(
             context: context,
             builder: (BuildContext context) => AlertDialog(
@@ -445,7 +445,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                                       TextSelection.fromPosition(TextPosition(
                                           offset: controllerBatasAntrean
                                               .text.length));
-                                  print(value.toString());
+                                  // print(value.toString());
                                 });
                               },
                               enabled: true,
@@ -491,7 +491,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                               controllerdate.selection =
                                   TextSelection.fromPosition(TextPosition(
                                       offset: controllerdate.text.length));
-                              print(value.toString());
+                              // print(value.toString());
                               AdminBacaDataAntrean();
                             });
                           },
@@ -522,9 +522,9 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                                 setState(() {
                                   controllerdate.text =
                                       value.toString().substring(0, 10);
-                                  print(value.toString());
+                                  // print(value.toString());
                                   AdminBacaDataAntrean();
-                                  print('elevatedButton');
+                                  // print('elevatedButton');
                                 });
                               });
                             },
