@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 var controllerdate = TextEditingController();
 var controllerAntreanSekarang = TextEditingController();
 var controllerBatasAntrean = TextEditingController();
+var controllerAntreanTerakhir = TextEditingController();
 
 class AdminVAntrean {
   var visit_id,
@@ -44,7 +45,7 @@ class AdminVAntrean {
 }
 
 List<AdminVAntrean> AVAs = [];
-var antreanSekarang, batasAntrean;
+var antreanSekarang, batasAntrean, antreanTerakhir;
 
 class AdminAntreanPasien extends StatefulWidget {
   const AdminAntreanPasien({Key key}) : super(key: key);
@@ -78,6 +79,21 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
     super.initState();
   }
 
+  Future<String> fetchDataResetAntreanTerakhir() async {
+    final response =
+        await http.post(Uri.parse(APIurl + "admin_upd_antrean_now.php"), body: {
+      'antrean_terakhir': '0',
+      // 'tgl_visit': '2021-10-21',
+    });
+    if (response.statusCode == 200) {
+      print('fetchDataResetAntreanTerakhir: ' + response.body.toString());
+      AdminBacaDataAntreanSekarangAwal();
+      return response.body;
+    } else {
+      throw Exception('Failed to read API');
+    }
+  }
+
   Future<String> fetchDataAntreanSekarangAwal() async {
     final response =
         await http.post(Uri.parse(APIurl + "pasien_view_antrean_sekarang.php"));
@@ -98,6 +114,8 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
       setState(() {
         antreanSekarang = json['antrean_sekarang'].toString();
         batasAntrean = json['batas_antrean'].toString();
+        antreanTerakhir = json['antrean_terakhir'].toString();
+        widgetInfoBar();
       });
     });
   }
@@ -164,6 +182,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
       if (json['result'].toString() == 'success') {
         antreanSekarang = json['antrean_sekarang'].toString();
         batasAntrean = json['batas_antrean'].toString();
+        antreanTerakhir = json['antrean_terakhir'].toString();
       } else {}
       setState(() {
         widgetLbuilderCekAntrean();
@@ -348,6 +367,49 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
     }
   }
 
+  Widget widgetInfoBar() {
+    return Row(
+      children: [
+        Expanded(
+            child: Text(
+          "antrean sekarang: \n",
+          style: TextStyle(fontSize: 12),
+          textAlign: TextAlign.center,
+        )),
+        Expanded(
+            child: Text(
+          antreanSekarang.toString(),
+          style: TextStyle(fontSize: 14, color: Colors.blueAccent),
+          textAlign: TextAlign.center,
+        )),
+        Expanded(
+            child: Text(
+          "batas antrean : \n",
+          style: TextStyle(fontSize: 12),
+          textAlign: TextAlign.center,
+        )),
+        Expanded(
+            child: Text(
+          batasAntrean.toString(),
+          style: TextStyle(fontSize: 14, color: Colors.blueAccent),
+          textAlign: TextAlign.center,
+        )),
+        Expanded(
+            child: Text(
+          "antrean terakhir : \n",
+          style: TextStyle(fontSize: 12),
+          textAlign: TextAlign.center,
+        )),
+        Expanded(
+            child: Text(
+          antreanTerakhir.toString(),
+          style: TextStyle(fontSize: 14, color: Colors.blueAccent),
+          textAlign: TextAlign.center,
+        )),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -362,34 +424,21 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
             physics: ScrollPhysics(),
             child: Column(
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                        child: Text(
-                      "antrean sekarang: \n",
-                      style: TextStyle(fontSize: 12),
-                      textAlign: TextAlign.center,
+                ElevatedButton(
+                    onPressed: () {
+                      fetchDataResetAntreanTerakhir();
+                    },
+                    child: Row(
+                      children: [
+                        Text('Reset Antrean terkhir'),
+                        Icon(
+                          Icons.refresh,
+                          color: Colors.white,
+                          size: 24.0,
+                        ),
+                      ],
                     )),
-                    Expanded(
-                        child: Text(
-                      antreanSekarang.toString(),
-                      style: TextStyle(fontSize: 14, color: Colors.blueAccent),
-                      textAlign: TextAlign.center,
-                    )),
-                    Expanded(
-                        child: Text(
-                      "batas antrean : \n",
-                      style: TextStyle(fontSize: 12),
-                      textAlign: TextAlign.center,
-                    )),
-                    Expanded(
-                        child: Text(
-                      batasAntrean.toString(),
-                      style: TextStyle(fontSize: 14, color: Colors.blueAccent),
-                      textAlign: TextAlign.center,
-                    )),
-                  ],
-                ),
+                widgetInfoBar(),
                 Divider(
                   color: Colors.blue,
                   thickness: 2,
@@ -464,7 +513,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                         ElevatedButton(
                             onPressed: () {
                               AdminBacaDataAntreanSekarang();
-                              ;
+                              AdminBacaDataAntreanSekarangAwal();
                             },
                             child: Icon(
                               Icons.check,
@@ -520,6 +569,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                                       value.toString().substring(0, 10);
                                   // print(value.toString());
                                   AdminBacaDataAntrean();
+                                  AdminBacaDataAntreanSekarangAwal();
                                   // print('elevatedButton');
                                 });
                               });
