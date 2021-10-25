@@ -75,7 +75,6 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
     AdminBacaDataAntreanSekarangAwal();
     AVAs = [];
     functionTimerRefresh();
-    // print('initStaate');
     super.initState();
   }
 
