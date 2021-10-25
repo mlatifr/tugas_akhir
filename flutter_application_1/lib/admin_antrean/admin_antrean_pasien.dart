@@ -512,8 +512,9 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                         Expanded(flex: 1, child: SizedBox()),
                         ElevatedButton(
                             onPressed: () {
-                              AdminBacaDataAntreanSekarang();
                               AdminBacaDataAntreanSekarangAwal();
+                              AdminBacaDataAntreanSekarang();
+                              AdminBacaDataAntrean();
                             },
                             child: Icon(
                               Icons.check,
