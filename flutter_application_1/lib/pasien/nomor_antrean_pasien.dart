@@ -20,8 +20,9 @@ class PsienVNoAntr {
 
 List<PsienVNoAntr> PVAs = [];
 
+// ignore: must_be_immutable
 class AntreanPasien extends StatefulWidget {
-  final user_klinik_id, tgl_visit, antrean_sekarang;
+  var user_klinik_id, tgl_visit, antrean_sekarang;
   AntreanPasien(
       {Key key, this.user_klinik_id, this.tgl_visit, this.antrean_sekarang})
       : super(key: key);
@@ -32,12 +33,13 @@ class AntreanPasien extends StatefulWidget {
 
 class _AntreanPasienState extends State<AntreanPasien> {
   Future<String> fetchDataTglVstPsien() async {
-    final response = await http
+    var response = await http
         .post(Uri.parse(APIurl + "pasien_view_antrean_user_tgl.php"), body: {
       'user_klinik_id': widget.user_klinik_id.toString(),
       'tgl_visit': widget.tgl_visit.toString()
     });
     if (response.statusCode == 200) {
+      print(response.body);
       return response.body;
     } else {
       throw Exception('Failed to read API');
@@ -57,8 +59,8 @@ class _AntreanPasienState extends State<AntreanPasien> {
           }
         } else {}
         setState(() {
-          print('jumhlas data antre: ');
-          print('jumhlas data antre: ' + PVAs.length.toString());
+          // print('jumhlas data antre: ');
+          // print('jumhlas data antre: ' + PVAs.length.toString());
         });
       });
     });

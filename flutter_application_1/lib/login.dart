@@ -5,12 +5,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 // ignore: unused_element
-String _username, _password, userid;
+String username, password, userid;
 Future<String> fetchDataLogin() async {
   // print('cek login function');
   final response = await http.post(Uri.parse(APIurl + "login.php"), body: {
-    'id': _username,
-    'sandi': _password,
+    'id': username,
+    'sandi': password,
     // 'id': 'pasien1',
     // 'sandi': 'pasien1',
   });
@@ -25,7 +25,7 @@ Future<String> fetchDataLogin() async {
 void doLogin() async {
   //simmpan user login ke alikasi(sahredPReferences or Cookies)
   final prefs = await SharedPreferences.getInstance();
-  prefs.setString("_username", _username);
+  prefs.setString("_username", username);
   // print('$userid: milik login');
   prefs.setString("userid", userid);
   // print('$userid: milik login2');
@@ -60,9 +60,9 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           userid = json['id'].toString();
         });
-        print(_username.toString() +
+        print(username.toString() +
             ' ' +
-            _password.toString() +
+            password.toString() +
             ' ' +
             userid.toString());
         doLogin();
@@ -94,9 +94,9 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    _username = null;
+    username = null;
     userid = null;
-    _password = null;
+    password = null;
   }
 
   // untuk hide karakter pada paswword
@@ -123,13 +123,13 @@ class _LoginPageState extends State<LoginPage> {
                 Image.asset('./asset/image/clinic.jpg'),
                 TextFormField(
                   onChanged: (value) {
-                    _username = value;
+                    username = value;
                   },
                   decoration: InputDecoration(labelText: 'username'),
                 ),
                 TextFormField(
                   onChanged: (value) {
-                    _password = value;
+                    password = value;
                   },
                   decoration: const InputDecoration(labelText: 'Password'),
                   obscureText: obscureText,
@@ -158,12 +158,12 @@ class _LoginPageState extends State<LoginPage> {
                         backgroundColor: Colors.blue,
                       ),
                       onPressed: () {
-                        print(_username.toString() +
+                        print(username.toString() +
                             ' ' +
-                            _password.toString() +
+                            password.toString() +
                             ' ' +
                             userid.toString());
-                        if (_password == null) {
+                        if (password == null) {
                           showDialog<String>(
                             context: context,
                             builder: (BuildContext context) => AlertDialog(
@@ -179,7 +179,7 @@ class _LoginPageState extends State<LoginPage> {
                               ],
                             ),
                           );
-                        } else if (_username == null) {
+                        } else if (username == null) {
                           showDialog<String>(
                             context: context,
                             builder: (BuildContext context) => AlertDialog(
@@ -195,7 +195,7 @@ class _LoginPageState extends State<LoginPage> {
                               ],
                             ),
                           );
-                        } else if (_username == null && _password == null) {
+                        } else if (username == null && password == null) {
                           showDialog<String>(
                             context: context,
                             builder: (BuildContext context) => AlertDialog(
@@ -211,7 +211,7 @@ class _LoginPageState extends State<LoginPage> {
                               ],
                             ),
                           );
-                        } else if (_username != null && _password != null) {
+                        } else if (username != null && password != null) {
                           bacaDataLogin(context);
                         }
                       },

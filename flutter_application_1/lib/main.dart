@@ -33,6 +33,7 @@ void doLogout() async {
   final prefs = await SharedPreferences.getInstance();
   prefs.remove("_username");
   prefs.remove("userid");
+  print('user id doLogout(): $userid');
   main();
 }
 
@@ -216,6 +217,10 @@ class _MyHomePageState extends State<MyHomePage> {
           ListTile(
             title: Text('Nomor Antrean'),
             onTap: () {
+              getUserId();
+              print('onTap');
+              print(
+                  "userid: $userid | tgl_visit: ${date.toString().substring(0, 10)} | antrean_sekarang: $antrean_sekarang");
               // Navigator.pop(context);
               Navigator.push(
                   context,
