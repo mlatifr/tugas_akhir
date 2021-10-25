@@ -425,7 +425,42 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
               children: [
                 ElevatedButton(
                     onPressed: () {
-                      fetchDataResetAntreanTerakhir();
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                                title: Text(
+                                  'Akan mengatur \nAntrean sekarang:0 \nBatas antrean:0 \nAntrean terakhir:0',
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                                actions: <Widget>[
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context, 'batal');
+                                        },
+                                        child: Text(
+                                          'batal',
+                                          // style: TextStyle(
+                                          //     color: Colors.black26)
+                                        ),
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          fetchDataResetAntreanTerakhir();
+                                          Navigator.pop(context, 'OK');
+                                        },
+                                        child: Text(
+                                          'ok',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ));
                     },
                     child: Row(
                       children: [
