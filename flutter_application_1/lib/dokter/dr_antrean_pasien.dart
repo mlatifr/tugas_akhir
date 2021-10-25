@@ -69,6 +69,7 @@ class _DrAntreanPasienState extends State<DrAntreanPasien> {
     Future<String> data = fetchDataDokterAntreanPasien();
     data.then((value) {
       //Mengubah json menjadi Array
+      // ignore: unused_local_variable
       Map json = jsonDecode(value);
       // print(json);
       setState(() {
