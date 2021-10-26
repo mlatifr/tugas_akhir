@@ -11,6 +11,7 @@ var controllerBatasAntrean = TextEditingController();
 var controllerAntreanTerakhir = TextEditingController();
 
 class AdminVAntrean {
+  // ignore: non_constant_identifier_names
   var visit_id,
       vhu_id,
       pasien_id,
