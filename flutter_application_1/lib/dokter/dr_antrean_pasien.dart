@@ -52,6 +52,28 @@ var controllerdate = TextEditingController();
 List<DokterVAntrean> DVAs = [];
 
 class _DrAntreanPasienState extends State<DrAntreanPasien> {
+  // ignore: unused_field
+  Timer _timerForInter; // <- Put this line on top of _MyAppState class
+  void functionTimerRefresh() {
+    _timerForInter = Timer.periodic(Duration(seconds: 15), (result) {
+      setState(() {
+        DokterBacaDataAntrean();
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    DateTime now = new DateTime.now();
+    DateTime date = new DateTime(now.year, now.month, now.day);
+    print(date);
+    controllerdate.text = date.toString().substring(0, 10);
+    DokterBacaDataAntrean();
+    DVAs = [];
+    functionTimerRefresh();
+    super.initState();
+  }
+
   Future<String> fetchDataDokterAntreanPasien() async {
     final response =
         await http.post(Uri.parse(APIurl + "dokter_v_antrean.php"), body: {
@@ -73,7 +95,11 @@ class _DrAntreanPasienState extends State<DrAntreanPasien> {
       //Mengubah json menjadi Array
       // ignore: unused_local_variable
       Map json = jsonDecode(value);
-      print(json);
+      for (var i in json['data']) {
+        print(i);
+        DokterVAntrean dva = DokterVAntrean.fromJson(i);
+        DVAs.add(dva);
+      }
       setState(() {
         // antreanSekarang = json['antrean_sekarang'].toString();
         // batasAntrean = json['batas_antrean'].toString();
@@ -112,36 +138,38 @@ class _DrAntreanPasienState extends State<DrAntreanPasien> {
     );
   }
 
-  Widget lsTile(int index) {
-    if (index <= 4) {
-      return ListTile(
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => DrRiwayatPeriksaPasien(
-                        namaPasien: '${index + 1}',
-                      )));
-        },
-        leading: CircleAvatar(),
-        title: Text('Pasien ${index + 1}'),
-        subtitle: Text('sub judul'),
-        trailing: Icon(Icons.check_box),
+  Widget widgetLsTile() {
+    if (DVAs.length > 0) {
+      return Expanded(
+        child: ListView.builder(
+            itemCount: DVAs.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  child: ListTile(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DrRiwayatPeriksaPasien(
+                                    namaPasien: '${DVAs[index].pasienId}',
+                                  )));
+                    },
+                    leading: CircleAvatar(
+                      child: Text('${index + 1}'),
+                    ),
+                    title: Text('${DVAs[index].userName}'),
+                    subtitle: Text('sub judul'),
+                    trailing: Icon(Icons.check_box),
+                  ));
+            }),
       );
     } else {
-      return ListTile(
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => DrRiwayatPeriksaPasien(
-                        namaPasien: '${index + 1}',
-                      )));
-        },
-        leading: CircleAvatar(),
-        title: Text('Pasien ${index + 1}'),
-        subtitle: Text('sub judul'),
-        trailing: Icon(Icons.access_time),
+      return Column(
+        children: [
+          CircularProgressIndicator(),
+          Text('data tidak ditemukan'),
+        ],
       );
     }
   }
@@ -217,22 +245,23 @@ class _DrAntreanPasienState extends State<DrAntreanPasien> {
           body: Column(
             children: [
               widgetSelectTgl(),
-              Expanded(
-                child: ListView.builder(
-                    itemCount: 10,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                        child: lsTile(index),
-                        //  ListTile(
-                        //   leading: CircleAvatar(),
-                        //   title: Text('Pasien ${index + 1}'),
-                        //   subtitle: Text('sub judul'),
-                        //   trailing: Icon(Icons.check_box),
-                        // ),
-                      );
-                    }),
-              ),
+              widgetLsTile(),
+              // Expanded(
+              //   child: ListView.builder(
+              //       itemCount: DVAs.length,
+              //       itemBuilder: (context, index) {
+              //         return Padding(
+              //           padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+              //           child: lsTile(index),
+              //           //  ListTile(
+              //           //   leading: CircleAvatar(),
+              //           //   title: Text('Pasien ${index + 1}'),
+              //           //   subtitle: Text('sub judul'),
+              //           //   trailing: Icon(Icons.check_box),
+              //           // ),
+              //         );
+              //       }),
+              // ),
             ],
           )),
     );

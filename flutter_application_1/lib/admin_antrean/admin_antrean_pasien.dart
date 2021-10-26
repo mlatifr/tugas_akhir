@@ -104,6 +104,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
     }
   }
 
+  // ignore: non_constant_identifier_names
   AdminBacaDataAntreanSekarangAwal() {
     AVAs.clear();
     Future<String> data = fetchDataAntreanSekarangAwal();
