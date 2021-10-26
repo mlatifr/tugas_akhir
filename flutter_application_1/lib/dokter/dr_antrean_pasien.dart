@@ -14,40 +14,41 @@ class DrAntreanPasien extends StatefulWidget {
 }
 
 class DokterVAntrean {
-  var visit_id,
-      vhu_id,
-      pasien_id,
-      tgl_visit,
-      username,
-      nomor_antrean,
-      status_antrean,
+  var visitId,
+      vhuId,
+      pasienId,
+      tglVisit,
+      userName,
+      nomorAntrean,
+      statusAntrean,
       keluhan;
   DokterVAntrean(
-      {this.visit_id,
-      this.vhu_id,
-      this.pasien_id,
-      this.tgl_visit,
-      this.username,
-      this.nomor_antrean,
-      this.status_antrean,
+      {this.visitId,
+      this.vhuId,
+      this.pasienId,
+      this.tglVisit,
+      this.userName,
+      this.nomorAntrean,
+      this.statusAntrean,
       this.keluhan});
 
   // untuk convert dari jSon
   factory DokterVAntrean.fromJson(Map<String, dynamic> json) {
     return new DokterVAntrean(
-      visit_id: json['visit_id'],
-      vhu_id: json['vhu_id'],
-      pasien_id: json['pasien_id'],
-      tgl_visit: json['tgl_visit'],
-      username: json['username'],
-      nomor_antrean: json['nomor_antrean'],
-      status_antrean: json['status_antrean'],
+      visitId: json['visit_id'],
+      vhuId: json['vhu_id'],
+      pasienId: json['pasien_id'],
+      tglVisit: json['tgl_visit'],
+      userName: json['username'],
+      nomorAntrean: json['nomor_antrean'],
+      statusAntrean: json['status_antrean'],
       keluhan: json['keluhan'],
     );
   }
 }
 
 var controllerdate = TextEditingController();
+// ignore: non_constant_identifier_names
 List<DokterVAntrean> DVAs = [];
 
 class _DrAntreanPasienState extends State<DrAntreanPasien> {
@@ -64,6 +65,7 @@ class _DrAntreanPasienState extends State<DrAntreanPasien> {
     }
   }
 
+  // ignore: non_constant_identifier_names
   DokterBacaDataAntrean() {
     DVAs.clear();
     Future<String> data = fetchDataDokterAntreanPasien();
@@ -71,7 +73,7 @@ class _DrAntreanPasienState extends State<DrAntreanPasien> {
       //Mengubah json menjadi Array
       // ignore: unused_local_variable
       Map json = jsonDecode(value);
-      // print(json);
+      print(json);
       setState(() {
         // antreanSekarang = json['antrean_sekarang'].toString();
         // batasAntrean = json['batas_antrean'].toString();
@@ -189,7 +191,7 @@ class _DrAntreanPasienState extends State<DrAntreanPasien> {
                     setState(() {
                       controllerdate.text = value.toString().substring(0, 10);
                       print(value.toString());
-                      // AdminBacaDataAntrean();
+                      DokterBacaDataAntrean();
                     });
                   });
                 },
