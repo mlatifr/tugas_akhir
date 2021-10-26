@@ -100,10 +100,7 @@ class _DrAntreanPasienState extends State<DrAntreanPasien> {
         DokterVAntrean dva = DokterVAntrean.fromJson(i);
         DVAs.add(dva);
       }
-      setState(() {
-        // antreanSekarang = json['antrean_sekarang'].toString();
-        // batasAntrean = json['batas_antrean'].toString();
-      });
+      setState(() {});
     });
   }
 
@@ -138,6 +135,31 @@ class _DrAntreanPasienState extends State<DrAntreanPasien> {
     );
   }
 
+  onGoBack(dynamic value) {
+    functionTimerRefresh();
+    print('timer start');
+    setState(() {
+      DokterBacaDataAntrean();
+      widgetLsTile();
+    });
+  }
+
+  Widget widgetStatusAntrean(int index) {
+    if (DVAs[index].statusAntrean.toString() == 'belum') {
+      return CircleAvatar(radius: 15, child: Icon(Icons.watch_later_outlined));
+    } else if (DVAs[index].statusAntrean.toString() == 'sudah') {
+      return CircleAvatar(radius: 15, child: Icon(Icons.check));
+    } else if (DVAs[index].statusAntrean.toString() == 'batal') {
+      return CircleAvatar(
+          radius: 15,
+          backgroundColor: Colors.red[400],
+          child: Icon(
+            Icons.cancel,
+            color: Colors.white,
+          ));
+    }
+  }
+
   Widget widgetLsTile() {
     if (DVAs.length > 0) {
       return Expanded(
@@ -147,21 +169,22 @@ class _DrAntreanPasienState extends State<DrAntreanPasien> {
               return Padding(
                   padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: ListTile(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DrRiwayatPeriksaPasien(
-                                    namaPasien: '${DVAs[index].pasienId}',
-                                  )));
-                    },
-                    leading: CircleAvatar(
-                      child: Text('${index + 1}'),
-                    ),
-                    title: Text('${DVAs[index].userName}'),
-                    subtitle: Text('sub judul'),
-                    trailing: Icon(Icons.check_box),
-                  ));
+                      onTap: () {
+                        _timerForInter.cancel();
+                        print('timer stop');
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DrRiwayatPeriksaPasien(
+                                      namaPasien: '${DVAs[index].userName}',
+                                    ))).then((onGoBack));
+                      },
+                      leading: CircleAvatar(
+                        child: Text('${index + 1}'),
+                      ),
+                      title: Text('${DVAs[index].userName}'),
+                      subtitle: Text('sub judul'),
+                      trailing: widgetStatusAntrean(index)));
             }),
       );
     } else {
@@ -246,22 +269,6 @@ class _DrAntreanPasienState extends State<DrAntreanPasien> {
             children: [
               widgetSelectTgl(),
               widgetLsTile(),
-              // Expanded(
-              //   child: ListView.builder(
-              //       itemCount: DVAs.length,
-              //       itemBuilder: (context, index) {
-              //         return Padding(
-              //           padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-              //           child: lsTile(index),
-              //           //  ListTile(
-              //           //   leading: CircleAvatar(),
-              //           //   title: Text('Pasien ${index + 1}'),
-              //           //   subtitle: Text('sub judul'),
-              //           //   trailing: Icon(Icons.check_box),
-              //           // ),
-              //         );
-              //       }),
-              // ),
             ],
           )),
     );
