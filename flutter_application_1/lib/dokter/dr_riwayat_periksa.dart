@@ -57,7 +57,7 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                 children: [
                   TextFormField(
                       enabled: false,
-                      initialValue: 'tidak ada',
+                      initialValue: 'tidak  ada',
                       decoration: InputDecoration(
                         labelText: "keluhan",
                         fillColor: Colors.white,
