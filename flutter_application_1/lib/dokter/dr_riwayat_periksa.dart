@@ -207,13 +207,14 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
     }
   }
 
-  Map<String, bool> valuesRight = {
-    'Auto Refraksi': true,
-    'Trial Lens': false,
-    'Slit Lamp': false,
-    'TOnometri Schiot': false,
-    'Fundoscopy': false,
-  };
+  //
+  // Map<String, bool> valuesRight = {
+  //   'Auto Refraksi': true,
+  //   'Trial Lens': false,
+  //   'Slit Lamp': false,
+  //   'TOnometri Schiot': false,
+  //   'Fundoscopy': false,
+  // };
   Map<String, bool> valuesLeft = {
     'Auto Refraksi': true,
     'Trial Lens': false,
@@ -221,6 +222,8 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
     'TOnometri Schiot': false,
     'Fundoscopy': false,
   };
+
+  var _valueButton = true;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -260,6 +263,8 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                 ElevatedButton(
                   onPressed: () {
                     // DokterBacaDataVListTindakan().then(refreshListTdkn());
+                    _valueButton = !_valueButton;
+                    print('button value: $_valueButton');
                   },
                   child: Text('button'),
                 ),
@@ -336,34 +341,27 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                                 ),
                               )),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(0.05),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.42,
-                                child: Container(
-                                  color: Colors.yellow,
-                                  child: Column(
-                                    children:
-                                        valuesRight.keys.map((String key) {
-                                      return new CheckboxListTile(
-                                        title: new Text(key),
-                                        value: valuesRight[key],
-                                        onChanged: (bool value) {
-                                          setState(() {
-                                            valuesRight[key] = value;
-                                          });
-                                        },
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        Container(
+                            color: Colors.yellow[50],
+                            child: ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: DVLTs.length,
+                                itemBuilder: (context, index) {
+                                  return CheckboxListTile(
+                                    title: Text(
+                                      '${index + 1} ${DVLTs[index].namaTindakan}',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    value: _valueButton,
+                                    onChanged: (bool value) {
+                                      setState(() {
+                                        _valueButton = value;
+                                      });
+                                      print('value: $_valueButton');
+                                    },
+                                  );
+                                })),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
