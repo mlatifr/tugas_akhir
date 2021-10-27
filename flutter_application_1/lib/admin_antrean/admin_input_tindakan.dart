@@ -33,6 +33,7 @@ class AdminVListTindakan {
 class _AdminInputTindakanState extends State<AdminInputTindakan> {
   @override
   void initState() {
+    AdminBacaDataListTindakan();
     super.initState();
   }
 
@@ -171,10 +172,17 @@ class _AdminInputTindakanState extends State<AdminInputTindakan> {
     return ListView.builder(
         // physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
-        itemCount: 50,
+        itemCount: AVTs.length,
         itemBuilder: (context, index) {
-          return Center(
-              child: Text('${index + 1}\n_______________________________'));
+          return Column(
+            children: [
+              Text(
+                '${index + 1} ${AVTs[index].namaTindakan}',
+                style: TextStyle(fontSize: 20),
+              ),
+              Divider(),
+            ],
+          );
         });
   }
 
