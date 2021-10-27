@@ -37,6 +37,36 @@ class _AdminInputTindakanState extends State<AdminInputTindakan> {
     super.initState();
   }
 
+  Future<String> fetchDataAdminInputTindakan() async {
+    final response =
+        await http.post(Uri.parse(APIurl + "admin_input_tindakan.php"), body: {
+      'nama': '300',
+      'harga': '300',
+    });
+    if (response.statusCode == 200) {
+      print("respon input tindakan: ${response.body}");
+      return response.body;
+    } else {
+      throw Exception('Failed to read API');
+    }
+  }
+
+  // ignore: non_constant_identifier_names
+  List<AdminVListTindakan> AVTs = [];
+  // ignore: non_constant_identifier_names
+  AdminBacaDataInputTindakan() {
+    Future<String> data = fetchDataAdminInputTindakan();
+    data.then((value) {
+      //Mengubah json menjadi Array
+      // ignore: unused_local_variable
+      Map json = jsonDecode(value);
+      if (json['result'].toString() == 'success') {
+        AdminBacaDataListTindakan();
+      }
+      setState(() {});
+    });
+  }
+
   Future<String> fetchDataAdminListTindakan() async {
     final response =
         await http.post(Uri.parse(APIurl + "dokter_v_list_tindakan.php"));
@@ -47,8 +77,6 @@ class _AdminInputTindakanState extends State<AdminInputTindakan> {
     }
   }
 
-  // ignore: non_constant_identifier_names
-  List<AdminVListTindakan> AVTs = [];
   // ignore: non_constant_identifier_names
   AdminBacaDataListTindakan() {
     AVTs.clear();
@@ -151,6 +179,11 @@ class _AdminInputTindakanState extends State<AdminInputTindakan> {
                         ),
                         TextButton(
                           onPressed: () {
+                            fetchDataAdminInputTindakan().then((value) {
+                              Navigator.pop(context, 'ok');
+                              setState(() {});
+                            });
+
                             // bacaDataKeluhan(context);
                           },
                           child: Text('OK'),
@@ -186,6 +219,56 @@ class _AdminInputTindakanState extends State<AdminInputTindakan> {
         });
   }
 
+  Widget widgetTabView() {
+    return DefaultTabController(
+      length: 2,
+      child: Column(
+        children: [
+          Container(
+            constraints: BoxConstraints(maxHeight: 150.0),
+            child: Material(
+              color: Colors.blue,
+              child: TabBar(
+                unselectedLabelColor: Colors.lightBlue[200],
+                labelColor: Colors.white,
+                unselectedLabelStyle: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 10,
+                ),
+                labelStyle: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+                indicatorColor: Colors.red,
+                tabs: [
+                  Tab(
+                    icon: Icon(
+                      Icons.medical_services,
+                    ),
+                    text: 'daftar tindakan',
+                    iconMargin: EdgeInsets.only(bottom: 10.0),
+                  ),
+                  Tab(
+                    icon: Icon(Icons.add_circle),
+                    text: 'tambah',
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            child: TabBarView(
+              children: [
+                widgetListTindakan(),
+                widgetInputTindakan(),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -201,53 +284,7 @@ class _AdminInputTindakanState extends State<AdminInputTindakan> {
             },
           ),
         ),
-        body: DefaultTabController(
-          length: 2,
-          child: Column(
-            children: [
-              Container(
-                constraints: BoxConstraints(maxHeight: 150.0),
-                child: Material(
-                  color: Colors.blue,
-                  child: TabBar(
-                    unselectedLabelColor: Colors.lightBlue[200],
-                    labelColor: Colors.white,
-                    unselectedLabelStyle: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 10,
-                    ),
-                    labelStyle: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                    indicatorColor: Colors.red,
-                    tabs: [
-                      Tab(
-                        icon: Icon(
-                          Icons.medical_services,
-                        ),
-                        text: 'daftar tindakan',
-                        iconMargin: EdgeInsets.only(bottom: 10.0),
-                      ),
-                      Tab(
-                        icon: Icon(Icons.add_circle),
-                        text: 'tambah',
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Expanded(
-                child: TabBarView(
-                  children: [
-                    widgetListTindakan(),
-                    widgetInputTindakan(),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
+        body: widgetTabView(),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
             AdminBacaDataListTindakan();
