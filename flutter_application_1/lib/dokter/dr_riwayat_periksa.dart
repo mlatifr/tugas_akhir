@@ -207,14 +207,26 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
     }
   }
 
-  //
-  // Map<String, bool> valuesRight = {
-  //   'Auto Refraksi': true,
-  //   'Trial Lens': false,
-  //   'Slit Lamp': false,
-  //   'TOnometri Schiot': false,
-  //   'Fundoscopy': false,
-  // };
+    var listNamaCheckbox = [];
+  mapingValues() {
+    for (var i = 0; i < DVLTs.length; i++) {
+      // print(DVLTs[i].namaTindakan);
+      var productMap = {DVLTs[i].namaTindakan: false};
+      listNamaCheckbox.add(productMap);
+    }
+    for (var item in listNamaCheckbox) {
+      print(item);
+    }
+  }
+  
+  Map<String, bool> valuesRight = {
+    'Auto Refraksi': true,
+    'Trial Lens': false,
+    'Slit Lamp': false,
+    'TOnometri Schiot': false,
+    'Fundoscopy': false,
+  };
+
   Map<String, bool> valuesLeft = {
     'Auto Refraksi': true,
     'Trial Lens': false,
@@ -263,8 +275,7 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                 ElevatedButton(
                   onPressed: () {
                     // DokterBacaDataVListTindakan().then(refreshListTdkn());
-                    _valueButton = !_valueButton;
-                    print('button value: $_valueButton');
+                    mapingValues();
                   },
                   child: Text('button'),
                 ),
