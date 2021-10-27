@@ -61,6 +61,7 @@ class _AdminInputTindakanState extends State<AdminInputTindakan> {
       // ignore: unused_local_variable
       Map json = jsonDecode(value);
       if (json['result'].toString() == 'success') {
+        print('input succes');
         AdminBacaDataListTindakan();
       }
       setState(() {});
@@ -179,12 +180,8 @@ class _AdminInputTindakanState extends State<AdminInputTindakan> {
                         ),
                         TextButton(
                           onPressed: () {
-                            fetchDataAdminInputTindakan().then((value) {
-                              Navigator.pop(context, 'ok');
-                              setState(() {});
-                            });
-
-                            // bacaDataKeluhan(context);
+                            AdminBacaDataInputTindakan();
+                            Navigator.pop(context, 'ok');
                           },
                           child: Text('OK'),
                         ),
@@ -229,6 +226,7 @@ class _AdminInputTindakanState extends State<AdminInputTindakan> {
             child: Material(
               color: Colors.blue,
               child: TabBar(
+                // onTap: AdminBacaDataListTindakan(),
                 unselectedLabelColor: Colors.lightBlue[200],
                 labelColor: Colors.white,
                 unselectedLabelStyle: TextStyle(
