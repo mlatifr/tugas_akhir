@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application_1/main.dart';
+import 'package:http/http.dart' as http;
 
 class AdminInputTindakan extends StatefulWidget {
   const AdminInputTindakan({Key key}) : super(key: key);
@@ -8,7 +12,59 @@ class AdminInputTindakan extends StatefulWidget {
   _AdminInputTindakanState createState() => _AdminInputTindakanState();
 }
 
+class AdminVListTindakan {
+  var idTindakan, namaTindakan, hargaTindakan;
+  AdminVListTindakan({
+    this.idTindakan,
+    this.namaTindakan,
+    this.hargaTindakan,
+  });
+
+  // untuk convert dari jSon
+  factory AdminVListTindakan.fromJson(Map<String, dynamic> json) {
+    return new AdminVListTindakan(
+      idTindakan: json['id'],
+      namaTindakan: json['nama'],
+      hargaTindakan: json['harga'],
+    );
+  }
+}
+
 class _AdminInputTindakanState extends State<AdminInputTindakan> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<String> fetchDataAdminListTindakan() async {
+    final response =
+        await http.post(Uri.parse(APIurl + "dokter_v_list_tindakan.php"));
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('Failed to read API');
+    }
+  }
+
+  // ignore: non_constant_identifier_names
+  List<AdminVListTindakan> AVTs = [];
+  // ignore: non_constant_identifier_names
+  AdminBacaDataListTindakan() {
+    AVTs.clear();
+    Future<String> data = fetchDataAdminListTindakan();
+    data.then((value) {
+      //Mengubah json menjadi Array
+      // ignore: unused_local_variable
+      Map json = jsonDecode(value);
+      for (var i in json['data']) {
+        print(i);
+        AdminVListTindakan dva = AdminVListTindakan.fromJson(i);
+        AVTs.add(dva);
+      }
+      setState(() {});
+    });
+  }
+
   Widget widgetInputTindakan() {
     return ListView(
       children: [
@@ -127,63 +183,75 @@ class _AdminInputTindakanState extends State<AdminInputTindakan> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: Text('Input Tindakan'),
-            leading: new IconButton(
-              icon: new Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text('Input Tindakan'),
+          leading: new IconButton(
+            icon: new Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
-          body: DefaultTabController(
-            length: 2,
-            child: Column(
-              children: [
-                Container(
-                  constraints: BoxConstraints(maxHeight: 150.0),
-                  child: Material(
-                    color: Colors.blue,
-                    child: TabBar(
-                      unselectedLabelColor: Colors.lightBlue[200],
-                      labelColor: Colors.white,
-                      unselectedLabelStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 10,
-                      ),
-                      labelStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                      indicatorColor: Colors.red,
-                      tabs: [
-                        Tab(
-                          icon: Icon(
-                            Icons.medical_services,
-                          ),
-                          text: 'daftar tindakan',
-                          iconMargin: EdgeInsets.only(bottom: 10.0),
-                        ),
-                        Tab(
-                          icon: Icon(Icons.add_circle),
-                          text: 'tambah',
-                        ),
-                      ],
+        ),
+        body: DefaultTabController(
+          length: 2,
+          child: Column(
+            children: [
+              Container(
+                constraints: BoxConstraints(maxHeight: 150.0),
+                child: Material(
+                  color: Colors.blue,
+                  child: TabBar(
+                    unselectedLabelColor: Colors.lightBlue[200],
+                    labelColor: Colors.white,
+                    unselectedLabelStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 10,
                     ),
-                  ),
-                ),
-                Expanded(
-                  child: TabBarView(
-                    children: [
-                      widgetListTindakan(),
-                      widgetInputTindakan(),
+                    labelStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                    indicatorColor: Colors.red,
+                    tabs: [
+                      Tab(
+                        icon: Icon(
+                          Icons.medical_services,
+                        ),
+                        text: 'daftar tindakan',
+                        iconMargin: EdgeInsets.only(bottom: 10.0),
+                      ),
+                      Tab(
+                        icon: Icon(Icons.add_circle),
+                        text: 'tambah',
+                      ),
                     ],
                   ),
                 ),
-              ],
-            ),
-          )),
+              ),
+              Expanded(
+                child: TabBarView(
+                  children: [
+                    widgetListTindakan(),
+                    widgetInputTindakan(),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            AdminBacaDataListTindakan();
+          },
+          icon: Icon(Icons.refresh),
+          label: Text(
+            "refresh",
+            style: TextStyle(fontSize: 10),
+          ),
+          backgroundColor: Colors.blue.withOpacity(0.65),
+        ),
+      ),
     );
   }
 }
