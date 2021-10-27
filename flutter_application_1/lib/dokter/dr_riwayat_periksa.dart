@@ -199,6 +199,14 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
     );
   }
 
+  var refreshListTindakan = false;
+  refreshListTdkn() {
+    if (refreshListTindakan == true) {
+      refreshListTindakan = true;
+      print(refreshListTindakan);
+    }
+  }
+
   Map<String, bool> valuesRight = {
     'Auto Refraksi': true,
     'Trial Lens': false,
@@ -230,12 +238,28 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
         ),
         body: ListView(
           children: <Widget>[
+            Container(
+                color: Colors.yellow[50],
+                child: ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: DVLTs.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          Text(
+                            '${index + 1} ${DVLTs[index].namaTindakan}',
+                            style: TextStyle(fontSize: 20),
+                          ),
+                          Divider(),
+                        ],
+                      );
+                    })),
             Column(
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    DokterBacaDataVListTindakan();
-                    print(DVLTs.length);
+                    // DokterBacaDataVListTindakan().then(refreshListTdkn());
                   },
                   child: Text('button'),
                 ),
@@ -330,25 +354,6 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                                         onChanged: (bool value) {
                                           setState(() {
                                             valuesRight[key] = value;
-                                          });
-                                        },
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.42,
-                                child: Container(
-                                  color: Colors.yellow[50],
-                                  child: Column(
-                                    children: valuesLeft.keys.map((String key) {
-                                      return new CheckboxListTile(
-                                        title: new Text(key),
-                                        value: valuesLeft[key],
-                                        onChanged: (bool value) {
-                                          setState(() {
-                                            valuesLeft[key] = value;
                                           });
                                         },
                                       );

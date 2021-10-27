@@ -8,19 +8,19 @@ import 'package:http/http.dart' as http;
 List<DokterVListTIndakan> DVLTs = [];
 
 class DokterVListTIndakan {
-  var visitId, idTindakan, namaTIndakan, hargaTIndakan;
+  var visitId, idTindakan, namaTindakan, hargaTindakan;
   DokterVListTIndakan({
     this.idTindakan,
-    this.namaTIndakan,
-    this.hargaTIndakan,
+    this.namaTindakan,
+    this.hargaTindakan,
   });
 
   // untuk convert dari jSon
   factory DokterVListTIndakan.fromJson(Map<String, dynamic> json) {
     return new DokterVListTIndakan(
-      idTindakan: json['idTindakan'],
-      namaTIndakan: json['namaTIndakan'],
-      hargaTIndakan: json['hargaTIndakan'],
+      idTindakan: json['id'],
+      namaTindakan: json['nama'],
+      hargaTindakan: json['harga'],
     );
   }
 }
@@ -38,13 +38,14 @@ Future<String> fetchDataDokterVListTindakan() async {
 
 // ignore: non_constant_identifier_names
 DokterBacaDataVListTindakan() {
+  DVLTs.clear();
   Future<String> data = fetchDataDokterVListTindakan();
   data.then((value) {
     //Mengubah json menjadi Array
     // ignore: unused_local_variable
     Map json = jsonDecode(value);
     for (var i in json['data']) {
-      print(i);
+      print('DokterBacaDataVListTindakan: ${i}');
       DokterVListTIndakan dvlt = DokterVListTIndakan.fromJson(i);
       DVLTs.add(dvlt);
     }
