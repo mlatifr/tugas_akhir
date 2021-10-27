@@ -40,8 +40,8 @@ class _AdminInputTindakanState extends State<AdminInputTindakan> {
   Future<String> fetchDataAdminInputTindakan() async {
     final response =
         await http.post(Uri.parse(APIurl + "admin_input_tindakan.php"), body: {
-      'nama': '300',
-      'harga': '300',
+      'nama': _namaTindakanController.text,
+      'harga': _hargaTindakanController.text,
     });
     if (response.statusCode == 200) {
       print("respon input tindakan: ${response.body}");
@@ -95,11 +95,14 @@ class _AdminInputTindakanState extends State<AdminInputTindakan> {
     });
   }
 
+  var _namaTindakanController = TextEditingController();
+  var _hargaTindakanController = TextEditingController();
   Widget widgetInputTindakan() {
     return ListView(
       children: [
         SizedBox(height: MediaQuery.of(context).size.height * 0.27),
         TextFormField(
+            controller: _namaTindakanController,
             maxLines: 1,
             // controller: keluhan,
             decoration: InputDecoration(
@@ -120,6 +123,7 @@ class _AdminInputTindakanState extends State<AdminInputTindakan> {
             )),
         SizedBox(height: MediaQuery.of(context).size.height * 0.02),
         TextFormField(
+            controller: _hargaTindakanController,
             maxLines: 1,
             // controller: keluhan,
             keyboardType: TextInputType.number,
@@ -161,8 +165,12 @@ class _AdminInputTindakanState extends State<AdminInputTindakan> {
                       ),
                       content: TextFormField(
                           enabled: false,
-                          maxLines: 5,
-                          // controller: keluhan,
+                          maxLines: 3,
+                          // controller: _namaTindakanController,
+                          initialValue:
+                              _namaTindakanController.text.toString() +
+                                  '\nharga: \n' +
+                                  _hargaTindakanController.text.toString(),
                           style: TextStyle(fontSize: 12),
                           decoration: InputDecoration(
                             fillColor: Colors.white,
@@ -175,12 +183,18 @@ class _AdminInputTindakanState extends State<AdminInputTindakan> {
                           )),
                       actions: <Widget>[
                         TextButton(
-                          onPressed: () => Navigator.pop(context, 'Cancel'),
+                          onPressed: () {
+                            _namaTindakanController.clear();
+                            _hargaTindakanController.clear();
+                            Navigator.pop(context, 'Cancel');
+                          },
                           child: Text('Batal'),
                         ),
                         TextButton(
                           onPressed: () {
                             AdminBacaDataInputTindakan();
+                            _namaTindakanController.clear();
+                            _hargaTindakanController.clear();
                             Navigator.pop(context, 'ok');
                           },
                           child: Text('OK'),
