@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/dokter/dr_get_list_tindakan.dart';
 
 import 'dr_antrean_pasien.dart';
 
@@ -231,6 +232,13 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
           children: <Widget>[
             Column(
               children: [
+                ElevatedButton(
+                  onPressed: () {
+                    DokterBacaDataVListTindakan();
+                    print(DVLTs.length);
+                  },
+                  child: Text('button'),
+                ),
                 Text('Profil'),
                 Text('Rekam Medis'),
                 Text('Nama'),
@@ -304,20 +312,6 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                                 ),
                               )),
                         ),
-                        // ListView(
-                        //   shrinkWrap: true,
-                        //   children: values.keys.map((String key) {
-                        //     return new CheckboxListTile(
-                        //       title: new Text(key),
-                        //       value: values[key],
-                        //       onChanged: (bool value) {
-                        //         setState(() {
-                        //           values[key] = value;
-                        //         });
-                        //       },
-                        //     );
-                        //   }).toList(),
-                        // ),
                         Padding(
                           padding: const EdgeInsets.all(0.05),
                           child: Row(
