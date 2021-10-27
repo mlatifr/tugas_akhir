@@ -5,6 +5,8 @@ import '../main.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import 'admin_input_tindakan.dart';
+
 var controllerdate = TextEditingController();
 var controllerAntreanSekarang = TextEditingController();
 var controllerBatasAntrean = TextEditingController();
@@ -59,8 +61,12 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
   // ignore: unused_field
   Timer _timerForInter; // <- Put this line on top of _MyAppState class
   void functionTimerRefresh() {
+    print('timer start');
+    var i = 0;
     _timerForInter = Timer.periodic(Duration(seconds: 15), (result) {
+      i += i;
       setState(() {
+        print('timer admin antrean: ' + i.toString());
         AdminBacaDataAntrean();
       });
     });
@@ -136,6 +142,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
   }
 
 // tahap 2 API 1
+  // ignore: non_constant_identifier_names
   AdminBacaDataAntrean() {
     AVAs.clear();
     Future<String> data = fetchDataAntrean();
@@ -172,6 +179,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
   }
 
   // tahap 2 API 1
+  // ignore: non_constant_identifier_names
   AdminBacaDataAntreanSekarang() {
     AVAs.clear();
     Future<String> data = fetchDataAntreanSekarang();
@@ -191,6 +199,7 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
     });
   }
 
+  // ignore: non_constant_identifier_names
   AdminKlikBacaDataAntrean() {
     AVAs.clear();
     setState(() {
@@ -224,6 +233,14 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
     }
   }
 
+  onGoBack(dynamic value) {
+    functionTimerRefresh();
+    print('timer start');
+    setState(() {
+      AVAs = [];
+    });
+  }
+
 //
   Widget widgetDrawer() {
     return Drawer(
@@ -240,11 +257,15 @@ class _AdminAntreanPasienState extends State<AdminAntreanPasien> {
                 ),
           ),
           ListTile(
-            title: Text('Refresh'),
+            title: Text('Input Tindakan'),
             onTap: () {
-              setState(() {
-                AdminBacaDataAntrean();
-              });
+              _timerForInter.cancel();
+              print('timer cancel');
+              Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AdminInputTindakan()))
+                  .then((onGoBack));
             },
           ),
           ListTile(

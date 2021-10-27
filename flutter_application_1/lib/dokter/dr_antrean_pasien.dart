@@ -127,6 +127,7 @@ class _DrAntreanPasienState extends State<DrAntreanPasien> {
           ListTile(
             title: Text('Logout'),
             onTap: () {
+              _timerForInter.cancel();
               doLogout();
             },
           ),
