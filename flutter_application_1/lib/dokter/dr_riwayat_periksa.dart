@@ -239,7 +239,9 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
     'Fundoscopy': false,
   };
   var listValueCheck = [false, true];
-  var _valueButton = true;
+  // var _valueButton = true;
+  var listTindakanMataKiri = [];
+  var tindakanMataKiri = {};
   Widget widgetListTindakan() {
     return Container(
         color: Colors.yellow[50],
@@ -257,8 +259,12 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                 onChanged: (bool value) {
                   setState(() {
                     listValueCheck[index] = value;
+                    if (value == true) {
+                      listTindakanMataKiri.clear();
+                      listTindakanMataKiri.add(DVLTs[index].namaTindakan);
+                      print(listTindakanMataKiri);
+                    }
                   });
-                  print('value: $_valueButton');
                 },
               );
             }));
@@ -361,27 +367,27 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                                 ),
                               )),
                         ),
-                        Container(
-                            color: Colors.yellow[50],
-                            child: ListView.builder(
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: DVLTs.length,
-                                itemBuilder: (context, index) {
-                                  return CheckboxListTile(
-                                    title: Text(
-                                      '${index + 1} ${DVLTs[index].namaTindakan}',
-                                      style: TextStyle(fontSize: 20),
-                                    ),
-                                    value: _valueButton,
-                                    onChanged: (bool value) {
-                                      setState(() {
-                                        _valueButton = value;
-                                      });
-                                      print('value: $_valueButton');
-                                    },
-                                  );
-                                })),
+                        // Container(
+                        //     color: Colors.yellow[50],
+                        //     child: ListView.builder(
+                        //         physics: NeverScrollableScrollPhysics(),
+                        //         shrinkWrap: true,
+                        //         itemCount: DVLTs.length,
+                        //         itemBuilder: (context, index) {
+                        //           return CheckboxListTile(
+                        //             title: Text(
+                        //               '${index + 1} ${DVLTs[index].namaTindakan}',
+                        //               style: TextStyle(fontSize: 20),
+                        //             ),
+                        //             value: _valueButton,
+                        //             onChanged: (bool value) {
+                        //               setState(() {
+                        //                 _valueButton = value;
+                        //               });
+                        //               print('value: $_valueButton');
+                        //             },
+                        //           );
+                        //         })),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
