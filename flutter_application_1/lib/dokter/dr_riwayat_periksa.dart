@@ -28,9 +28,10 @@ List<Item> generateItems(int numberOfItems) {
 }
 
 class DrRiwayatPeriksaPasien extends StatefulWidget {
-  final namaPasien, visitId;
+  final namaPasien, visitId, keluhan;
 
-  const DrRiwayatPeriksaPasien({Key key, this.namaPasien, this.visitId})
+  const DrRiwayatPeriksaPasien(
+      {Key key, this.namaPasien, this.visitId, this.keluhan})
       : super(key: key);
 
   @override
@@ -62,6 +63,7 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
     });
   }
 
+  var _controllerKeluhan = TextEditingController();
   final List<Item> _data = generateItems(8);
   Widget _buildPanel() {
     return ExpansionPanelList(
@@ -84,8 +86,8 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
               child: Column(
                 children: [
                   TextFormField(
-                      enabled: false,
-                      initialValue: 'tidak  ada',
+                      enabled: true,
+                      controller: _controllerKeluhan,
                       decoration: InputDecoration(
                         labelText: "keluhan",
                         fillColor: Colors.white,
@@ -228,44 +230,12 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
 
   @override
   void initState() {
+    _controllerKeluhan.text = widget.keluhan;
     DokterBacaDataVListTindakan();
     super.initState();
   }
 
-  Map<String, bool> valuesLeft = {
-    'Auto Refraksi': true,
-    'Trial Lens': false,
-    'Slit Lamp': false,
-    'TOnometri Schiot': false,
-    'Fundoscopy': false,
-  };
   var listValueCheck = [false, true];
-  List<dynamic> listTindakanIdMataKiri = [];
-  Map<dynamic, dynamic> arrTindakanIdMataKiri = {};
-  persiapanKirimData() {
-    //untuk kirim nested sub-key ke postman
-    listTindakanIdMataKiri.clear();
-    arrTindakanIdMataKiri.clear();
-    for (var i = 0; i < listValueCheck.length; i++) {
-      if (listValueCheck[i] == true) {
-        listTindakanIdMataKiri.add(DVLTs[i].idTindakan);
-      }
-    }
-    for (var i = 0; i < listTindakanIdMataKiri.length; i++) {
-      arrTindakanIdMataKiri = {
-        'tindakan_array': {
-          "tindakan_$i": {"visit_id": "1", "tindakan_id": i, "mt_sisi": "kiri"}
-        }
-      };
-      //nanti setiap klik checkbox, maka send post untuk input tindakan.
-      // tetapi haru dimunculkan showdialog dulu untuk konfirmasi
-      //hal tersebut untuk menghindari salah pencet oleh user
-      //rencananya:
-      // checkBox => kalau sudah di centang, tidak bisa di uncentang
-    }
-    fetchDataDokterInputTindakan(1, 1, 'kiri');
-  }
-
   Widget widgetListTindakanKiri() {
     print(DVLTs[0].namaTindakan);
     if (DVLTs != null) {
@@ -329,165 +299,184 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text('Riwayat Periksa: ${widget.namaPasien}'),
-          leading: new IconButton(
-            icon: new Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context);
-            },
+    if (DVLTs.length > 0) {
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: Text('Riwayat Periksa: ${widget.namaPasien}'),
+            leading: new IconButton(
+              icon: new Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
           ),
-        ),
-        body: ListView(
-          children: <Widget>[
-            Column(
-              children: [
-                Text('Profil'),
-                Text('Rekam Medis'),
-                Text('Nama'),
-                Text('Usia'),
-                Padding(
-                  padding: const EdgeInsets.all(25.0),
-                  child: Container(
-                    color: Colors.green[50],
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextFormField(
-                              initialValue: 'tidak ada',
-                              decoration: InputDecoration(
-                                labelText: "keluhan",
-                                fillColor: Colors.white,
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide(
-                                    color: Colors.blue,
+          body: ListView(
+            children: <Widget>[
+              Column(
+                children: [
+                  Text('Profil'),
+                  Text('Rekam Medis'),
+                  Text('Nama'),
+                  Text('Usia'),
+                  Padding(
+                    padding: const EdgeInsets.all(25.0),
+                    child: Container(
+                      color: Colors.green[50],
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                                initialValue: 'tidak ada',
+                                decoration: InputDecoration(
+                                  labelText: "keluhan",
+                                  fillColor: Colors.white,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderSide: BorderSide(
+                                      color: Colors.blue,
+                                    ),
                                   ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide(
-                                    color: Colors.blue,
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderSide: BorderSide(
+                                      color: Colors.blue,
+                                    ),
                                   ),
-                                ),
-                              )),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextFormField(
-                              initialValue: 'tidak ada',
-                              decoration: InputDecoration(
-                                labelText: "anamnesis",
-                                fillColor: Colors.white,
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide(
-                                    color: Colors.blue,
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide(
-                                    color: Colors.blue,
-                                  ),
-                                ),
-                              )),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: widgetListTindakanKiri(),
-                              ),
-                              Expanded(
-                                child: widgetListTindakanKanan(),
-                              )
-                            ],
+                                )),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextFormField(
-                              initialValue: 'Cari',
-                              decoration: InputDecoration(
-                                labelText: "Resep",
-                                fillColor: Colors.white,
-                                prefixIcon: Padding(
-                                  padding: EdgeInsets.only(top: 15),
-                                  child: Icon(Icons.search),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide(
-                                    color: Colors.blue,
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                                initialValue: 'tidak ada',
+                                decoration: InputDecoration(
+                                  labelText: "anamnesis",
+                                  fillColor: Colors.white,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderSide: BorderSide(
+                                      color: Colors.blue,
+                                    ),
                                   ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide(
-                                    color: Colors.blue,
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderSide: BorderSide(
+                                      color: Colors.blue,
+                                    ),
                                   ),
-                                ),
-                              )),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextButton(
-                            onPressed: () {},
-                            child: Text('tambah'),
-                            style: TextButton.styleFrom(
-                                primary: Colors.white,
-                                backgroundColor: Colors.blue,
-                                minimumSize: Size(
-                                    MediaQuery.of(context).size.width,
-                                    MediaQuery.of(context).size.height * 0.01)),
+                                )),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Table(
-                              border: TableBorder
-                                  .all(), // Allows to add a border decoration around your table
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
                               children: [
-                                TableRow(children: [
-                                  Text('Obat'),
-                                  Text('Btl/Strip'),
-                                  Text('Dosis'),
-                                  Text('Atrn Pakai'),
-                                ]),
-                                TableRow(children: [
-                                  Text(
-                                    'Insto',
+                                Expanded(
+                                  child: widgetListTindakanKiri(),
+                                ),
+                                Expanded(
+                                  child: widgetListTindakanKanan(),
+                                )
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                                initialValue: 'Cari',
+                                decoration: InputDecoration(
+                                  labelText: "Resep",
+                                  fillColor: Colors.white,
+                                  prefixIcon: Padding(
+                                    padding: EdgeInsets.only(top: 15),
+                                    child: Icon(Icons.search),
                                   ),
-                                  Text('3'),
-                                  Text('3x1'),
-                                  Text('Setelah maem'),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderSide: BorderSide(
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderSide: BorderSide(
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                )),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextButton(
+                              onPressed: () {},
+                              child: Text('tambah'),
+                              style: TextButton.styleFrom(
+                                  primary: Colors.white,
+                                  backgroundColor: Colors.blue,
+                                  minimumSize: Size(
+                                      MediaQuery.of(context).size.width,
+                                      MediaQuery.of(context).size.height *
+                                          0.01)),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Table(
+                                border: TableBorder
+                                    .all(), // Allows to add a border decoration around your table
+                                children: [
+                                  TableRow(children: [
+                                    Text('Obat'),
+                                    Text('Btl/Strip'),
+                                    Text('Dosis'),
+                                    Text('Atrn Pakai'),
+                                  ]),
+                                  TableRow(children: [
+                                    Text(
+                                      'Insto',
+                                    ),
+                                    Text('3'),
+                                    Text('3x1'),
+                                    Text('Setelah maem'),
+                                  ]),
+                                  TableRow(children: [
+                                    Text('Catarlent'),
+                                    Text('3'),
+                                    Text('3x1'),
+                                    Text('Setelah maem'),
+                                  ]),
                                 ]),
-                                TableRow(children: [
-                                  Text('Catarlent'),
-                                  Text('3'),
-                                  Text('3x1'),
-                                  Text('Setelah maem'),
-                                ]),
-                              ]),
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                _buildPanel(),
-              ],
-            ),
-          ],
+                  _buildPanel(),
+                ],
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: Text('Riwayat Periksa: ${widget.namaPasien}'),
+            leading: new IconButton(
+              icon: new Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ),
+          body: Center(child: CircularProgressIndicator()),
+        ),
+      );
+    }
   }
 }
