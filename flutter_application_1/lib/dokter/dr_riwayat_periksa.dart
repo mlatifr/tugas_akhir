@@ -52,6 +52,11 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
       }
       setState(() {
         widgetListTindakan();
+        listValueCheck.clear();
+        for (var i = 0; i < DVLTs.length; i++) {
+          listValueCheck.add(false);
+          print('lValueCHeckLength ${listValueCheck.length}');
+        }
       });
     });
   }
