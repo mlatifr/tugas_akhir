@@ -180,6 +180,7 @@ class _DrAntreanPasienState extends State<DrAntreanPasien> {
                             MaterialPageRoute(
                                 builder: (context) => DrRiwayatPeriksaPasien(
                                       namaPasien: '${DVAs[index].userName}',
+                                      visitId: '${DVAs[index].visitId}',
                                     ))).then((onGoBack));
                       },
                       leading: CircleAvatar(

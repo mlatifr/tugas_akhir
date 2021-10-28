@@ -28,9 +28,10 @@ List<Item> generateItems(int numberOfItems) {
 }
 
 class DrRiwayatPeriksaPasien extends StatefulWidget {
-  final namaPasien;
+  final namaPasien, visitId;
 
-  const DrRiwayatPeriksaPasien({Key key, this.namaPasien}) : super(key: key);
+  const DrRiwayatPeriksaPasien({Key key, this.namaPasien, this.visitId})
+      : super(key: key);
 
   @override
   _DrRiwayatPeriksaPasienState createState() => _DrRiwayatPeriksaPasienState();
@@ -51,7 +52,7 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
         DVLTs.add(dvlt);
       }
       setState(() {
-        widgetListTindakan();
+        widgetListTindakanKiri();
         listValueCheck.clear();
         for (var i = 0; i < DVLTs.length; i++) {
           listValueCheck.add(false);
@@ -265,7 +266,38 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
     fetchDataDokterInputTindakan(1, 1, 'kiri');
   }
 
-  Widget widgetListTindakan() {
+  Widget widgetListTindakanKiri() {
+    print(DVLTs[0].namaTindakan);
+    if (DVLTs != null) {
+      return ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: DVLTs.length,
+          itemBuilder: (context, index) {
+            return CheckboxListTile(
+              title: Text(
+                '${index + 1} ${DVLTs[index].namaTindakan}',
+                style: TextStyle(fontSize: 16),
+              ),
+              value: listValueCheck[index],
+              onChanged: (bool value) {
+                setState(() {
+                  listValueCheck[index] = value;
+                  if (value == true) {
+                    fetchDataDokterInputTindakan(
+                        widget.visitId, DVLTs[index].idTindakan, 'kiri');
+                  } else {
+                    fetchDataDokterInputTindakanBatal(
+                        widget.visitId, DVLTs[index].idTindakan, 'kiri');
+                  }
+                });
+              },
+            );
+          });
+    }
+  }
+
+  Widget widgetListTindakanKanan() {
     return Container(
         color: Colors.yellow[50],
         child: ListView.builder(
@@ -276,7 +308,7 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
               return CheckboxListTile(
                 title: Text(
                   '${index + 1} ${DVLTs[index].namaTindakan}',
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 16),
                 ),
                 value: listValueCheck[index],
                 onChanged: (bool value) {
@@ -284,10 +316,10 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                     listValueCheck[index] = value;
                     if (value == true) {
                       fetchDataDokterInputTindakan(
-                          1, DVLTs[index].idTindakan, 'kiri');
+                          widget.visitId, DVLTs[index].idTindakan, 'kanan');
                     } else {
                       fetchDataDokterInputTindakanBatal(
-                          1, DVLTs[index].idTindakan, 'kiri');
+                          widget.visitId, DVLTs[index].idTindakan, 'kanan');
                     }
                   });
                 },
@@ -312,13 +344,6 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
         ),
         body: ListView(
           children: <Widget>[
-            widgetListTindakan(),
-            ElevatedButton(
-              onPressed: () {
-                persiapanKirimData();
-              },
-              child: Text('button'),
-            ),
             Column(
               children: [
                 Text('Profil'),
@@ -352,27 +377,7 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                                 ),
                               )),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextFormField(
-                              initialValue: 'tidak ada',
-                              decoration: InputDecoration(
-                                labelText: "Riwayat Alergi",
-                                fillColor: Colors.white,
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide(
-                                    color: Colors.blue,
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide(
-                                    color: Colors.blue,
-                                  ),
-                                ),
-                              )),
-                        ),
+
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
@@ -394,27 +399,19 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                                 ),
                               )),
                         ),
-                        // Container(
-                        //     color: Colors.yellow[50],
-                        //     child: ListView.builder(
-                        //         physics: NeverScrollableScrollPhysics(),
-                        //         shrinkWrap: true,
-                        //         itemCount: DVLTs.length,
-                        //         itemBuilder: (context, index) {
-                        //           return CheckboxListTile(
-                        //             title: Text(
-                        //               '${index + 1} ${DVLTs[index].namaTindakan}',
-                        //               style: TextStyle(fontSize: 20),
-                        //             ),
-                        //             value: _valueButton,
-                        //             onChanged: (bool value) {
-                        //               setState(() {
-                        //                 _valueButton = value;
-                        //               });
-                        //               print('value: $_valueButton');
-                        //             },
-                        //           );
-                        //         })),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: widgetListTindakanKiri(),
+                              ),
+                              Expanded(
+                                child: widgetListTindakanKanan(),
+                              )
+                            ],
+                          ),
+                        ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
