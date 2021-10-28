@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/dokter/dr_get_list_tindakan.dart';
 
@@ -35,6 +37,25 @@ class DrRiwayatPeriksaPasien extends StatefulWidget {
 }
 
 class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
+  // ignore: non_constant_identifier_names
+  DokterBacaDataVListTindakan() {
+    DVLTs.clear();
+    Future<String> data = fetchDataDokterVListTindakan();
+    data.then((value) {
+      //Mengubah json menjadi Array
+      // ignore: unused_local_variable
+      Map json = jsonDecode(value);
+      for (var i in json['data']) {
+        print('DokterBacaDataVListTindakan: ${i}');
+        DokterVListTindakan dvlt = DokterVListTindakan.fromJson(i);
+        DVLTs.add(dvlt);
+      }
+      setState(() {
+        widgetListTindakan();
+      });
+    });
+  }
+
   final List<Item> _data = generateItems(8);
   Widget _buildPanel() {
     return ExpansionPanelList(
@@ -199,50 +220,10 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
     );
   }
 
-  var refreshListTindakan = false;
-  refreshListTdkn() {
-    if (refreshListTindakan == true) {
-      refreshListTindakan = true;
-      print(refreshListTindakan);
-    }
-  }
-
   @override
   void initState() {
     DokterBacaDataVListTindakan();
-    // DokterBacaDataVListTindakan().then(mapingValues());
     super.initState();
-  }
-
-  var listNamaCheckbox;
-  var valuesRight;
-  var productMap;
-  var salahBenar = false;
-  var listPercobaan = ['p1', 'p2', 'p3'];
-  Map<String, dynamic> alfabet;
-  mapingValues() {
-    print('enter mapingValues');
-    for (var i = 0; i < listPercobaan.length; i++) {
-      print('enter for $i');
-      // print(DVLTs[i].namaTindakan);
-      productMap = {'${listPercobaan[i]}': salahBenar};
-      // listNamaCheckbox.add(productMap);
-      alfabet.addAll(productMap);
-      print('proses: $productMap');
-    }
-    // for (var item in listNamaCheckbox) {
-    //   print(item);
-    // }
-
-    // var arrayPercoban = {'tindakan1': false, 'tindakan2': true};
-    // for (var item in arrayPercoban) {
-    //   valuesRight = Map<String, dynamic>.fromIterable(arrayPercoban,
-    //       key: (item) => item.toString(), value: (item) => item.toString());
-    // }
-
-    print('values righ: ' + alfabet.toString());
-
-    setState(() {});
   }
 
   Map<String, bool> valuesLeft = {
@@ -252,9 +233,32 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
     'TOnometri Schiot': false,
     'Fundoscopy': false,
   };
-  var valueCheck = [false, true];
+  var listValueCheck = [false, true];
   var _valueButton = true;
-  bool isChecked = true;
+  Widget widgetListTindakan() {
+    return Container(
+        color: Colors.yellow[50],
+        child: ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: DVLTs.length,
+            itemBuilder: (context, index) {
+              return CheckboxListTile(
+                title: Text(
+                  '${index + 1} ${DVLTs[index].namaTindakan}',
+                  style: TextStyle(fontSize: 20),
+                ),
+                value: listValueCheck[index],
+                onChanged: (bool value) {
+                  setState(() {
+                    listValueCheck[index] = value;
+                  });
+                  print('value: $_valueButton');
+                },
+              );
+            }));
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -272,79 +276,11 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
         ),
         body: ListView(
           children: <Widget>[
-            // Padding(
-            //   padding: const EdgeInsets.all(0.05),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //     children: [
-            //       SizedBox(
-            //         width: MediaQuery.of(context).size.width * 0.42,
-            //         child: Container(
-            //           color: Colors.yellow,
-            //           child: Column(
-            //             children: valuesRight.keys.map((String key) {
-            //               return new CheckboxListTile(
-            //                 title: new Text(key),
-            //                 value: valuesRight[key],
-            //                 onChanged: (bool value) {
-            //                   setState(() {
-            //                     valuesRight[key] = value;
-            //                   });
-            //                 },
-            //               );
-            //             }).toList(),
-            //           ),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            Container(
-                color: Colors.yellow[50],
-                child: ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: DVLTs.length,
-                    itemBuilder: (context, index) {
-                      return CheckboxListTile(
-                        title: Text(
-                          '${index + 1} ${DVLTs[index].namaTindakan}',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        value: valueCheck[index],
-                        onChanged: (bool value) {
-                          setState(() {
-                            valueCheck[index] = value;
-                          });
-                          print('value: $_valueButton');
-                        },
-                      );
-                    })),
+            widgetListTindakan(),
             ElevatedButton(
-              onPressed: () {
-                // DokterBacaDataVListTindakan().then(refreshListTdkn());
-                // DokterBacaDataVListTindakan().then(mapingValues());
-                mapingValues();
-              },
+              onPressed: () {},
               child: Text('button'),
             ),
-            // Container(
-            //     color: Colors.yellow[50],
-            //     child: ListView.builder(
-            //         physics: NeverScrollableScrollPhysics(),
-            //         shrinkWrap: true,
-            //         itemCount: DVLTs.length,
-            //         itemBuilder: (context, index) {
-            //           return Column(
-            //             children: [
-            //               Text(
-            //                 '${index + 1} ${DVLTs[index].namaTindakan}',
-            //                 style: TextStyle(fontSize: 20),
-            //               ),
-            //               Divider(),
-            //             ],
-            //           );
-            //         })),
             Column(
               children: [
                 Text('Profil'),

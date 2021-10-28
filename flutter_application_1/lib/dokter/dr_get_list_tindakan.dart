@@ -36,18 +36,4 @@ Future<String> fetchDataDokterVListTindakan() async {
   }
 }
 
-// ignore: non_constant_identifier_names
-DokterBacaDataVListTindakan() {
-  DVLTs.clear();
-  Future<String> data = fetchDataDokterVListTindakan();
-  data.then((value) {
-    //Mengubah json menjadi Array
-    // ignore: unused_local_variable
-    Map json = jsonDecode(value);
-    for (var i in json['data']) {
-      print('DokterBacaDataVListTindakan: ${i}');
-      DokterVListTindakan dvlt = DokterVListTindakan.fromJson(i);
-      DVLTs.add(dvlt);
-    }
-  });
-}
+
