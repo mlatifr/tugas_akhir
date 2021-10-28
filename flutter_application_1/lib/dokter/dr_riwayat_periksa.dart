@@ -54,10 +54,13 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
       }
       setState(() {
         widgetListTindakanKiri();
-        listValueCheck.clear();
+        widgetListTindakanKanan();
+        listValueCheckKiri.clear();
+        listValueCheckKanan.clear();
         for (var i = 0; i < DVLTs.length; i++) {
-          listValueCheck.add(false);
-          print('lValueCHeckLength ${listValueCheck.length}');
+          listValueCheckKiri.add(false);
+          listValueCheckKanan.add(false);
+          print('lValueCHeckLength ${listValueCheckKiri.length}');
         }
       });
     });
@@ -235,7 +238,8 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
     super.initState();
   }
 
-  var listValueCheck = [false, true];
+  var listValueCheckKiri = [false, true];
+  var listValueCheckKanan = [false, true];
   Widget widgetListTindakanKiri() {
     print(DVLTs[0].namaTindakan);
     if (DVLTs != null) {
@@ -249,10 +253,10 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                 '${index + 1} ${DVLTs[index].namaTindakan}',
                 style: TextStyle(fontSize: 16),
               ),
-              value: listValueCheck[index],
+              value: listValueCheckKiri[index],
               onChanged: (bool value) {
                 setState(() {
-                  listValueCheck[index] = value;
+                  listValueCheckKiri[index] = value;
                   if (value == true) {
                     fetchDataDokterInputTindakan(
                         widget.visitId, DVLTs[index].idTindakan, 'kiri');
@@ -280,10 +284,10 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                   '${index + 1} ${DVLTs[index].namaTindakan}',
                   style: TextStyle(fontSize: 16),
                 ),
-                value: listValueCheck[index],
+                value: listValueCheckKanan[index],
                 onChanged: (bool value) {
                   setState(() {
-                    listValueCheck[index] = value;
+                    listValueCheckKanan[index] = value;
                     if (value == true) {
                       fetchDataDokterInputTindakan(
                           widget.visitId, DVLTs[index].idTindakan, 'kanan');
