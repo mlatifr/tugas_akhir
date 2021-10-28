@@ -239,9 +239,9 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
     'Fundoscopy': false,
   };
   var listValueCheck = [false, true];
-  // var _valueButton = true;
   var listTindakanIdMataKiri = [];
   persiapanKirimData() {
+    //untuk kirim nested sub-key ke postman
     listTindakanIdMataKiri.clear();
     for (var i = 0; i < listValueCheck.length; i++) {
       if (listValueCheck[i] == true) {
