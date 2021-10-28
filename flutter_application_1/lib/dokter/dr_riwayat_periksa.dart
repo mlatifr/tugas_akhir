@@ -251,14 +251,15 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
       }
     }
     for (var i = 0; i < listTindakanIdMataKiri.length; i++) {
-      arrTindakanIdMataKiri.addAll({
+      arrTindakanIdMataKiri = {
         'tindakan_array': {
           "tindakan_$i": {"visit_id": "1", "tindakan_id": i, "mt_sisi": "kiri"}
         }
-      });
-      print('arrTindakanIdMataKiri: $arrTindakanIdMataKiri');
+      };
+      fetchDataDokterInputTindakan(arrTindakanIdMataKiri);
+      // print('arrTindakanIdMataKiri: $arrTindakanIdMataKiri');
     }
-    print('listTi: $listTindakanIdMataKiri');
+    // print('listTi: $listTindakanIdMataKiri');
   }
 
   Widget widgetListTindakan() {

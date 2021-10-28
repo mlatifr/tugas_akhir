@@ -36,15 +36,15 @@ Future<String> fetchDataDokterVListTindakan() async {
   }
 }
 
-Future<String> fetchDataDokterInputTindakan() async {
+Future<String> fetchDataDokterInputTindakan(bodyParameter) async {
   final response = await http.post(
-    Uri.parse(APIurl + "dokter_v_list_tindakan.php"),
-  );
+      Uri.parse(APIurl + "dokter_input_tindakan_array.php"),
+      body: {"visit_id": "1", "tindakan_id": '1', "mt_sisi": "kiri"});
   if (response.statusCode == 200) {
+    print('200: ${response.body}');
     return response.body;
   } else {
+    print('else: ${response.body}');
     throw Exception('Failed to read API');
   }
 }
-
-
