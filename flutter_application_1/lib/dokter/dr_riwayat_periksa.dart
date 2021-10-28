@@ -239,16 +239,22 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
     'Fundoscopy': false,
   };
   var listValueCheck = [false, true];
-  var listTindakanIdMataKiri = [];
+  List<dynamic> listTindakanIdMataKiri = [];
+  Map<dynamic, dynamic> arrTindakanIdMataKiri = {};
   persiapanKirimData() {
     //untuk kirim nested sub-key ke postman
     listTindakanIdMataKiri.clear();
+    arrTindakanIdMataKiri.clear();
     for (var i = 0; i < listValueCheck.length; i++) {
       if (listValueCheck[i] == true) {
         listTindakanIdMataKiri.add(DVLTs[i].idTindakan);
       }
     }
-    print(listTindakanIdMataKiri);
+    for (var i = 0; i < listTindakanIdMataKiri.length; i++) {
+      arrTindakanIdMataKiri.addAll({'tindakan_array[$i]': i});
+    }
+    print('listTi: $listTindakanIdMataKiri');
+    print('arrTindakanIdMataKiri: $arrTindakanIdMataKiri');
   }
 
   Widget widgetListTindakan() {
