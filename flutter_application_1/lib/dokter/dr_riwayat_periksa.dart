@@ -256,10 +256,13 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
           "tindakan_$i": {"visit_id": "1", "tindakan_id": i, "mt_sisi": "kiri"}
         }
       };
-      fetchDataDokterInputTindakan(arrTindakanIdMataKiri);
-      // print('arrTindakanIdMataKiri: $arrTindakanIdMataKiri');
+      fetchDataDokterInputTindakan(1, 1, 'kiri');
+      //nanti setiap klik checkbox, maka send post untuk input tindakan.
+      // tetapi haru dimunculkan showdialog dulu untuk konfirmasi
+      //hal tersebut untuk menghindari salah pencet oleh user
+      //rencananya:
+      // checkBox => kalau sudah di centang, tidak bisa di uncentang
     }
-    // print('listTi: $listTindakanIdMataKiri');
   }
 
   Widget widgetListTindakan() {

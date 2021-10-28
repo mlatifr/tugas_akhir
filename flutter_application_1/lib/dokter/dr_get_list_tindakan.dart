@@ -36,7 +36,7 @@ Future<String> fetchDataDokterVListTindakan() async {
   }
 }
 
-Future<String> fetchDataDokterInputTindakan(bodyParameter) async {
+Future<String> fetchDataDokterInputTindakan(pVisitId,ptdkId,pmtSisi) async {
   final response = await http.post(
       Uri.parse(APIurl + "dokter_input_tindakan_array.php"),
       body: {"visit_id": "1", "tindakan_id": '1', "mt_sisi": "kiri"});
