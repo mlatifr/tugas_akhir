@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application_1/dokter/dr_get_list_tindakan.dart';
 import 'package:flutter_application_1/dokter/dr_riwayat_periksa.dart';
 import '../main.dart';
 import 'dart:async';
@@ -173,6 +174,7 @@ class _DrAntreanPasienState extends State<DrAntreanPasien> {
                       onTap: () {
                         _timerForInter.cancel();
                         print('timer stop');
+                        DokterVListTindakan();
                         Navigator.push(
                             context,
                             MaterialPageRoute(

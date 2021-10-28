@@ -5,19 +5,19 @@ import 'dart:convert';
 import 'package:flutter_application_1/main.dart';
 import 'package:http/http.dart' as http;
 
-List<DokterVListTIndakan> DVLTs = [];
+List<DokterVListTindakan> DVLTs = [];
 
-class DokterVListTIndakan {
+class DokterVListTindakan {
   var visitId, idTindakan, namaTindakan, hargaTindakan;
-  DokterVListTIndakan({
+  DokterVListTindakan({
     this.idTindakan,
     this.namaTindakan,
     this.hargaTindakan,
   });
 
   // untuk convert dari jSon
-  factory DokterVListTIndakan.fromJson(Map<String, dynamic> json) {
-    return new DokterVListTIndakan(
+  factory DokterVListTindakan.fromJson(Map<String, dynamic> json) {
+    return new DokterVListTindakan(
       idTindakan: json['id'],
       namaTindakan: json['nama'],
       hargaTindakan: json['harga'],
@@ -46,7 +46,7 @@ DokterBacaDataVListTindakan() {
     Map json = jsonDecode(value);
     for (var i in json['data']) {
       print('DokterBacaDataVListTindakan: ${i}');
-      DokterVListTIndakan dvlt = DokterVListTIndakan.fromJson(i);
+      DokterVListTindakan dvlt = DokterVListTindakan.fromJson(i);
       DVLTs.add(dvlt);
     }
   });

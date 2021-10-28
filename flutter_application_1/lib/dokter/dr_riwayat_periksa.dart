@@ -207,25 +207,43 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
     }
   }
 
-    var listNamaCheckbox = [];
-  mapingValues() {
-    for (var i = 0; i < DVLTs.length; i++) {
-      // print(DVLTs[i].namaTindakan);
-      var productMap = {DVLTs[i].namaTindakan: false};
-      listNamaCheckbox.add(productMap);
-    }
-    for (var item in listNamaCheckbox) {
-      print(item);
-    }
+  @override
+  void initState() {
+    DokterBacaDataVListTindakan();
+    // DokterBacaDataVListTindakan().then(mapingValues());
+    super.initState();
   }
-  
-  Map<String, bool> valuesRight = {
-    'Auto Refraksi': true,
-    'Trial Lens': false,
-    'Slit Lamp': false,
-    'TOnometri Schiot': false,
-    'Fundoscopy': false,
-  };
+
+  var listNamaCheckbox;
+  var valuesRight;
+  var productMap;
+  var salahBenar = false;
+  var listPercobaan = ['p1', 'p2', 'p3'];
+  Map<String, dynamic> alfabet;
+  mapingValues() {
+    print('enter mapingValues');
+    for (var i = 0; i < listPercobaan.length; i++) {
+      print('enter for $i');
+      // print(DVLTs[i].namaTindakan);
+      productMap = {'${listPercobaan[i]}': salahBenar};
+      // listNamaCheckbox.add(productMap);
+      alfabet.addAll(productMap);
+      print('proses: $productMap');
+    }
+    // for (var item in listNamaCheckbox) {
+    //   print(item);
+    // }
+
+    // var arrayPercoban = {'tindakan1': false, 'tindakan2': true};
+    // for (var item in arrayPercoban) {
+    //   valuesRight = Map<String, dynamic>.fromIterable(arrayPercoban,
+    //       key: (item) => item.toString(), value: (item) => item.toString());
+    // }
+
+    print('values righ: ' + alfabet.toString());
+
+    setState(() {});
+  }
 
   Map<String, bool> valuesLeft = {
     'Auto Refraksi': true,
@@ -234,8 +252,9 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
     'TOnometri Schiot': false,
     'Fundoscopy': false,
   };
-
+  var valueCheck = [false, true];
   var _valueButton = true;
+  bool isChecked = true;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -253,6 +272,33 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
         ),
         body: ListView(
           children: <Widget>[
+            // Padding(
+            //   padding: const EdgeInsets.all(0.05),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //     children: [
+            //       SizedBox(
+            //         width: MediaQuery.of(context).size.width * 0.42,
+            //         child: Container(
+            //           color: Colors.yellow,
+            //           child: Column(
+            //             children: valuesRight.keys.map((String key) {
+            //               return new CheckboxListTile(
+            //                 title: new Text(key),
+            //                 value: valuesRight[key],
+            //                 onChanged: (bool value) {
+            //                   setState(() {
+            //                     valuesRight[key] = value;
+            //                   });
+            //                 },
+            //               );
+            //             }).toList(),
+            //           ),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
             Container(
                 color: Colors.yellow[50],
                 child: ListView.builder(
@@ -260,25 +306,47 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                     shrinkWrap: true,
                     itemCount: DVLTs.length,
                     itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          Text(
-                            '${index + 1} ${DVLTs[index].namaTindakan}',
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          Divider(),
-                        ],
+                      return CheckboxListTile(
+                        title: Text(
+                          '${index + 1} ${DVLTs[index].namaTindakan}',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        value: valueCheck[index],
+                        onChanged: (bool value) {
+                          setState(() {
+                            valueCheck[index] = value;
+                          });
+                          print('value: $_valueButton');
+                        },
                       );
                     })),
+            ElevatedButton(
+              onPressed: () {
+                // DokterBacaDataVListTindakan().then(refreshListTdkn());
+                // DokterBacaDataVListTindakan().then(mapingValues());
+                mapingValues();
+              },
+              child: Text('button'),
+            ),
+            // Container(
+            //     color: Colors.yellow[50],
+            //     child: ListView.builder(
+            //         physics: NeverScrollableScrollPhysics(),
+            //         shrinkWrap: true,
+            //         itemCount: DVLTs.length,
+            //         itemBuilder: (context, index) {
+            //           return Column(
+            //             children: [
+            //               Text(
+            //                 '${index + 1} ${DVLTs[index].namaTindakan}',
+            //                 style: TextStyle(fontSize: 20),
+            //               ),
+            //               Divider(),
+            //             ],
+            //           );
+            //         })),
             Column(
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    // DokterBacaDataVListTindakan().then(refreshListTdkn());
-                    mapingValues();
-                  },
-                  child: Text('button'),
-                ),
                 Text('Profil'),
                 Text('Rekam Medis'),
                 Text('Nama'),
