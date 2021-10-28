@@ -36,4 +36,15 @@ Future<String> fetchDataDokterVListTindakan() async {
   }
 }
 
+Future<String> fetchDataDokterInputTindakan() async {
+  final response = await http.post(
+    Uri.parse(APIurl + "dokter_v_list_tindakan.php"),
+  );
+  if (response.statusCode == 200) {
+    return response.body;
+  } else {
+    throw Exception('Failed to read API');
+  }
+}
+
 

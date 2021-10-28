@@ -240,8 +240,17 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
   };
   var listValueCheck = [false, true];
   // var _valueButton = true;
-  var listTindakanMataKiri = [];
-  var tindakanMataKiri = {};
+  var listTindakanIdMataKiri = [];
+  persiapanKirimData() {
+    listTindakanIdMataKiri.clear();
+    for (var i = 0; i < listValueCheck.length; i++) {
+      if (listValueCheck[i] == true) {
+        listTindakanIdMataKiri.add(DVLTs[i].idTindakan);
+      }
+    }
+    print(listTindakanIdMataKiri);
+  }
+
   Widget widgetListTindakan() {
     return Container(
         color: Colors.yellow[50],
@@ -260,9 +269,9 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                   setState(() {
                     listValueCheck[index] = value;
                     if (value == true) {
-                      listTindakanMataKiri.clear();
-                      listTindakanMataKiri.add(DVLTs[index].namaTindakan);
-                      print(listTindakanMataKiri);
+                      print(listValueCheck.runtimeType);
+                    } else {
+                      print(listValueCheck);
                     }
                   });
                 },
@@ -289,7 +298,9 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
           children: <Widget>[
             widgetListTindakan(),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                persiapanKirimData();
+              },
               child: Text('button'),
             ),
             Column(
