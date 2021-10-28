@@ -286,7 +286,8 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                       fetchDataDokterInputTindakan(
                           1, DVLTs[index].idTindakan, 'kiri');
                     } else {
-                      print(listValueCheck);
+                      fetchDataDokterInputTindakanBatal(
+                          1, DVLTs[index].idTindakan, 'kiri');
                     }
                   });
                 },

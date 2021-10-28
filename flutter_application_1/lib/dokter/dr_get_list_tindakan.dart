@@ -52,3 +52,21 @@ Future<String> fetchDataDokterInputTindakan(pVisitId, pTdkId, pMtSisi) async {
     throw Exception('Failed to read API');
   }
 }
+
+Future<String> fetchDataDokterInputTindakanBatal(
+    pVisitId, pTdkId, pMtSisi) async {
+  print('final: $pVisitId | $pTdkId | $pMtSisi');
+  final response = await http
+      .post(Uri.parse(APIurl + "dokter_input_tindakan_batal.php"), body: {
+    "visit_id": pVisitId.toString(),
+    "tindakan_id": pTdkId.toString(),
+    "mt_sisi": pMtSisi
+  });
+  if (response.statusCode == 200) {
+    print('200: ${response.body}');
+    return response.body;
+  } else {
+    print('else: ${response.body}');
+    throw Exception('Failed to read API');
+  }
+}
