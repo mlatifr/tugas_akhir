@@ -181,6 +181,7 @@ class _DrAntreanPasienState extends State<DrAntreanPasien> {
                                 builder: (context) => DrRiwayatPeriksaPasien(
                                       namaPasien: '${DVAs[index].userName}',
                                       visitId: '${DVAs[index].visitId}',
+                                      keluhan: '${DVAs[index].keluhan}',
                                     ))).then((onGoBack));
                       },
                       leading: CircleAvatar(

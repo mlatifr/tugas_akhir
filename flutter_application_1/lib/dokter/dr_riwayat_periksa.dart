@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/dokter/dr_get_list_tindakan.dart';
+import 'package:flutter_application_1/main.dart';
 
 import 'dr_antrean_pasien.dart';
 
@@ -48,7 +49,7 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
       // ignore: unused_local_variable
       Map json = jsonDecode(value);
       for (var i in json['data']) {
-        print('DokterBacaDataVListTindakan: ${i}');
+        // print('DokterBacaDataVListTindakan: ${i}');
         DokterVListTindakan dvlt = DokterVListTindakan.fromJson(i);
         DVLTs.add(dvlt);
       }
@@ -60,13 +61,13 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
         for (var i = 0; i < DVLTs.length; i++) {
           listValueCheckKiri.add(false);
           listValueCheckKanan.add(false);
-          print('lValueCHeckLength ${listValueCheckKiri.length}');
+          // print('lValueCHeckLength ${listValueCheckKiri.length}');
         }
       });
     });
   }
 
-  var _controllerKeluhan = TextEditingController();
+  TextEditingController controllerKeluhan = TextEditingController();
   final List<Item> _data = generateItems(8);
   Widget _buildPanel() {
     return ExpansionPanelList(
@@ -90,7 +91,16 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                 children: [
                   TextFormField(
                       enabled: true,
-                      controller: _controllerKeluhan,
+                      controller: controllerKeluhan,
+                      onChanged: (value) {
+                        setState(() {
+                          controllerKeluhan.text = value.toString();
+                          controllerKeluhan.selection =
+                              TextSelection.fromPosition(TextPosition(
+                                  offset: controllerKeluhan.text.length));
+                          print(value.toString());
+                        });
+                      },
                       decoration: InputDecoration(
                         labelText: "keluhan",
                         fillColor: Colors.white,
@@ -233,15 +243,27 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
 
   @override
   void initState() {
-    _controllerKeluhan.text = widget.keluhan;
+    controllerKeluhan.text = widget.keluhan;
+    controllerKeluhan.addListener(() {
+      setState(() {
+        print('controller initstate keluhan ${controllerKeluhan.text}');
+      });
+    });
+    // print(_controllerKeluhan.text);
     DokterBacaDataVListTindakan();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    controllerKeluhan.dispose();
+    super.dispose();
   }
 
   var listValueCheckKiri = [false, true];
   var listValueCheckKanan = [false, true];
   Widget widgetListTindakanKiri() {
-    print(DVLTs[0].namaTindakan);
+    // print(DVLTs[0].namaTindakan);
     if (DVLTs != null) {
       return ListView.builder(
           physics: NeverScrollableScrollPhysics(),
@@ -334,7 +356,8 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextFormField(
-                                initialValue: 'tidak ada',
+                                // initialValue: widget.keluhan,
+                                controller: controllerKeluhan,
                                 decoration: InputDecoration(
                                   labelText: "keluhan",
                                   fillColor: Colors.white,
