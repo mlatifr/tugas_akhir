@@ -1,10 +1,6 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/dokter/dr_get_list_tindakan.dart';
-import 'package:flutter_application_1/main.dart';
-
-import 'dr_antrean_pasien.dart';
 
 // stores ExpansionPanel state information
 class Item {
@@ -69,7 +65,7 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
 
   TextEditingController controllerKeluhan = TextEditingController();
   final List<Item> _data = generateItems(8);
-  Widget _buildPanel() {
+  Widget widgetBuildPanel() {
     return ExpansionPanelList(
       expansionCallback: (int index, bool isExpanded) {
         setState(() {
@@ -265,62 +261,82 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
   Widget widgetListTindakanKiri() {
     // print(DVLTs[0].namaTindakan);
     if (DVLTs != null) {
-      return ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: DVLTs.length,
-          itemBuilder: (context, index) {
-            return CheckboxListTile(
-              title: Text(
-                '${index + 1} ${DVLTs[index].namaTindakan}',
-                style: TextStyle(fontSize: 16),
-              ),
-              value: listValueCheckKiri[index],
-              onChanged: (bool value) {
-                setState(() {
-                  listValueCheckKiri[index] = value;
-                  if (value == true) {
-                    fetchDataDokterInputTindakan(
-                        widget.visitId, DVLTs[index].idTindakan, 'kiri');
-                  } else {
-                    fetchDataDokterInputTindakanBatal(
-                        widget.visitId, DVLTs[index].idTindakan, 'kiri');
-                  }
-                });
-              },
-            );
-          });
+      return Column(
+        children: [
+          Text(
+            'Mata Kiri:',
+            style: TextStyle(
+              decoration: TextDecoration.underline,
+            ),
+          ),
+          ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: DVLTs.length,
+              itemBuilder: (context, index) {
+                return CheckboxListTile(
+                  title: Text(
+                    '${index + 1} ${DVLTs[index].namaTindakan}',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  value: listValueCheckKiri[index],
+                  onChanged: (bool value) {
+                    setState(() {
+                      listValueCheckKiri[index] = value;
+                      if (value == true) {
+                        fetchDataDokterInputTindakan(
+                            widget.visitId, DVLTs[index].idTindakan, 'kiri');
+                      } else {
+                        fetchDataDokterInputTindakanBatal(
+                            widget.visitId, DVLTs[index].idTindakan, 'kiri');
+                      }
+                    });
+                  },
+                );
+              }),
+        ],
+      );
     }
   }
 
   Widget widgetListTindakanKanan() {
     return Container(
         color: Colors.yellow[50],
-        child: ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: DVLTs.length,
-            itemBuilder: (context, index) {
-              return CheckboxListTile(
-                title: Text(
-                  '${index + 1} ${DVLTs[index].namaTindakan}',
-                  style: TextStyle(fontSize: 16),
-                ),
-                value: listValueCheckKanan[index],
-                onChanged: (bool value) {
-                  setState(() {
-                    listValueCheckKanan[index] = value;
-                    if (value == true) {
-                      fetchDataDokterInputTindakan(
-                          widget.visitId, DVLTs[index].idTindakan, 'kanan');
-                    } else {
-                      fetchDataDokterInputTindakanBatal(
-                          widget.visitId, DVLTs[index].idTindakan, 'kanan');
-                    }
-                  });
-                },
-              );
-            }));
+        child: Column(
+          children: [
+            Text(
+              'Mata Kanan:',
+              style: TextStyle(
+                decoration: TextDecoration.underline,
+              ),
+            ),
+            ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: DVLTs.length,
+                itemBuilder: (context, index) {
+                  return CheckboxListTile(
+                    title: Text(
+                      '${index + 1} ${DVLTs[index].namaTindakan}',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    value: listValueCheckKanan[index],
+                    onChanged: (bool value) {
+                      setState(() {
+                        listValueCheckKanan[index] = value;
+                        if (value == true) {
+                          fetchDataDokterInputTindakan(
+                              widget.visitId, DVLTs[index].idTindakan, 'kanan');
+                        } else {
+                          fetchDataDokterInputTindakanBatal(
+                              widget.visitId, DVLTs[index].idTindakan, 'kanan');
+                        }
+                      });
+                    },
+                  );
+                }),
+          ],
+        ));
   }
 
   @override
@@ -331,7 +347,7 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
         home: Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text('Riwayat Periksa: ${widget.namaPasien}'),
+            title: Text('Input Pemeriksaan'),
             leading: new IconButton(
               icon: new Icon(Icons.arrow_back),
               onPressed: () {
@@ -343,16 +359,22 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
             children: <Widget>[
               Column(
                 children: [
-                  Text('Profil'),
-                  Text('Rekam Medis'),
-                  Text('Nama'),
-                  Text('Usia'),
+                  // Text('Profil'),
+                  // Text('Rekam Medis'),
+                  // Text('Nama'),
+                  // Text('Usia'),
                   Padding(
                     padding: const EdgeInsets.all(25.0),
                     child: Container(
                       color: Colors.green[50],
                       child: Column(
                         children: [
+                          Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                '${widget.namaPasien}',
+                                style: TextStyle(fontSize: 22),
+                              )),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextFormField(
@@ -480,7 +502,7 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                       ),
                     ),
                   ),
-                  _buildPanel(),
+                  // widgetBuildPanel(),
                 ],
               ),
             ],
