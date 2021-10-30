@@ -92,6 +92,7 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
     return Row(
       children: [
         Expanded(
+          flex: 12,
           child: TextFormField(
               controller: controllerCariObat,
               onChanged: (value) {
@@ -123,12 +124,16 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                 ),
               )),
         ),
+        Expanded(flex: 1, child: SizedBox()),
         Expanded(
+          flex: 4,
           child: TextButton(
             onPressed: () {
               DokterBacaDataVListObat(controllerCariObat.text);
             },
-            child: Text('tambah'),
+            child: Text(
+              'Cari',
+            ),
             style: TextButton.styleFrom(
                 primary: Colors.white,
                 backgroundColor: Colors.blue,
@@ -148,8 +153,20 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
           shrinkWrap: true,
           itemCount: DVLOs.length,
           itemBuilder: (context, index) {
-            return Text(
-                'nama: ${DVLOs[index].obatNama} stok: ${DVLOs[index].obatStok}');
+            return Row(
+              children: [
+                Expanded(
+                  flex: 8,
+                  child: Text(
+                      'nama: ${DVLOs[index].obatNama} stok: ${DVLOs[index].obatStok}'),
+                ),
+                Expanded(
+                    flex: 1,
+                    child: ElevatedButton(
+                      onPressed: () {},
+                    ))
+              ],
+            );
           });
     }
   }
