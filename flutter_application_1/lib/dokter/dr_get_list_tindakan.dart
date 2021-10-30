@@ -6,6 +6,23 @@ import 'package:flutter_application_1/main.dart';
 import 'package:http/http.dart' as http;
 
 List<DokterVListTindakan> DVLTs = [];
+List<DokterVKeranjangTindakan> DVKTs = [];
+
+class DokterVKeranjangTindakan {
+  var namaTindakan, mataSisiTindakan;
+  DokterVKeranjangTindakan({
+    this.namaTindakan,
+    this.mataSisiTindakan,
+  });
+
+  // untuk convert dari jSon
+  factory DokterVKeranjangTindakan.fromJson(Map<String, dynamic> json) {
+    return new DokterVKeranjangTindakan(
+      namaTindakan: json['nama'],
+      mataSisiTindakan: json['mt_sisi'],
+    );
+  }
+}
 
 class DokterVListTindakan {
   var visitId, idTindakan, namaTindakan, hargaTindakan;
@@ -67,6 +84,20 @@ Future<String> fetchDataDokterInputTindakanBatal(
     return response.body;
   } else {
     // print('else: ${response.body}');
+    throw Exception('Failed to read API');
+  }
+}
+
+Future<String> fetchDataDokterVKeranjangTindakan(pVisitId) async {
+  print('final: $pVisitId');
+  final response = await http.post(
+      Uri.parse(APIurl + "dokter_v_keranjang_tindakan.php"),
+      body: {"visit_id": pVisitId.toString()});
+  if (response.statusCode == 200) {
+    print('keranjang tindakan: ${response.body}');
+    return response.body;
+  } else {
+    print('else: ${response.body}');
     throw Exception('Failed to read API');
   }
 }

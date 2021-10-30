@@ -40,6 +40,29 @@ class DrRiwayatPeriksaPasien extends StatefulWidget {
 
 class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
   // ignore: non_constant_identifier_names
+  DokterBacaDataVKeranjangTindakan(pVisitId) {
+    DVKTs.clear();
+    Future<String> data = fetchDataDokterVKeranjangTindakan(pVisitId);
+    data.then((value) {
+      //Mengubah json menjadi Array
+      // ignore: unused_local_variable
+      Map json = jsonDecode(value);
+      for (var i in json['data']) {
+        DokterVKeranjangTindakan keranjangObat =
+            DokterVKeranjangTindakan.fromJson(i);
+        DVKTs.add(keranjangObat);
+      }
+      setState(() {
+        widgetKeranjangTindakan();
+        for (var i = 0; i < DVLKOs.length; i++) {
+          // print(
+          //     'id: ${DVLOs[i].obatId}\nnama: ${DVLOs[i].obatNama}\nstok: ${DVLOs[i].obatStok}\n\n\n\n\n\n');
+        }
+      });
+    });
+  }
+
+  // ignore: non_constant_identifier_names
   DokterBacaDataVKeranjangObat(pVisitId) {
     DVLKOs.clear();
     Future<String> data = fetchDataDokterKeranjangObat(pVisitId);
@@ -54,8 +77,8 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
       setState(() {
         widgetListObats();
         for (var i = 0; i < DVLKOs.length; i++) {
-          print(
-              'id: ${DVLOs[i].obatId}\nnama: ${DVLOs[i].obatNama}\nstok: ${DVLOs[i].obatStok}\n\n\n\n\n\n');
+          // print(
+          //     'id: ${DVLOs[i].obatId}\nnama: ${DVLOs[i].obatNama}\nstok: ${DVLOs[i].obatStok}\n\n\n\n\n\n');
         }
       });
     });
@@ -76,8 +99,8 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
       setState(() {
         widgetListObats();
         for (var i = 0; i < DVLOs.length; i++) {
-          print(
-              'id: ${DVLOs[i].obatId}\nnama: ${DVLOs[i].obatNama}\nstok: ${DVLOs[i].obatStok}\n\n\n\n\n\n');
+          // print(
+          //     'id: ${DVLOs[i].obatId}\nnama: ${DVLOs[i].obatNama}\nstok: ${DVLOs[i].obatStok}\n\n\n\n\n\n');
         }
       });
     });
@@ -122,7 +145,7 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                   controllerCariObat.text = value.toString();
                   controllerCariObat.selection = TextSelection.fromPosition(
                       TextPosition(offset: controllerCariObat.text.length));
-                  print(value.toString());
+                  // print(value.toString());
                 });
               },
               decoration: InputDecoration(
@@ -217,7 +240,7 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                                                     TextPosition(
                                                         offset: controllerJumlah
                                                             .text.length));
-                                            print(value.toString());
+                                            // print(value.toString());
                                           });
                                         },
                                         decoration: InputDecoration(
@@ -259,7 +282,7 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                                                     TextPosition(
                                                         offset: controllerDosis
                                                             .text.length));
-                                            print(value.toString());
+                                            // print(value.toString());
                                           });
                                         },
                                         decoration: InputDecoration(
@@ -320,190 +343,17 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
   TextEditingController controllerKeluhan = TextEditingController();
   TextEditingController controllerCariObat = TextEditingController();
   final List<Item> _data = generateItems(8);
-  // Widget widgetBuildPanel() {
-  //   return ExpansionPanelList(
-  //     expansionCallback: (int index, bool isExpanded) {
-  //       setState(() {
-  //         _data[index].isExpanded = !isExpanded;
-  //       });
-  //     },
-  //     children: _data.map<ExpansionPanel>((Item item) {
-  //       return ExpansionPanel(
-  //         headerBuilder: (BuildContext context, bool isExpanded) {
-  //           return ListTile(
-  //             title: Text(item.headerValue),
-  //           );
-  //         },
-  //         body: Padding(
-  //           padding: const EdgeInsets.all(25.0),
-  //           child: Container(
-  //             color: Colors.green[50],
-  //             child: Column(
-  //               children: [
-  //                 TextFormField(
-  //                     enabled: true,
-  //                     controller: controllerKeluhan,
-  //                     onChanged: (value) {
-  //                       setState(() {
-  //                         controllerKeluhan.text = value.toString();
-  //                         controllerKeluhan.selection =
-  //                             TextSelection.fromPosition(TextPosition(
-  //                                 offset: controllerKeluhan.text.length));
-  //                         print(value.toString());
-  //                       });
-  //                     },
-  //                     decoration: InputDecoration(
-  //                       labelText: "keluhan",
-  //                       fillColor: Colors.white,
-  //                       enabledBorder: OutlineInputBorder(
-  //                         borderRadius: BorderRadius.circular(10.0),
-  //                         borderSide: BorderSide(
-  //                           color: Colors.blue,
-  //                         ),
-  //                       ),
-  //                       focusedBorder: OutlineInputBorder(
-  //                         borderRadius: BorderRadius.circular(10.0),
-  //                         borderSide: BorderSide(
-  //                           color: Colors.blue,
-  //                         ),
-  //                       ),
-  //                     )),
-  //                 TextFormField(
-  //                     enabled: false,
-  //                     initialValue: 'tidak ada',
-  //                     decoration: InputDecoration(
-  //                       labelText: "Riwayat Alergi",
-  //                       fillColor: Colors.white,
-  //                       enabledBorder: OutlineInputBorder(
-  //                         borderRadius: BorderRadius.circular(10.0),
-  //                         borderSide: BorderSide(
-  //                           color: Colors.blue,
-  //                         ),
-  //                       ),
-  //                       focusedBorder: OutlineInputBorder(
-  //                         borderRadius: BorderRadius.circular(10.0),
-  //                         borderSide: BorderSide(
-  //                           color: Colors.blue,
-  //                         ),
-  //                       ),
-  //                     )),
-  //                 TextFormField(
-  //                     enabled: false,
-  //                     initialValue: 'tidak ada',
-  //                     decoration: InputDecoration(
-  //                       labelText: "anamnesis",
-  //                       fillColor: Colors.white,
-  //                       enabledBorder: OutlineInputBorder(
-  //                         borderRadius: BorderRadius.circular(10.0),
-  //                         borderSide: BorderSide(
-  //                           color: Colors.blue,
-  //                         ),
-  //                       ),
-  //                       focusedBorder: OutlineInputBorder(
-  //                         borderRadius: BorderRadius.circular(10.0),
-  //                         borderSide: BorderSide(
-  //                           color: Colors.blue,
-  //                         ),
-  //                       ),
-  //                     )),
-  //                 Row(
-  //                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //                   children: [
-  //                     SizedBox(
-  //                       width: MediaQuery.of(context).size.width * 0.42,
-  //                       child: Container(
-  //                         color: Colors.yellow,
-  //                         child: TextFormField(
-  //                             enabled: false,
-  //                             initialValue: 'tidak ada',
-  //                             decoration: InputDecoration(
-  //                               labelText: "tindakan mata kiri",
-  //                               fillColor: Colors.white,
-  //                               enabledBorder: OutlineInputBorder(
-  //                                 borderRadius: BorderRadius.circular(10.0),
-  //                                 borderSide: BorderSide(
-  //                                   color: Colors.blue,
-  //                                 ),
-  //                               ),
-  //                               focusedBorder: OutlineInputBorder(
-  //                                 borderRadius: BorderRadius.circular(10.0),
-  //                                 borderSide: BorderSide(
-  //                                   color: Colors.blue,
-  //                                 ),
-  //                               ),
-  //                             )),
-  //                       ),
-  //                     ),
-  //                     SizedBox(
-  //                       width: MediaQuery.of(context).size.width * 0.42,
-  //                       child: Container(
-  //                         color: Colors.yellow[50],
-  //                         child: TextFormField(
-  //                             enabled: false,
-  //                             maxLines: 10,
-  //                             initialValue:
-  //                                 '1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n 8 \n 9 \n 10',
-  //                             decoration: InputDecoration(
-  //                               labelText: "tindakan mata kanan",
-  //                               fillColor: Colors.white,
-  //                               enabledBorder: OutlineInputBorder(
-  //                                 borderRadius: BorderRadius.circular(10.0),
-  //                                 borderSide: BorderSide(
-  //                                   color: Colors.blue,
-  //                                 ),
-  //                               ),
-  //                               focusedBorder: OutlineInputBorder(
-  //                                 borderRadius: BorderRadius.circular(10.0),
-  //                                 borderSide: BorderSide(
-  //                                   color: Colors.blue,
-  //                                 ),
-  //                               ),
-  //                             )),
-  //                       ),
-  //                     ),
-  //                   ],
-  //                 ),
-  //                 TextFormField(
-  //                     enabled: false,
-  //                     initialValue: 'tidak ada',
-  //                     decoration: InputDecoration(
-  //                       labelText: "Resep",
-  //                       fillColor: Colors.white,
-  //                       enabledBorder: OutlineInputBorder(
-  //                         borderRadius: BorderRadius.circular(10.0),
-  //                         borderSide: BorderSide(
-  //                           color: Colors.blue,
-  //                         ),
-  //                       ),
-  //                       focusedBorder: OutlineInputBorder(
-  //                         borderRadius: BorderRadius.circular(10.0),
-  //                         borderSide: BorderSide(
-  //                           color: Colors.blue,
-  //                         ),
-  //                       ),
-  //                     )),
-  //               ],
-  //             ),
-  //           ),
-  //         ),
-  //         isExpanded: item.isExpanded,
-  //       );
-  //     }).toList(),
-  //   );
-  // }
 
   @override
   void initState() {
     controllerKeluhan.text = widget.keluhan;
     controllerKeluhan.addListener(() {
-      setState(() {
-        print('controller initstate keluhan ${controllerKeluhan.text}');
-      });
+      setState(() {});
     });
-    // print(_controllerKeluhan.text);
     DokterBacaDataVListTindakan();
     DokterBacaDataVListObat('');
     DokterBacaDataVKeranjangObat(widget.visitId);
+    DokterBacaDataVKeranjangTindakan(widget.visitId);
     super.initState();
   }
 
@@ -516,7 +366,6 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
   var listValueCheckKiri = [false, true];
   var listValueCheckKanan = [false, true];
   Widget widgetListTindakanKiri() {
-    // print(DVLTs[0].namaTindakan);
     if (DVLTs != null) {
       return Column(
         children: [
@@ -594,6 +443,26 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                 }),
           ],
         ));
+  }
+
+  Widget widgetKeranjangTindakan() {
+    if (DVKTs.length > 0) {
+      return ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: DVKTs.length,
+          itemBuilder: (context, index) {
+            return Center(
+              child: Text(
+                '${DVKTs[index].namaTindakan} | ${DVKTs[index].mataSisiTindakan}',
+              ),
+            );
+          });
+    } else {
+      return Row(
+        children: [Text('Keranjang Tindakan: '), CircularProgressIndicator()],
+      );
+    }
   }
 
   @override
@@ -680,6 +549,7 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                                   style: TextStyle(),
                                 ),
                                 children: [
+                                  widgetKeranjangTindakan(),
                                   Row(
                                     children: [
                                       Expanded(
