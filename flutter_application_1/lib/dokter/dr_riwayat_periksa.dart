@@ -474,6 +474,7 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
     });
     // print(_controllerKeluhan.text);
     DokterBacaDataVListTindakan();
+    DokterBacaDataVListObat('');
     super.initState();
   }
 
