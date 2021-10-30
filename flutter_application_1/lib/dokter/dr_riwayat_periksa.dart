@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/dokter/dr_get_list_tindakan.dart';
 
+import 'dr_get_list_obat.dart';
+
 // stores ExpansionPanel state information
 class Item {
   Item({
@@ -36,6 +38,28 @@ class DrRiwayatPeriksaPasien extends StatefulWidget {
 }
 
 class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
+  // ignore: non_constant_identifier_names
+  DokterBacaDataVListObat(pNamaObat) {
+    DVLOs.clear();
+    Future<String> data = fetchDataDokterVListObat(pNamaObat);
+    data.then((value) {
+      //Mengubah json menjadi Array
+      // ignore: unused_local_variable
+      Map json = jsonDecode(value);
+      for (var i in json['data']) {
+        // print('DokterBacaDataVListTindakan: ${i}');
+        DokterVListObat dvlo = DokterVListObat.fromJson(i);
+        DVLOs.add(dvlo);
+      }
+      setState(() {
+        for (var i = 0; i < DVLOs.length; i++) {
+          print(
+              'id: ${DVLOs[i].obatId}\nnama: ${DVLOs[i].obatNama}\nstok: ${DVLOs[i].obatStok}\n\n\n\n\n\n');
+        }
+      });
+    });
+  }
+
   // ignore: non_constant_identifier_names
   DokterBacaDataVListTindakan() {
     DVLTs.clear();
@@ -434,6 +458,9 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextFormField(
+                                onChanged: (value) {
+                                  DokterBacaDataVListObat(value);
+                                },
                                 initialValue: 'Cari',
                                 decoration: InputDecoration(
                                   labelText: "Resep",
