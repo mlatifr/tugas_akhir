@@ -87,7 +87,55 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
     });
   }
 
+  Widget widgetCariObat() {
+    return Row(
+      children: [
+        Expanded(
+          child: TextFormField(
+              controller: controllerCariObat,
+              onChanged: (value) {
+                setState(() {
+                  controllerCariObat.text = value.toString();
+                  controllerCariObat.selection = TextSelection.fromPosition(
+                      TextPosition(offset: controllerCariObat.text.length));
+                  print(value.toString());
+                });
+              },
+              decoration: InputDecoration(
+                labelText: "Resep",
+                fillColor: Colors.white,
+                prefixIcon: Padding(
+                  padding: EdgeInsets.only(top: 15),
+                  child: Icon(Icons.search),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.blue,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.blue,
+                  ),
+                ),
+              )),
+        ),
+      ],
+    );
+  }
+
+  Widget widgetListObats() {
+    if (DVLOs.length > 0) {
+      for (var i = 0; i < DVLOs.length; i++) {
+        return Text(' nama: ${DVLOs[i].obatNama} stok: ${DVLOs[i].obatStok}');
+      }
+    }
+  }
+
   TextEditingController controllerKeluhan = TextEditingController();
+  TextEditingController controllerCariObat = TextEditingController();
   final List<Item> _data = generateItems(8);
   Widget widgetBuildPanel() {
     return ExpansionPanelList(
@@ -383,10 +431,6 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
             children: <Widget>[
               Column(
                 children: [
-                  // Text('Profil'),
-                  // Text('Rekam Medis'),
-                  // Text('Nama'),
-                  // Text('Usia'),
                   Padding(
                     padding: const EdgeInsets.all(25.0),
                     child: Container(
@@ -456,33 +500,11 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: TextFormField(
-                                onChanged: (value) {
-                                  DokterBacaDataVListObat(value);
-                                },
-                                initialValue: 'Cari',
-                                decoration: InputDecoration(
-                                  labelText: "Resep",
-                                  fillColor: Colors.white,
-                                  prefixIcon: Padding(
-                                    padding: EdgeInsets.only(top: 15),
-                                    child: Icon(Icons.search),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    borderSide: BorderSide(
-                                      color: Colors.blue,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    borderSide: BorderSide(
-                                      color: Colors.blue,
-                                    ),
-                                  ),
-                                )),
-                          ),
+                              padding: const EdgeInsets.all(8.0),
+                              child: widgetCariObat()),
+                          Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: widgetListObats()),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextButton(
