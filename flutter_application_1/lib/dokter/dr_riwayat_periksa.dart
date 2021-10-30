@@ -40,6 +40,27 @@ class DrRiwayatPeriksaPasien extends StatefulWidget {
 
 class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
   // ignore: non_constant_identifier_names
+  DokterBacaDataVKeranjangObat(pVisitId) {
+    DVLKOs.clear();
+    Future<String> data = fetchDataDokterKeranjangObat(pVisitId);
+    data.then((value) {
+      //Mengubah json menjadi Array
+      // ignore: unused_local_variable
+      Map json = jsonDecode(value);
+      for (var i in json['data']) {
+        DokterVKeranjangObat keranjangObat = DokterVKeranjangObat.fromJson(i);
+        DVLKOs.add(keranjangObat);
+      }
+      setState(() {
+        widgetListObats();
+        for (var i = 0; i < DVLKOs.length; i++) {
+          print(
+              'id: ${DVLOs[i].obatId}\nnama: ${DVLOs[i].obatNama}\nstok: ${DVLOs[i].obatStok}\n\n\n\n\n\n');
+        }
+      });
+    });
+  } // ignore: non_constant_identifier_names
+
   DokterBacaDataVListObat(pNamaObat) {
     DVLOs.clear();
     Future<String> data = fetchDataDokterVListObat(pNamaObat);
@@ -272,6 +293,7 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                                       controllerDosis.text,
                                       controllerJumlah.text,
                                       widget.visitId);
+                                  DokterBacaDataVKeranjangObat(widget.visitId);
                                 },
                                 child: Text('tambah'),
                                 style: TextButton.styleFrom(
@@ -481,6 +503,7 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
     // print(_controllerKeluhan.text);
     DokterBacaDataVListTindakan();
     DokterBacaDataVListObat('');
+    DokterBacaDataVKeranjangObat(widget.visitId);
     super.initState();
   }
 
@@ -698,34 +721,82 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                                           0.01)),
                             ),
                           ),
+                          // widgetKeranjangObat
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
                             child: Table(
                                 border: TableBorder
                                     .all(), // Allows to add a border decoration around your table
                                 children: [
                                   TableRow(children: [
-                                    Text('Obat'),
-                                    Text('Btl/Strip'),
-                                    Text('Dosis'),
-                                    Text('Atrn Pakai'),
-                                  ]),
-                                  TableRow(children: [
                                     Text(
-                                      'Insto',
+                                      'Obat',
+                                      textAlign: TextAlign.center,
                                     ),
-                                    Text('3'),
-                                    Text('3x1'),
-                                    Text('Setelah maem'),
-                                  ]),
-                                  TableRow(children: [
-                                    Text('Catarlent'),
-                                    Text('3'),
-                                    Text('3x1'),
-                                    Text('Setelah maem'),
+                                    Text(
+                                      'Jumlah',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Text(
+                                      'Dosis',
+                                      textAlign: TextAlign.center,
+                                    ),
                                   ]),
                                 ]),
                           ),
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: DVLKOs.length,
+                                itemBuilder: (context, index) {
+                                  return Table(
+                                      border: TableBorder
+                                          .all(), // Allows to add a border decoration around your table
+                                      children: [
+                                        TableRow(children: [
+                                          Text(
+                                            '${DVLKOs[index].obatNama}',
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          Text(
+                                            '${DVLKOs[index].obatJumlah}',
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          Text(
+                                            '${DVLKOs[index].obatDosis}',
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ]),
+                                      ]);
+                                }),
+                          ),
+                          // Padding(
+                          //   padding: const EdgeInsets.all(8.0),
+                          //   child: Table(
+                          //       border: TableBorder
+                          //           .all(), // Allows to add a border decoration around your table
+                          //       children: [
+                          //         TableRow(children: [
+                          //           Text('Obat'),
+                          //           Text('Jumlah'),
+                          //           Text('Dosis'),
+                          //         ]),
+                          //         TableRow(children: [
+                          //           Text(
+                          //             'Insto',
+                          //           ),
+                          //           Text('3'),
+                          //           Text('3x1'),
+                          //         ]),
+                          //         TableRow(children: [
+                          //           Text('Catarlent'),
+                          //           Text('3'),
+                          //           Text('3x1'),
+                          //         ]),
+                          //       ]),
+                          // ),
                         ],
                       ),
                     ),
