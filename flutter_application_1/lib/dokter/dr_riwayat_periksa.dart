@@ -47,17 +47,18 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
       //Mengubah json menjadi Array
       // ignore: unused_local_variable
       Map json = jsonDecode(value);
-      for (var i in json['data']) {
-        DokterVKeranjangTindakan keranjangObat =
-            DokterVKeranjangTindakan.fromJson(i);
-        DVKTs.add(keranjangObat);
+      if (json['result'].toString() == 'error') {
+        DVKTs.clear();
+        print('json[result]: ${json['result']}');
+      } else {
+        for (var i in json['data']) {
+          DokterVKeranjangTindakan keranjangObat =
+              DokterVKeranjangTindakan.fromJson(i);
+          DVKTs.add(keranjangObat);
+        }
       }
       setState(() {
         widgetKeranjangTindakan();
-        for (var i = 0; i < DVLKOs.length; i++) {
-          // print(
-          //     'id: ${DVLOs[i].obatId}\nnama: ${DVLOs[i].obatNama}\nstok: ${DVLOs[i].obatStok}\n\n\n\n\n\n');
-        }
       });
     });
   }
@@ -391,11 +392,16 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                       listValueCheckKiri[index] = value;
                       if (value == true) {
                         fetchDataDokterInputTindakan(
-                            widget.visitId, DVLTs[index].idTindakan, 'kiri');
-                      } else {
+                                widget.visitId, DVLTs[index].idTindakan, 'kiri')
+                            .then((value) => DokterBacaDataVKeranjangTindakan(
+                                widget.visitId));
+                      } else if (value == false) {
                         fetchDataDokterInputTindakanBatal(
-                            widget.visitId, DVLTs[index].idTindakan, 'kiri');
+                                widget.visitId, DVLTs[index].idTindakan, 'kiri')
+                            .then((value) => DokterBacaDataVKeranjangTindakan(
+                                widget.visitId));
                       }
+                      // DokterBacaDataVKeranjangTindakan(widget.visitId);
                     });
                   },
                 );
@@ -431,11 +437,15 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                       setState(() {
                         listValueCheckKanan[index] = value;
                         if (value == true) {
-                          fetchDataDokterInputTindakan(
-                              widget.visitId, DVLTs[index].idTindakan, 'kanan');
-                        } else {
-                          fetchDataDokterInputTindakanBatal(
-                              widget.visitId, DVLTs[index].idTindakan, 'kanan');
+                          fetchDataDokterInputTindakan(widget.visitId,
+                                  DVLTs[index].idTindakan, 'kanan')
+                              .then((value) => DokterBacaDataVKeranjangTindakan(
+                                  widget.visitId));
+                        } else if (value == false) {
+                          fetchDataDokterInputTindakanBatal(widget.visitId,
+                                  DVLTs[index].idTindakan, 'kanan')
+                              .then((value) => DokterBacaDataVKeranjangTindakan(
+                                  widget.visitId));
                         }
                       });
                     },
