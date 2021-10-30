@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_application_1/dokter/dr_get_list_tindakan.dart';
 
 import 'dr_get_list_obat.dart';
@@ -161,85 +162,121 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                     children: [
                       ExpansionTile(
                           title: Text(
-                              'NAMA: ${DVLOs[index].obatNama} | STOK: ${DVLOs[index].obatStok}'),
+                            '${DVLOs[index].obatNama}',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(),
+                          ),
                           children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                'STOK: ${DVLOs[index].obatStok}',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(),
+                              ),
+                            ),
                             Row(
                               children: [
                                 Expanded(
-                                  child: TextFormField(
-                                      enabled: true,
-                                      controller: controllerJumlah,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          controllerJumlah.text =
-                                              value.toString();
-                                          controllerJumlah.selection =
-                                              TextSelection.fromPosition(
-                                                  TextPosition(
-                                                      offset: controllerJumlah
-                                                          .text.length));
-                                          print(value.toString());
-                                        });
-                                      },
-                                      decoration: InputDecoration(
-                                        labelText: "Jumlah",
-                                        fillColor: Colors.white,
-                                        enabledBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          borderSide: BorderSide(
-                                            color: Colors.blue,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: TextFormField(
+                                        enabled: true,
+                                        controller: controllerJumlah,
+                                        keyboardType: TextInputType.number,
+                                        inputFormatters: <TextInputFormatter>[
+                                          FilteringTextInputFormatter.digitsOnly
+                                        ],
+                                        onChanged: (value) {
+                                          setState(() {
+                                            controllerJumlah.text =
+                                                value.toString();
+                                            controllerJumlah.selection =
+                                                TextSelection.fromPosition(
+                                                    TextPosition(
+                                                        offset: controllerJumlah
+                                                            .text.length));
+                                            print(value.toString());
+                                          });
+                                        },
+                                        decoration: InputDecoration(
+                                          labelText: "Jumlah",
+                                          fillColor: Colors.white,
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                            borderSide: BorderSide(
+                                              color: Colors.blue,
+                                            ),
                                           ),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          borderSide: BorderSide(
-                                            color: Colors.blue,
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                            borderSide: BorderSide(
+                                              color: Colors.blue,
+                                            ),
                                           ),
-                                        ),
-                                      )),
+                                        )),
+                                  ),
                                 ),
                                 Expanded(
-                                  child: TextFormField(
-                                      enabled: true,
-                                      controller: controllerDosis,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          controllerDosis.text =
-                                              value.toString();
-                                          controllerDosis.selection =
-                                              TextSelection.fromPosition(
-                                                  TextPosition(
-                                                      offset: controllerDosis
-                                                          .text.length));
-                                          print(value.toString());
-                                        });
-                                      },
-                                      decoration: InputDecoration(
-                                        labelText: "Dosis",
-                                        fillColor: Colors.white,
-                                        enabledBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          borderSide: BorderSide(
-                                            color: Colors.blue,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: TextFormField(
+                                        enabled: true,
+                                        controller: controllerDosis,
+                                        // keyboardType: TextInputType.number,
+                                        // inputFormatters: <TextInputFormatter>[
+                                        //   FilteringTextInputFormatter.digitsOnly
+                                        // ],
+                                        onChanged: (value) {
+                                          setState(() {
+                                            controllerDosis.text =
+                                                value.toString();
+                                            controllerDosis.selection =
+                                                TextSelection.fromPosition(
+                                                    TextPosition(
+                                                        offset: controllerDosis
+                                                            .text.length));
+                                            print(value.toString());
+                                          });
+                                        },
+                                        decoration: InputDecoration(
+                                          labelText: "Dosis",
+                                          fillColor: Colors.white,
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                            borderSide: BorderSide(
+                                              color: Colors.blue,
+                                            ),
                                           ),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          borderSide: BorderSide(
-                                            color: Colors.blue,
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                            borderSide: BorderSide(
+                                              color: Colors.blue,
+                                            ),
                                           ),
-                                        ),
-                                      )),
+                                        )),
+                                  ),
                                 )
                               ],
                             ),
-                            ElevatedButton(
-                              onPressed: () {},
-                            )
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextButton(
+                                onPressed: () {},
+                                child: Text('tambah'),
+                                style: TextButton.styleFrom(
+                                    primary: Colors.white,
+                                    backgroundColor: Colors.blue,
+                                    minimumSize: Size(
+                                        MediaQuery.of(context).size.width,
+                                        MediaQuery.of(context).size.height *
+                                            0.01)),
+                              ),
+                            ),
                           ])
                     ],
                   ),
