@@ -157,194 +157,275 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
               children: [
                 Expanded(
                   flex: 8,
-                  child: Text(
-                      'nama: ${DVLOs[index].obatNama} stok: ${DVLOs[index].obatStok}'),
+                  child: Column(
+                    children: [
+                      ExpansionTile(
+                          title: Text(
+                              'NAMA: ${DVLOs[index].obatNama} | STOK: ${DVLOs[index].obatStok}'),
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: TextFormField(
+                                      enabled: true,
+                                      controller: controllerJumlah,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          controllerJumlah.text =
+                                              value.toString();
+                                          controllerJumlah.selection =
+                                              TextSelection.fromPosition(
+                                                  TextPosition(
+                                                      offset: controllerJumlah
+                                                          .text.length));
+                                          print(value.toString());
+                                        });
+                                      },
+                                      decoration: InputDecoration(
+                                        labelText: "Jumlah",
+                                        fillColor: Colors.white,
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          borderSide: BorderSide(
+                                            color: Colors.blue,
+                                          ),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          borderSide: BorderSide(
+                                            color: Colors.blue,
+                                          ),
+                                        ),
+                                      )),
+                                ),
+                                Expanded(
+                                  child: TextFormField(
+                                      enabled: true,
+                                      controller: controllerDosis,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          controllerDosis.text =
+                                              value.toString();
+                                          controllerDosis.selection =
+                                              TextSelection.fromPosition(
+                                                  TextPosition(
+                                                      offset: controllerDosis
+                                                          .text.length));
+                                          print(value.toString());
+                                        });
+                                      },
+                                      decoration: InputDecoration(
+                                        labelText: "Dosis",
+                                        fillColor: Colors.white,
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          borderSide: BorderSide(
+                                            color: Colors.blue,
+                                          ),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          borderSide: BorderSide(
+                                            color: Colors.blue,
+                                          ),
+                                        ),
+                                      )),
+                                )
+                              ],
+                            ),
+                            ElevatedButton(
+                              onPressed: () {},
+                            )
+                          ])
+                    ],
+                  ),
                 ),
-                Expanded(
-                    flex: 1,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                    ))
               ],
             );
           });
     }
   }
 
+  TextEditingController controllerJumlah = TextEditingController();
+  TextEditingController controllerDosis = TextEditingController();
   TextEditingController controllerKeluhan = TextEditingController();
   TextEditingController controllerCariObat = TextEditingController();
   final List<Item> _data = generateItems(8);
-  Widget widgetBuildPanel() {
-    return ExpansionPanelList(
-      expansionCallback: (int index, bool isExpanded) {
-        setState(() {
-          _data[index].isExpanded = !isExpanded;
-        });
-      },
-      children: _data.map<ExpansionPanel>((Item item) {
-        return ExpansionPanel(
-          headerBuilder: (BuildContext context, bool isExpanded) {
-            return ListTile(
-              title: Text(item.headerValue),
-            );
-          },
-          body: Padding(
-            padding: const EdgeInsets.all(25.0),
-            child: Container(
-              color: Colors.green[50],
-              child: Column(
-                children: [
-                  TextFormField(
-                      enabled: true,
-                      controller: controllerKeluhan,
-                      onChanged: (value) {
-                        setState(() {
-                          controllerKeluhan.text = value.toString();
-                          controllerKeluhan.selection =
-                              TextSelection.fromPosition(TextPosition(
-                                  offset: controllerKeluhan.text.length));
-                          print(value.toString());
-                        });
-                      },
-                      decoration: InputDecoration(
-                        labelText: "keluhan",
-                        fillColor: Colors.white,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(
-                            color: Colors.blue,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(
-                            color: Colors.blue,
-                          ),
-                        ),
-                      )),
-                  TextFormField(
-                      enabled: false,
-                      initialValue: 'tidak ada',
-                      decoration: InputDecoration(
-                        labelText: "Riwayat Alergi",
-                        fillColor: Colors.white,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(
-                            color: Colors.blue,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(
-                            color: Colors.blue,
-                          ),
-                        ),
-                      )),
-                  TextFormField(
-                      enabled: false,
-                      initialValue: 'tidak ada',
-                      decoration: InputDecoration(
-                        labelText: "anamnesis",
-                        fillColor: Colors.white,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(
-                            color: Colors.blue,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(
-                            color: Colors.blue,
-                          ),
-                        ),
-                      )),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.42,
-                        child: Container(
-                          color: Colors.yellow,
-                          child: TextFormField(
-                              enabled: false,
-                              initialValue: 'tidak ada',
-                              decoration: InputDecoration(
-                                labelText: "tindakan mata kiri",
-                                fillColor: Colors.white,
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide(
-                                    color: Colors.blue,
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide(
-                                    color: Colors.blue,
-                                  ),
-                                ),
-                              )),
-                        ),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.42,
-                        child: Container(
-                          color: Colors.yellow[50],
-                          child: TextFormField(
-                              enabled: false,
-                              maxLines: 10,
-                              initialValue:
-                                  '1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n 8 \n 9 \n 10',
-                              decoration: InputDecoration(
-                                labelText: "tindakan mata kanan",
-                                fillColor: Colors.white,
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide(
-                                    color: Colors.blue,
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide(
-                                    color: Colors.blue,
-                                  ),
-                                ),
-                              )),
-                        ),
-                      ),
-                    ],
-                  ),
-                  TextFormField(
-                      enabled: false,
-                      initialValue: 'tidak ada',
-                      decoration: InputDecoration(
-                        labelText: "Resep",
-                        fillColor: Colors.white,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(
-                            color: Colors.blue,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(
-                            color: Colors.blue,
-                          ),
-                        ),
-                      )),
-                ],
-              ),
-            ),
-          ),
-          isExpanded: item.isExpanded,
-        );
-      }).toList(),
-    );
-  }
+  // Widget widgetBuildPanel() {
+  //   return ExpansionPanelList(
+  //     expansionCallback: (int index, bool isExpanded) {
+  //       setState(() {
+  //         _data[index].isExpanded = !isExpanded;
+  //       });
+  //     },
+  //     children: _data.map<ExpansionPanel>((Item item) {
+  //       return ExpansionPanel(
+  //         headerBuilder: (BuildContext context, bool isExpanded) {
+  //           return ListTile(
+  //             title: Text(item.headerValue),
+  //           );
+  //         },
+  //         body: Padding(
+  //           padding: const EdgeInsets.all(25.0),
+  //           child: Container(
+  //             color: Colors.green[50],
+  //             child: Column(
+  //               children: [
+  //                 TextFormField(
+  //                     enabled: true,
+  //                     controller: controllerKeluhan,
+  //                     onChanged: (value) {
+  //                       setState(() {
+  //                         controllerKeluhan.text = value.toString();
+  //                         controllerKeluhan.selection =
+  //                             TextSelection.fromPosition(TextPosition(
+  //                                 offset: controllerKeluhan.text.length));
+  //                         print(value.toString());
+  //                       });
+  //                     },
+  //                     decoration: InputDecoration(
+  //                       labelText: "keluhan",
+  //                       fillColor: Colors.white,
+  //                       enabledBorder: OutlineInputBorder(
+  //                         borderRadius: BorderRadius.circular(10.0),
+  //                         borderSide: BorderSide(
+  //                           color: Colors.blue,
+  //                         ),
+  //                       ),
+  //                       focusedBorder: OutlineInputBorder(
+  //                         borderRadius: BorderRadius.circular(10.0),
+  //                         borderSide: BorderSide(
+  //                           color: Colors.blue,
+  //                         ),
+  //                       ),
+  //                     )),
+  //                 TextFormField(
+  //                     enabled: false,
+  //                     initialValue: 'tidak ada',
+  //                     decoration: InputDecoration(
+  //                       labelText: "Riwayat Alergi",
+  //                       fillColor: Colors.white,
+  //                       enabledBorder: OutlineInputBorder(
+  //                         borderRadius: BorderRadius.circular(10.0),
+  //                         borderSide: BorderSide(
+  //                           color: Colors.blue,
+  //                         ),
+  //                       ),
+  //                       focusedBorder: OutlineInputBorder(
+  //                         borderRadius: BorderRadius.circular(10.0),
+  //                         borderSide: BorderSide(
+  //                           color: Colors.blue,
+  //                         ),
+  //                       ),
+  //                     )),
+  //                 TextFormField(
+  //                     enabled: false,
+  //                     initialValue: 'tidak ada',
+  //                     decoration: InputDecoration(
+  //                       labelText: "anamnesis",
+  //                       fillColor: Colors.white,
+  //                       enabledBorder: OutlineInputBorder(
+  //                         borderRadius: BorderRadius.circular(10.0),
+  //                         borderSide: BorderSide(
+  //                           color: Colors.blue,
+  //                         ),
+  //                       ),
+  //                       focusedBorder: OutlineInputBorder(
+  //                         borderRadius: BorderRadius.circular(10.0),
+  //                         borderSide: BorderSide(
+  //                           color: Colors.blue,
+  //                         ),
+  //                       ),
+  //                     )),
+  //                 Row(
+  //                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //                   children: [
+  //                     SizedBox(
+  //                       width: MediaQuery.of(context).size.width * 0.42,
+  //                       child: Container(
+  //                         color: Colors.yellow,
+  //                         child: TextFormField(
+  //                             enabled: false,
+  //                             initialValue: 'tidak ada',
+  //                             decoration: InputDecoration(
+  //                               labelText: "tindakan mata kiri",
+  //                               fillColor: Colors.white,
+  //                               enabledBorder: OutlineInputBorder(
+  //                                 borderRadius: BorderRadius.circular(10.0),
+  //                                 borderSide: BorderSide(
+  //                                   color: Colors.blue,
+  //                                 ),
+  //                               ),
+  //                               focusedBorder: OutlineInputBorder(
+  //                                 borderRadius: BorderRadius.circular(10.0),
+  //                                 borderSide: BorderSide(
+  //                                   color: Colors.blue,
+  //                                 ),
+  //                               ),
+  //                             )),
+  //                       ),
+  //                     ),
+  //                     SizedBox(
+  //                       width: MediaQuery.of(context).size.width * 0.42,
+  //                       child: Container(
+  //                         color: Colors.yellow[50],
+  //                         child: TextFormField(
+  //                             enabled: false,
+  //                             maxLines: 10,
+  //                             initialValue:
+  //                                 '1 \n 2 \n 3 \n 4 \n 5 \n 6 \n 7 \n 8 \n 9 \n 10',
+  //                             decoration: InputDecoration(
+  //                               labelText: "tindakan mata kanan",
+  //                               fillColor: Colors.white,
+  //                               enabledBorder: OutlineInputBorder(
+  //                                 borderRadius: BorderRadius.circular(10.0),
+  //                                 borderSide: BorderSide(
+  //                                   color: Colors.blue,
+  //                                 ),
+  //                               ),
+  //                               focusedBorder: OutlineInputBorder(
+  //                                 borderRadius: BorderRadius.circular(10.0),
+  //                                 borderSide: BorderSide(
+  //                                   color: Colors.blue,
+  //                                 ),
+  //                               ),
+  //                             )),
+  //                       ),
+  //                     ),
+  //                   ],
+  //                 ),
+  //                 TextFormField(
+  //                     enabled: false,
+  //                     initialValue: 'tidak ada',
+  //                     decoration: InputDecoration(
+  //                       labelText: "Resep",
+  //                       fillColor: Colors.white,
+  //                       enabledBorder: OutlineInputBorder(
+  //                         borderRadius: BorderRadius.circular(10.0),
+  //                         borderSide: BorderSide(
+  //                           color: Colors.blue,
+  //                         ),
+  //                       ),
+  //                       focusedBorder: OutlineInputBorder(
+  //                         borderRadius: BorderRadius.circular(10.0),
+  //                         borderSide: BorderSide(
+  //                           color: Colors.blue,
+  //                         ),
+  //                       ),
+  //                     )),
+  //               ],
+  //             ),
+  //           ),
+  //         ),
+  //         isExpanded: item.isExpanded,
+  //       );
+  //     }).toList(),
+  //   );
+  // }
 
   @override
   void initState() {
@@ -525,23 +606,70 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: widgetListTindakanKiri(),
-                                ),
-                                Expanded(
-                                  child: widgetListTindakanKanan(),
-                                )
-                              ],
-                            ),
+                            child: ExpansionTile(
+                                title: TextFormField(
+                                    enabled: false,
+                                    decoration: InputDecoration(
+                                      labelText: "Input Tindakan",
+                                      fillColor: Colors.white,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        borderSide: BorderSide(
+                                          color: Colors.blue,
+                                        ),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        borderSide: BorderSide(
+                                          color: Colors.blue,
+                                        ),
+                                      ),
+                                    )),
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: widgetListTindakanKiri(),
+                                      ),
+                                      Expanded(
+                                        child: widgetListTindakanKanan(),
+                                      )
+                                    ],
+                                  ),
+                                ]),
                           ),
+                          // Padding(
+                          //     padding: const EdgeInsets.all(8.0),
+                          //     child: widgetCariObat()),
                           Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: widgetCariObat()),
-                          Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: widgetListObats()),
+                              child: ExpansionTile(
+                                  title: TextFormField(
+                                      enabled: false,
+                                      decoration: InputDecoration(
+                                        labelText: "Input Resep",
+                                        fillColor: Colors.white,
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          borderSide: BorderSide(
+                                            color: Colors.blue,
+                                          ),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          borderSide: BorderSide(
+                                            color: Colors.blue,
+                                          ),
+                                        ),
+                                      )),
+                                  children: [
+                                    widgetCariObat(),
+                                    widgetListObats()
+                                  ])),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextButton(
