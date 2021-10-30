@@ -52,6 +52,7 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
         DVLOs.add(dvlo);
       }
       setState(() {
+        widgetListObats();
         for (var i = 0; i < DVLOs.length; i++) {
           print(
               'id: ${DVLOs[i].obatId}\nnama: ${DVLOs[i].obatNama}\nstok: ${DVLOs[i].obatStok}\n\n\n\n\n\n');
@@ -122,15 +123,34 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                 ),
               )),
         ),
+        Expanded(
+          child: TextButton(
+            onPressed: () {
+              DokterBacaDataVListObat(controllerCariObat.text);
+            },
+            child: Text('tambah'),
+            style: TextButton.styleFrom(
+                primary: Colors.white,
+                backgroundColor: Colors.blue,
+                minimumSize: Size(MediaQuery.of(context).size.width,
+                    MediaQuery.of(context).size.height * 0.01)),
+          ),
+        ),
       ],
     );
   }
 
+  // ignore: missing_return
   Widget widgetListObats() {
     if (DVLOs.length > 0) {
-      for (var i = 0; i < DVLOs.length; i++) {
-        return Text(' nama: ${DVLOs[i].obatNama} stok: ${DVLOs[i].obatStok}');
-      }
+      return ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: DVLOs.length,
+          itemBuilder: (context, index) {
+            return Text(
+                'nama: ${DVLOs[index].obatNama} stok: ${DVLOs[index].obatStok}');
+          });
     }
   }
 
