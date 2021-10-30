@@ -607,26 +607,11 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ExpansionTile(
-                                title: TextFormField(
-                                    enabled: false,
-                                    decoration: InputDecoration(
-                                      labelText: "Input Tindakan",
-                                      fillColor: Colors.white,
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        borderSide: BorderSide(
-                                          color: Colors.blue,
-                                        ),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        borderSide: BorderSide(
-                                          color: Colors.blue,
-                                        ),
-                                      ),
-                                    )),
+                                title: Text(
+                                  'Input Tindakan',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(),
+                                ),
                                 children: [
                                   Row(
                                     children: [
@@ -646,26 +631,11 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                           Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: ExpansionTile(
-                                  title: TextFormField(
-                                      enabled: false,
-                                      decoration: InputDecoration(
-                                        labelText: "Input Resep",
-                                        fillColor: Colors.white,
-                                        enabledBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          borderSide: BorderSide(
-                                            color: Colors.blue,
-                                          ),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          borderSide: BorderSide(
-                                            color: Colors.blue,
-                                          ),
-                                        ),
-                                      )),
+                                  title: Text(
+                                    'Input Resep',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(),
+                                  ),
                                   children: [
                                     widgetCariObat(),
                                     widgetListObats()
