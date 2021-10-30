@@ -266,7 +266,13 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  fetchDataDokterInputResepObat(
+                                      DVLOs[index].obatId,
+                                      controllerDosis.text,
+                                      controllerJumlah.text,
+                                      widget.visitId);
+                                },
                                 child: Text('tambah'),
                                 style: TextButton.styleFrom(
                                     primary: Colors.white,

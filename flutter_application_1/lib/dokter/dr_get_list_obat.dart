@@ -38,19 +38,21 @@ Future<String> fetchDataDokterVListObat(pNamaObat) async {
   }
 }
 
-Future<String> fetchDataDokterVlistObatBatal(pVisitId, pTdkId, pMtSisi) async {
-  // print('final: $pVisitId | $pTdkId | $pMtSisi');
+Future<String> fetchDataDokterInputResepObat(
+    pObtId, pDosis, pJumlah, pVisitId) async {
+  print('final: $pObtId | $pDosis | $pJumlah | $pVisitId');
   final response = await http
-      .post(Uri.parse(APIurl + "dokter_input_tindakan_batal.php"), body: {
+      .post(Uri.parse(APIurl + "dokter_input_resep_has_obat.php"), body: {
+    "obat_id": pObtId.toString(),
+    "dosis": pDosis.toString(),
+    "jumlah": pJumlah.toString(),
     "visit_id": pVisitId.toString(),
-    "tindakan_id": pTdkId.toString(),
-    "mt_sisi": pMtSisi
   });
   if (response.statusCode == 200) {
-    // print('200: ${response.body}');
+    print('200: ${response.body}');
     return response.body;
   } else {
-    // print('else: ${response.body}');
+    print('else: ${response.body}');
     throw Exception('Failed to read API');
   }
 }
