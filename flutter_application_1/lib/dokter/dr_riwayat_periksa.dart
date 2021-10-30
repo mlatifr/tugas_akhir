@@ -457,17 +457,50 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
 
   Widget widgetKeranjangTindakan() {
     if (DVKTs.length > 0) {
-      return ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: DVKTs.length,
-          itemBuilder: (context, index) {
-            return Center(
-              child: Text(
-                '${DVKTs[index].namaTindakan} | ${DVKTs[index].mataSisiTindakan}',
-              ),
-            );
-          });
+      return Column(
+        children: [
+          Table(
+              border: TableBorder
+                  .all(), // Allows to add a border decoration around your table
+              children: [
+                TableRow(children: [
+                  Text(
+                    'Nama',
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    'Tindakan',
+                    textAlign: TextAlign.center,
+                  ),
+                ]),
+              ]),
+          ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: DVKTs.length,
+              itemBuilder: (context, index) {
+                return Table(
+                    border: TableBorder
+                        .all(), // Allows to add a border decoration around your table
+                    children: [
+                      TableRow(children: [
+                        Text(
+                          '${DVKTs[index].namaTindakan}',
+                          textAlign: TextAlign.center,
+                        ),
+                        Text(
+                          '${DVKTs[index].mataSisiTindakan}',
+                          textAlign: TextAlign.center,
+                        ),
+                      ]),
+                    ]);
+              }),
+          Divider(
+            color: Colors.black,
+            thickness: 2,
+          ),
+        ],
+      );
     } else {
       return Row(
         children: [Text('Keranjang Tindakan: '), CircularProgressIndicator()],
