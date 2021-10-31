@@ -111,13 +111,19 @@ class _DrAntreanPasienState extends State<DrAntreanPasien> {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Text('Selamat datang: ' + username),
+            child: Text(
+              'Selamat datang: \n ' + username,
+              style: TextStyle(
+                backgroundColor: Colors.white.withOpacity(0.85),
+                fontSize: 20,
+              ),
+            ),
             decoration: BoxDecoration(
-                // image: DecorationImage(
-                //   fit: BoxFit.cover,
-                //   image: AssetImage('assets/images/clinic.jpg'),
-                // ),
-                ),
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: AssetImage('./asset/image/clinic_text.jpg'),
+              ),
+            ),
           ),
           ListTile(
             title: Text('Cari Pasien'),
