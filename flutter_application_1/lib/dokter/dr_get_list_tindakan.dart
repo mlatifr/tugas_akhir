@@ -9,10 +9,11 @@ List<DokterVListTindakan> DVLTs = [];
 List<DokterVKeranjangTindakan> DVKTs = [];
 
 class DokterVKeranjangTindakan {
-  var namaTindakan, mataSisiTindakan;
+  var namaTindakan, mataSisiTindakan, tindakan_id;
   DokterVKeranjangTindakan({
     this.namaTindakan,
     this.mataSisiTindakan,
+    this.tindakan_id,
   });
 
   // untuk convert dari jSon
@@ -20,6 +21,7 @@ class DokterVKeranjangTindakan {
     return new DokterVKeranjangTindakan(
       namaTindakan: json['nama'],
       mataSisiTindakan: json['mt_sisi'],
+      tindakan_id: json['tindakan_id'],
     );
   }
 }
@@ -80,7 +82,7 @@ Future<String> fetchDataDokterInputTindakanBatal(
     "mt_sisi": pMtSisi
   });
   if (response.statusCode == 200) {
-    // print('200: ${response.body}');
+    print('fetchDataDokterInputTindakanBatal: ${response.body}');
     return response.body;
   } else {
     // print('else: ${response.body}');

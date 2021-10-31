@@ -354,7 +354,14 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
     DokterBacaDataVListTindakan();
     DokterBacaDataVListObat('');
     DokterBacaDataVKeranjangObat(widget.visitId);
-    DokterBacaDataVKeranjangTindakan(widget.visitId);
+    for (var index = 0; index < DVKTs.length; index++) {
+      fetchDataDokterInputTindakanBatal(
+              widget.visitId, DVKTs[index].tindakan_id, 'kiri')
+          .then((value) => DokterBacaDataVKeranjangTindakan(widget.visitId));
+      fetchDataDokterInputTindakanBatal(
+              widget.visitId, DVKTs[index].tindakan_id, 'kanan')
+          .then((value) => DokterBacaDataVKeranjangTindakan(widget.visitId));
+    }
     super.initState();
   }
 
