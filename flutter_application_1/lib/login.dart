@@ -120,7 +120,14 @@ class _LoginPageState extends State<LoginPage> {
           children: <Widget>[
             Column(
               children: [
-                Image.asset('./asset/image/clinic.jpg'),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.asset(
+                    './asset/image/clinic_text.jpg',
+                    // './asset/image/clinic1.jpg',
+                    // width: MediaQuery.of(context).size.width * 0.50,
+                  ),
+                ),
                 TextFormField(
                   onChanged: (value) {
                     username = value;

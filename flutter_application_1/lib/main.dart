@@ -107,7 +107,9 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Pendaftaran'),
+      home: MyHomePage(
+        title: 'Pendaftaran Visit',
+      ),
       // home: LoginPage(),
     );
   }
@@ -206,13 +208,19 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Text('Selamat datang: ' + username),
+            child: Text(
+              'Selamat datang: \n' + username,
+              style: TextStyle(
+                backgroundColor: Colors.white.withOpacity(0.85),
+                fontSize: 20,
+              ),
+            ),
             decoration: BoxDecoration(
-                // image: DecorationImage(
-                //   fit: BoxFit.cover,
-                //   image: AssetImage('assets/images/clinic.jpg'),
-                // ),
-                ),
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: AssetImage('./asset/image/clinic_text.jpg'),
+              ),
+            ),
           ),
           ListTile(
             title: Text('Nomor Antrean'),
@@ -283,9 +291,12 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           Column(
             children: [
-              SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.55,
-                  child: Image.asset('./asset/image/clinic.jpg')),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.asset(
+                  './asset/image/clinic_text.jpg',
+                ),
+              ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               Text('Selamat Datang'),
               Text(username),
