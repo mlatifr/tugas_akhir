@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/dokter/dr_get_list_tindakan.dart';
 import 'package:flutter_application_1/dokter/dr_riwayat_periksa.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../main.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -58,11 +59,19 @@ class _AptAntreanPasienState extends State<AptAntreanPasien> {
     });
   }
 
+  void getUserIdApoteker() async {
+    final prefs = await SharedPreferences.getInstance();
+    userid = prefs.getString("userid");
+    setState(() {});
+  }
+
   @override
   void initState() {
+    getUserIdApoteker();
+    print('user id apoteker $userid');
     DateTime now = new DateTime.now();
     DateTime date = new DateTime(now.year, now.month, now.day);
-    print(date);
+    // print(date);
     controllerdate.text = date.toString().substring(0, 10);
     ApotekerBacaDataAntrean();
     AptkrVAs = [];
@@ -176,6 +185,11 @@ class _AptAntreanPasienState extends State<AptAntreanPasien> {
                     onTap: () {
                       _timerForInter.cancel();
                       print('timer stop');
+                      fetchDataApotekerInputRspVst(
+                        AptkrVAs[index].visitId,
+                        userid,
+                        DateTime.now().toString().substring(0, 10),
+                      );
                       Navigator.push(
                           context,
                           MaterialPageRoute(

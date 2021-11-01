@@ -16,8 +16,8 @@ class AptInputObat extends StatefulWidget {
 
 class _AptInputObatState extends State<AptInputObat> {
   // ignore: non_constant_identifier_names
-  ApotekerBacaDataVKeranjangObat(pVisitId) {
-    AVLKOs.clear();
+  ApotekerBacaDataVKeranjangResepDokter(pVisitId) {
+    AVKRDs.clear();
     Future<String> data = fetchDataDokterKeranjangObat(pVisitId);
     data.then((value) {
       //Mengubah json menjadi Array
@@ -26,7 +26,7 @@ class _AptInputObatState extends State<AptInputObat> {
       for (var i in json['data']) {
         ApotekerVKeranjangObat keranjangObat =
             ApotekerVKeranjangObat.fromJson(i);
-        AVLKOs.add(keranjangObat);
+        AVKRDs.add(keranjangObat);
       }
       setState(() {
         widgetListObats();
@@ -234,8 +234,8 @@ class _AptInputObatState extends State<AptInputObat> {
                               padding: const EdgeInsets.all(8.0),
                               child: TextButton(
                                 onPressed: () {
-                                  fetchDataDokterInputResepObat(
-                                          DVLOs[index].obatId,
+                                  fetchDataApotekerInputResepObat(
+                                          AVLOs[index].obatId,
                                           controllerDosis.text,
                                           controllerJumlah.text,
                                           widget.visitId)
@@ -317,7 +317,7 @@ class _AptInputObatState extends State<AptInputObat> {
       child: ListView.builder(
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemCount: AVLKOs.length,
+          itemCount: AVKRDs.length,
           itemBuilder: (context, index) {
             return Table(
                 border: TableBorder
@@ -325,15 +325,15 @@ class _AptInputObatState extends State<AptInputObat> {
                 children: [
                   TableRow(children: [
                     Text(
-                      '${AVLKOs[index].nama}',
+                      '${AVKRDs[index].nama}',
                       textAlign: TextAlign.center,
                     ),
                     Text(
-                      '${AVLKOs[index].jumlah}',
+                      '${AVKRDs[index].jumlah}',
                       textAlign: TextAlign.center,
                     ),
                     Text(
-                      '${AVLKOs[index].dosis}',
+                      '${AVKRDs[index].dosis}',
                       textAlign: TextAlign.center,
                     ),
                   ]),
@@ -344,7 +344,7 @@ class _AptInputObatState extends State<AptInputObat> {
 
   @override
   void initState() {
-    ApotekerBacaDataVKeranjangObat(widget.visitId);
+    ApotekerBacaDataVKeranjangResepDokter(widget.visitId);
     controllerCariObat.clear();
     ApotekerBacaDataVListObat(controllerCariObat.text);
     super.initState();
@@ -357,13 +357,13 @@ class _AptInputObatState extends State<AptInputObat> {
 
   @override
   Widget build(BuildContext context) {
-    if (AVLKOs.length > 0) {
+    if (AVKRDs.length > 0) {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text('Input Pemeriksaan'),
+            title: Text('Input Resep'),
             leading: new IconButton(
               icon: new Icon(Icons.arrow_back),
               onPressed: () {

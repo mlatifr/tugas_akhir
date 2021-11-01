@@ -6,7 +6,7 @@ import 'package:flutter_application_1/main.dart';
 import 'package:http/http.dart' as http;
 
 List<ApotekerrVListObat> AVLOs = [];
-List<ApotekerVKeranjangObat> AVLKOs = [];
+List<ApotekerVKeranjangObat> AVKRDs = [];
 
 class ApotekerVKeranjangObat {
   var resep_dokter_id, obat_id, nama, dosis, jumlah;
@@ -48,6 +48,25 @@ class ApotekerrVListObat {
   }
 }
 
+Future<String> fetchDataApotekerInputRspVst(
+    pVisit_id, pUser_id_apoteker, pTgl_penulisan_resep) async {
+  print(
+      'fetchDataApotekerInputRspVst: $pVisit_id | $pUser_id_apoteker | $pTgl_penulisan_resep');
+  final response =
+      await http.post(Uri.parse(APIurl + "apoteker_v_list_obat.php"), body: {
+    'visit_id': pVisit_id.toString(),
+    'user_id_apoteker': pUser_id_apoteker.toString(),
+    'tgl_penulisan_resep': pTgl_penulisan_resep.toString()
+  });
+  if (response.statusCode == 200) {
+    print('fetchDataApotekerInputRspVst: ${response.body}');
+    return response.body;
+  } else {
+    // print('else: ${response.body}');
+    throw Exception('Failed to read API');
+  }
+}
+
 Future<String> fetchDataApotekerVListObat(pNamaObat) async {
   // print('final: $pVisitId | $pTdkId | $pMtSisi');
   final response = await http.post(
@@ -66,14 +85,14 @@ Future<String> fetchDataApotekerInputResepObat(
     pObtId, pDosis, pJumlah, pVisitId) async {
   // print('final: $pObtId | $pDosis | $pJumlah | $pVisitId');
   final response = await http
-      .post(Uri.parse(APIurl + "dokter_input_resep_has_obat.php"), body: {
+      .post(Uri.parse(APIurl + "apoteker_input_resep_has_obat.php"), body: {
     "obat_id": pObtId.toString(),
     "dosis": pDosis.toString(),
     "jumlah": pJumlah.toString(),
     "visit_id": pVisitId.toString(),
   });
   if (response.statusCode == 200) {
-    // print('200: ${response.body}');
+    print('fetchDataApotekerInputResepObat: ${response.body}');
     return response.body;
   } else {
     // print('else: ${response.body}');
