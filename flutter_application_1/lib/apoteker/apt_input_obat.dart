@@ -18,16 +18,16 @@ class AptInputObat extends StatefulWidget {
 class _AptInputObatState extends State<AptInputObat> {
   // ignore: non_constant_identifier_names
   ApotekerBacaDataVKeranjangResepDokter(pVisitId) {
-    AVKRDs.clear();
+    AVKODrs.clear();
     Future<String> data = fetchDataDokterKeranjangObat(pVisitId);
     data.then((value) {
       //Mengubah json menjadi Array
       // ignore: unused_local_variable
       Map json = jsonDecode(value);
       for (var i in json['data']) {
-        ApotekerVKeranjangObat keranjangObat =
-            ApotekerVKeranjangObat.fromJson(i);
-        AVKRDs.add(keranjangObat);
+        ApotekerVKeranjangObatDokter keranjangObatDokter =
+            ApotekerVKeranjangObatDokter.fromJson(i);
+        AVKODrs.add(keranjangObatDokter);
       }
       setState(() {
         widgetListObats();
@@ -321,7 +321,7 @@ class _AptInputObatState extends State<AptInputObat> {
       child: ListView.builder(
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemCount: AVKRDs.length,
+          itemCount: AVKODrs.length,
           itemBuilder: (context, index) {
             return Table(
                 border: TableBorder
@@ -329,15 +329,15 @@ class _AptInputObatState extends State<AptInputObat> {
                 children: [
                   TableRow(children: [
                     Text(
-                      '${AVKRDs[index].nama}',
+                      '${AVKODrs[index].nama}',
                       textAlign: TextAlign.center,
                     ),
                     Text(
-                      '${AVKRDs[index].jumlah}',
+                      '${AVKODrs[index].jumlah}',
                       textAlign: TextAlign.center,
                     ),
                     Text(
-                      '${AVKRDs[index].dosis}',
+                      '${AVKODrs[index].dosis}',
                       textAlign: TextAlign.center,
                     ),
                   ]),
@@ -369,6 +369,25 @@ class _AptInputObatState extends State<AptInputObat> {
     });
   }
 
+// ignore: non_constant_identifier_names
+  ApotekerBacaInputResepObat(pRspAptkrId, pObtId, pDosis, pJumlah, pVisitId) {
+    // AptkrRspId = '';
+    Future<String> data = ApotekerBacaInputResepObat(
+        pRspAptkrId, pObtId, pDosis, pJumlah, pVisitId);
+    data.then((value) {
+      //Mengubah json menjadi Array
+      // ignore: unused_local_variable
+      Map json = jsonDecode(value);
+      // AptkrRspId = json['id_resep_apoteker'].toString();
+      // print('ApotekerBacaDataRspVst(): $AptkrRspId');
+      for (var i in json['data']) {
+        print(i);
+        // ApotekerVAntrean dva = ApotekerVAntrean.fromJson(i);
+      }
+      setState(() {});
+    });
+  }
+
   @override
   void initState() {
     ApotekerBacaDataRspVst();
@@ -385,7 +404,7 @@ class _AptInputObatState extends State<AptInputObat> {
 
   @override
   Widget build(BuildContext context) {
-    if (AVKRDs.length > 0) {
+    if (AVKODrs.length > 0) {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(

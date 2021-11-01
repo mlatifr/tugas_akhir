@@ -6,7 +6,7 @@ import 'package:flutter_application_1/main.dart';
 import 'package:http/http.dart' as http;
 
 List<ApotekerrVListObat> AVLOs = [];
-List<ApotekerVKeranjangObat> AVKRDs = [];
+List<ApotekerVKeranjangObatDokter> AVKODrs = [];
 
 class ApotekerVKeranjangObat {
   var resep_dokter_id, obat_id, nama, dosis, jumlah;
@@ -21,6 +21,28 @@ class ApotekerVKeranjangObat {
   // untuk convert dari jSon
   factory ApotekerVKeranjangObat.fromJson(Map<String, dynamic> json) {
     return new ApotekerVKeranjangObat(
+      resep_dokter_id: json['resep_dokter_id'],
+      obat_id: json['obat_id'],
+      nama: json['nama'],
+      dosis: json['dosis'],
+      jumlah: json['dosis'],
+    );
+  }
+}
+
+class ApotekerVKeranjangObatDokter {
+  var resep_dokter_id, obat_id, nama, dosis, jumlah;
+  ApotekerVKeranjangObatDokter({
+    this.resep_dokter_id,
+    this.obat_id,
+    this.nama,
+    this.dosis,
+    this.jumlah,
+  });
+
+  // untuk convert dari jSon
+  factory ApotekerVKeranjangObatDokter.fromJson(Map<String, dynamic> json) {
+    return new ApotekerVKeranjangObatDokter(
       resep_dokter_id: json['resep_dokter_id'],
       obat_id: json['obat_id'],
       nama: json['nama'],
