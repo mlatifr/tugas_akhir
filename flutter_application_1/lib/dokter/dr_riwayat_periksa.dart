@@ -191,10 +191,12 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
     );
   }
 
+  int selected; //agar yg terbuka hanya bisa 1 ListTile
   // ignore: missing_return
   Widget widgetListObats() {
     if (DVLOs.length > 0) {
       return ListView.builder(
+          key: Key('builder ${selected.toString()}'), //agar yg terbuka hanya bisa 1 ListTile
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemCount: DVLOs.length,
@@ -206,6 +208,18 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                   child: Column(
                     children: [
                       ExpansionTile(
+                          key: Key(index.toString()), //agar yg terbuka hanya bisa 1 ListTile
+                          initiallyExpanded: index == selected, //agar yg terbuka hanya bisa 1 ListTile
+                          onExpansionChanged: ((newState) {
+                            if (newState)
+                              setState(() {
+                                selected = index;
+                              });
+                            else
+                              setState(() {
+                                selected = -1;
+                              });
+                          }),
                           title: Text(
                             '${DVLOs[index].obatNama}',
                             textAlign: TextAlign.center,
@@ -313,10 +327,28 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                               child: TextButton(
                                 onPressed: () {
                                   fetchDataDokterInputResepObat(
-                                      DVLOs[index].obatId,
-                                      controllerDosis.text,
-                                      controllerJumlah.text,
-                                      widget.visitId);
+                                          DVLOs[index].obatId,
+                                          controllerDosis.text,
+                                          controllerJumlah.text,
+                                          widget.visitId)
+                                      .then((value) => showDialog<String>(
+                                            context: context,
+                                            builder: (BuildContext context) =>
+                                                AlertDialog(
+                                              title: Text(
+                                                'Obat berhasil ditambah ke resep',
+                                                style: TextStyle(fontSize: 14),
+                                              ),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          context, 'ok'),
+                                                  child: Text('ok'),
+                                                ),
+                                              ],
+                                            ),
+                                          ));
                                   DokterBacaDataVKeranjangObat(widget.visitId);
                                 },
                                 child: Text('tambah'),
