@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_application_1/dokter/dr_get_list_obat.dart';
 import 'package:flutter_application_1/dokter/dr_get_list_tindakan.dart';
 
+import 'apt_get_resep_pasien_detail.dart';
+
 // stores ExpansionPanel state information
 class Item {
   Item({
@@ -38,16 +40,17 @@ class AptInputObat extends StatefulWidget {
 
 class _AptInputObatState extends State<AptInputObat> {
   // ignore: non_constant_identifier_names
-  DokterBacaDataVKeranjangObat(pVisitId) {
-    DVLKOs.clear();
+  ApotekerBacaDataVKeranjangObat(pVisitId) {
+    AVLKOs.clear();
     Future<String> data = fetchDataDokterKeranjangObat(pVisitId);
     data.then((value) {
       //Mengubah json menjadi Array
       // ignore: unused_local_variable
       Map json = jsonDecode(value);
       for (var i in json['data']) {
-        DokterVKeranjangObat keranjangObat = DokterVKeranjangObat.fromJson(i);
-        DVLKOs.add(keranjangObat);
+        ApotekerVKeranjangObat keranjangObat =
+            ApotekerVKeranjangObat.fromJson(i);
+        AVLKOs.add(keranjangObat);
       }
       setState(() {
         widgetListObats();
@@ -55,16 +58,16 @@ class _AptInputObatState extends State<AptInputObat> {
     });
   } // ignore: non_constant_identifier_names
 
-  DokterBacaDataVListObat(pNamaObat) {
-    DVLOs.clear();
+  ApotekerBacaDataVListObat(pNamaObat) {
+    AVLOs.clear();
     Future<String> data = fetchDataDokterVListObat(pNamaObat);
     data.then((value) {
       //Mengubah json menjadi Array
       // ignore: unused_local_variable
       Map json = jsonDecode(value);
       for (var i in json['data']) {
-        DokterVListObat dvlo = DokterVListObat.fromJson(i);
-        DVLOs.add(dvlo);
+        ApotekerrVListObat dvlo = ApotekerrVListObat.fromJson(i);
+        AVLOs.add(dvlo);
       }
       setState(() {
         widgetListObats();
@@ -112,7 +115,7 @@ class _AptInputObatState extends State<AptInputObat> {
           flex: 4,
           child: TextButton(
             onPressed: () {
-              DokterBacaDataVListObat(controllerCariObat.text);
+              // DokterBacaDataVListObat(controllerCariObat.text);
             },
             child: Text(
               'Cari',
@@ -131,13 +134,13 @@ class _AptInputObatState extends State<AptInputObat> {
   int selected; //agar yg terbuka hanya bisa 1 ListTile
   // ignore: missing_return
   Widget widgetListObats() {
-    if (DVLOs.length > 0) {
+    if (5 > 0) {
       return ListView.builder(
           key: Key(
               'builder ${selected.toString()}'), //agar yg terbuka hanya bisa 1 ListTile
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemCount: DVLOs.length,
+          itemCount: 5,
           itemBuilder: (context, index) {
             return Row(
               children: [
@@ -161,7 +164,7 @@ class _AptInputObatState extends State<AptInputObat> {
                               });
                           }),
                           title: Text(
-                            '${DVLOs[index].obatNama}',
+                            'apoteker 1',
                             textAlign: TextAlign.center,
                             style: TextStyle(),
                           ),
@@ -169,7 +172,7 @@ class _AptInputObatState extends State<AptInputObat> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                'STOK: ${DVLOs[index].obatStok}',
+                                '2',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(),
                               ),
@@ -223,10 +226,6 @@ class _AptInputObatState extends State<AptInputObat> {
                                     child: TextFormField(
                                         enabled: true,
                                         controller: controllerDosis,
-                                        // keyboardType: TextInputType.number,
-                                        // inputFormatters: <TextInputFormatter>[
-                                        //   FilteringTextInputFormatter.digitsOnly
-                                        // ],
                                         onChanged: (value) {
                                           setState(() {
                                             controllerDosis.text =
@@ -236,7 +235,6 @@ class _AptInputObatState extends State<AptInputObat> {
                                                     TextPosition(
                                                         offset: controllerDosis
                                                             .text.length));
-                                            // print(value.toString());
                                           });
                                         },
                                         decoration: InputDecoration(
@@ -261,52 +259,6 @@ class _AptInputObatState extends State<AptInputObat> {
                                 )
                               ],
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: TextButton(
-                                onPressed: () {
-                                  fetchDataDokterInputResepObat(
-                                          DVLOs[index].obatId,
-                                          controllerDosis.text,
-                                          controllerJumlah.text,
-                                          widget.visitId)
-                                      .then((value) => showDialog<String>(
-                                            context: context,
-                                            builder: (BuildContext context) =>
-                                                AlertDialog(
-                                              title: Text(
-                                                'Obat berhasil ditambah ke resep',
-                                                style: TextStyle(fontSize: 14),
-                                              ),
-                                              actions: <Widget>[
-                                                TextButton(
-                                                    onPressed: () {
-                                                      controllerJumlah.clear();
-                                                      controllerDosis.clear();
-                                                      setState(() {
-                                                        widgetListObats();
-                                                      });
-                                                      Navigator.pop(
-                                                        context,
-                                                        'ok',
-                                                      );
-                                                    },
-                                                    child: Text('ok')),
-                                              ],
-                                            ),
-                                          ));
-                                  DokterBacaDataVKeranjangObat(widget.visitId);
-                                },
-                                child: Text('tambah'),
-                                style: TextButton.styleFrom(
-                                    primary: Colors.white,
-                                    backgroundColor: Colors.blue,
-                                    minimumSize: Size(
-                                        MediaQuery.of(context).size.width,
-                                        MediaQuery.of(context).size.height *
-                                            0.01)),
-                              ),
-                            ),
                           ])
                     ],
                   ),
@@ -319,33 +271,17 @@ class _AptInputObatState extends State<AptInputObat> {
 
   TextEditingController controllerJumlah = TextEditingController();
   TextEditingController controllerDosis = TextEditingController();
-  TextEditingController controllerKeluhan = TextEditingController();
   TextEditingController controllerCariObat = TextEditingController();
   final List<Item> _data = generateItems(8);
 
   @override
   void initState() {
-    // controllerKeluhan.text = widget.keluhan;
-    // controllerKeluhan.addListener(() {
-    //   setState(() {});
-    // });
-    // DokterBacaDataVListTindakan();
-    DokterBacaDataVListObat('');
-    DokterBacaDataVKeranjangObat(widget.visitId);
-    // for (var index = 0; index < DVKTs.length; index++) {
-    //   fetchDataDokterInputTindakanBatal(
-    //           widget.visitId, DVKTs[index].tindakan_id, 'kiri')
-    //       .then((value) => DokterBacaDataVKeranjangTindakan(widget.visitId));
-    //   fetchDataDokterInputTindakanBatal(
-    //           widget.visitId, DVKTs[index].tindakan_id, 'kanan')
-    //       .then((value) => DokterBacaDataVKeranjangTindakan(widget.visitId));
-    // }
+    ApotekerBacaDataVKeranjangObat(widget.visitId);
     super.initState();
   }
 
   @override
   void dispose() {
-    controllerKeluhan.dispose();
     super.dispose();
   }
 
@@ -405,62 +341,9 @@ class _AptInputObatState extends State<AptInputObat> {
     );
   }
 
-  Widget widgetKeranjangTindakan() {
-    if (DVKTs.length > 0) {
-      return Column(
-        children: [
-          Table(
-              border: TableBorder
-                  .all(), // Allows to add a border decoration around your table
-              children: [
-                TableRow(children: [
-                  Text(
-                    'Nama',
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    'Tindakan',
-                    textAlign: TextAlign.center,
-                  ),
-                ]),
-              ]),
-          ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: DVKTs.length,
-              itemBuilder: (context, index) {
-                return Table(
-                    border: TableBorder
-                        .all(), // Allows to add a border decoration around your table
-                    children: [
-                      TableRow(children: [
-                        Text(
-                          '${DVKTs[index].namaTindakan}',
-                          textAlign: TextAlign.center,
-                        ),
-                        Text(
-                          '${DVKTs[index].mataSisiTindakan}',
-                          textAlign: TextAlign.center,
-                        ),
-                      ]),
-                    ]);
-              }),
-          Divider(
-            color: Colors.black,
-            thickness: 2,
-          ),
-        ],
-      );
-    } else {
-      return Row(
-        children: [Text('Keranjang Tindakan: '), CircularProgressIndicator()],
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    if (DVLTs.length > 0) {
+    if (AVLKOs.length > 0) {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
@@ -520,7 +403,7 @@ class _AptInputObatState extends State<AptInputObat> {
         home: Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text('Riwayat Periksa: ${widget.namaPasien}'),
+            title: Text('Resep: ${widget.namaPasien}'),
             leading: new IconButton(
               icon: new Icon(Icons.arrow_back),
               onPressed: () {

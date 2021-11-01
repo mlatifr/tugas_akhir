@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:flutter_application_1/main.dart';
 import 'package:http/http.dart' as http;
 
-List<ApotekerrVListObat> DVLOs = [];
+List<ApotekerrVListObat> AVLOs = [];
 List<ApotekerVKeranjangObat> AVLKOs = [];
 
 class ApotekerVKeranjangObat {
@@ -82,12 +82,12 @@ Future<String> fetchDataApotekerInputResepObat(
 
 Future<String> fetchDataApotekerKeranjangObat(pVisitId) async {
   // print('final:$pVisitId');
-  final response = await http
-      .post(Uri.parse(APIurl + "dokter_v_keranjang_resep_obat.php"), body: {
+  final response =
+      await http.post(Uri.parse(APIurl + "apoteker_v_rsp_dr.php"), body: {
     "visit_id": pVisitId.toString(),
   });
   if (response.statusCode == 200) {
-    // print('200: ${response.body}');
+    print('200: ${response.body}');
     return response.body;
   } else {
     // print('else: ${response.body}');
