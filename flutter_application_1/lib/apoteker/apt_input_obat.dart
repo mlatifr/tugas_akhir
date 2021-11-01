@@ -2,12 +2,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/dokter/dr_get_list_obat.dart';
+import 'package:http/http.dart';
 import 'apt_get_resep_pasien_detail.dart';
 
 class AptInputObat extends StatefulWidget {
-  final namaPasien, visitId;
+  final AptkrId, namaPasien, visitId;
 
-  const AptInputObat({Key key, this.namaPasien, this.visitId})
+  const AptInputObat({Key key, this.AptkrId, this.namaPasien, this.visitId})
       : super(key: key);
 
   @override
@@ -235,35 +236,38 @@ class _AptInputObatState extends State<AptInputObat> {
                               child: TextButton(
                                 onPressed: () {
                                   fetchDataApotekerInputResepObat(
+                                          AptkrRspId,
                                           AVLOs[index].obatId,
                                           controllerDosis.text,
                                           controllerJumlah.text,
                                           widget.visitId)
-                                      .then((value) => showDialog<String>(
-                                            context: context,
-                                            builder: (BuildContext context) =>
-                                                AlertDialog(
-                                              title: Text(
-                                                'Obat berhasil ditambah ke resep',
-                                                style: TextStyle(fontSize: 14),
-                                              ),
-                                              actions: <Widget>[
-                                                TextButton(
-                                                    onPressed: () {
-                                                      controllerJumlah.clear();
-                                                      controllerDosis.clear();
-                                                      setState(() {
-                                                        widgetListObats();
-                                                      });
-                                                      Navigator.pop(
-                                                        context,
-                                                        'ok',
-                                                      );
-                                                    },
-                                                    child: Text('ok')),
-                                              ],
-                                            ),
-                                          ));
+                                      .then((value) {
+                                    showDialog<String>(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          AlertDialog(
+                                        title: Text(
+                                          'Obat berhasil ditambah ke resep',
+                                          style: TextStyle(fontSize: 14),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                              onPressed: () {
+                                                controllerJumlah.clear();
+                                                controllerDosis.clear();
+                                                setState(() {
+                                                  widgetListObats();
+                                                });
+                                                Navigator.pop(
+                                                  context,
+                                                  'ok',
+                                                );
+                                              },
+                                              child: Text('ok')),
+                                        ],
+                                      ),
+                                    );
+                                  });
                                   // DokterBacaDataVKeranjangObat(widget.visitId);
                                 },
                                 child: Text('tambah'),
@@ -342,8 +346,32 @@ class _AptInputObatState extends State<AptInputObat> {
     );
   }
 
+  var AptkrRspId;
+  // ignore: non_constant_identifier_names
+  ApotekerBacaDataRspVst() {
+    AptkrRspId = '';
+    Future<String> data = fetchDataApotekerInputRspVst(
+      widget.visitId,
+      widget.AptkrId,
+      DateTime.now().toString().substring(0, 10),
+    );
+    data.then((value) {
+      //Mengubah json menjadi Array
+      // ignore: unused_local_variable
+      Map json = jsonDecode(value);
+      AptkrRspId = json['id_resep_apoteker'].toString();
+      print('ApotekerBacaDataRspVst(): $AptkrRspId');
+      // for (var i in json['data']) {
+      //   print(i);
+      //   ApotekerVAntrean dva = ApotekerVAntrean.fromJson(i);
+      // }
+      setState(() {});
+    });
+  }
+
   @override
   void initState() {
+    ApotekerBacaDataRspVst();
     ApotekerBacaDataVKeranjangResepDokter(widget.visitId);
     controllerCariObat.clear();
     ApotekerBacaDataVListObat(controllerCariObat.text);

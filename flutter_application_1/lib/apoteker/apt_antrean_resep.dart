@@ -185,15 +185,16 @@ class _AptAntreanPasienState extends State<AptAntreanPasien> {
                     onTap: () {
                       _timerForInter.cancel();
                       print('timer stop');
-                      fetchDataApotekerInputRspVst(
-                        AptkrVAs[index].visitId,
-                        userid,
-                        DateTime.now().toString().substring(0, 10),
-                      );
+                      // fetchDataApotekerInputRspVst(
+                      //   AptkrVAs[index].visitId,
+                      //   userid,
+                      //   DateTime.now().toString().substring(0, 10),
+                      // );
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => AptInputObat(
+                                    AptkrId: userid,
                                     namaPasien: AptkrVAs[index].userName,
                                     visitId: AptkrVAs[index].visitId,
                                   ))).then((onGoBack));

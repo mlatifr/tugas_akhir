@@ -50,10 +50,10 @@ class ApotekerrVListObat {
 
 Future<String> fetchDataApotekerInputRspVst(
     pVisit_id, pUser_id_apoteker, pTgl_penulisan_resep) async {
-  print(
-      'fetchDataApotekerInputRspVst: $pVisit_id | $pUser_id_apoteker | $pTgl_penulisan_resep');
-  final response =
-      await http.post(Uri.parse(APIurl + "apoteker_v_list_obat.php"), body: {
+  // print(
+  //     'fetchDataApotekerInputRspVst: $pVisit_id | $pUser_id_apoteker | $pTgl_penulisan_resep');
+  final response = await http
+      .post(Uri.parse(APIurl + "apoteker_input_resep_visit.php"), body: {
     'visit_id': pVisit_id.toString(),
     'user_id_apoteker': pUser_id_apoteker.toString(),
     'tgl_penulisan_resep': pTgl_penulisan_resep.toString()
@@ -82,10 +82,11 @@ Future<String> fetchDataApotekerVListObat(pNamaObat) async {
 }
 
 Future<String> fetchDataApotekerInputResepObat(
-    pObtId, pDosis, pJumlah, pVisitId) async {
+    pRspAptkrId, pObtId, pDosis, pJumlah, pVisitId) async {
   // print('final: $pObtId | $pDosis | $pJumlah | $pVisitId');
   final response = await http
       .post(Uri.parse(APIurl + "apoteker_input_resep_has_obat.php"), body: {
+    "resep_apoteker_id": pRspAptkrId.toString(),
     "obat_id": pObtId.toString(),
     "dosis": pDosis.toString(),
     "jumlah": pJumlah.toString(),
@@ -95,7 +96,7 @@ Future<String> fetchDataApotekerInputResepObat(
     print('fetchDataApotekerInputResepObat: ${response.body}');
     return response.body;
   } else {
-    // print('else: ${response.body}');
+    print('else fetchDataApotekerInputResepObat: ${response.body}');
     throw Exception('Failed to read API');
   }
 }
