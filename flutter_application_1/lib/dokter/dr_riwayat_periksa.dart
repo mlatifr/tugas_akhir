@@ -196,7 +196,8 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
   Widget widgetListObats() {
     if (DVLOs.length > 0) {
       return ListView.builder(
-          key: Key('builder ${selected.toString()}'), //agar yg terbuka hanya bisa 1 ListTile
+          key: Key(
+              'builder ${selected.toString()}'), //agar yg terbuka hanya bisa 1 ListTile
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemCount: DVLOs.length,
@@ -208,8 +209,10 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                   child: Column(
                     children: [
                       ExpansionTile(
-                          key: Key(index.toString()), //agar yg terbuka hanya bisa 1 ListTile
-                          initiallyExpanded: index == selected, //agar yg terbuka hanya bisa 1 ListTile
+                          key: Key(index
+                              .toString()), //agar yg terbuka hanya bisa 1 ListTile
+                          initiallyExpanded: index ==
+                              selected, //agar yg terbuka hanya bisa 1 ListTile
                           onExpansionChanged: ((newState) {
                             if (newState)
                               setState(() {
@@ -341,11 +344,18 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                                               ),
                                               actions: <Widget>[
                                                 TextButton(
-                                                  onPressed: () =>
+                                                    onPressed: () {
+                                                      controllerJumlah.clear();
+                                                      controllerDosis.clear();
+                                                      setState(() {
+                                                        widgetListObats();
+                                                      });
                                                       Navigator.pop(
-                                                          context, 'ok'),
-                                                  child: Text('ok'),
-                                                ),
+                                                        context,
+                                                        'ok',
+                                                      );
+                                                    },
+                                                    child: Text('ok')),
                                               ],
                                             ),
                                           ));
@@ -492,6 +502,62 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                 }),
           ],
         ));
+  }
+
+  Widget widgetKeranjangObatHeader() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+      child: Table(
+          border: TableBorder
+              .all(), // Allows to add a border decoration around your table
+          children: [
+            TableRow(children: [
+              Text(
+                'Obat',
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                'Jumlah',
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                'Dosis',
+                textAlign: TextAlign.center,
+              ),
+            ]),
+          ]),
+    );
+  }
+
+  Widget widgetKeranjangObatBody() {
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: DVLKOs.length,
+          itemBuilder: (context, index) {
+            return Table(
+                border: TableBorder
+                    .all(), // Allows to add a border decoration around your table
+                children: [
+                  TableRow(children: [
+                    Text(
+                      '${DVLKOs[index].obatNama}',
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      '${DVLKOs[index].obatJumlah}',
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      '${DVLKOs[index].obatDosis}',
+                      textAlign: TextAlign.center,
+                    ),
+                  ]),
+                ]);
+          }),
+    );
   }
 
   Widget widgetKeranjangTindakan() {
@@ -644,9 +710,6 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                                   ),
                                 ]),
                           ),
-                          // Padding(
-                          //     padding: const EdgeInsets.all(8.0),
-                          //     child: widgetCariObat()),
                           Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: ExpansionTile(
@@ -659,101 +722,12 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                                     widgetCariObat(),
                                     widgetListObats()
                                   ])),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: TextButton(
-                              onPressed: () {},
-                              child: Text('tambah'),
-                              style: TextButton.styleFrom(
-                                  primary: Colors.white,
-                                  backgroundColor: Colors.blue,
-                                  minimumSize: Size(
-                                      MediaQuery.of(context).size.width,
-                                      MediaQuery.of(context).size.height *
-                                          0.01)),
-                            ),
-                          ),
-                          // widgetKeranjangObat
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-                            child: Table(
-                                border: TableBorder
-                                    .all(), // Allows to add a border decoration around your table
-                                children: [
-                                  TableRow(children: [
-                                    Text(
-                                      'Obat',
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    Text(
-                                      'Jumlah',
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    Text(
-                                      'Dosis',
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ]),
-                                ]),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: ListView.builder(
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: DVLKOs.length,
-                                itemBuilder: (context, index) {
-                                  return Table(
-                                      border: TableBorder
-                                          .all(), // Allows to add a border decoration around your table
-                                      children: [
-                                        TableRow(children: [
-                                          Text(
-                                            '${DVLKOs[index].obatNama}',
-                                            textAlign: TextAlign.center,
-                                          ),
-                                          Text(
-                                            '${DVLKOs[index].obatJumlah}',
-                                            textAlign: TextAlign.center,
-                                          ),
-                                          Text(
-                                            '${DVLKOs[index].obatDosis}',
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ]),
-                                      ]);
-                                }),
-                          ),
-                          // Padding(
-                          //   padding: const EdgeInsets.all(8.0),
-                          //   child: Table(
-                          //       border: TableBorder
-                          //           .all(), // Allows to add a border decoration around your table
-                          //       children: [
-                          //         TableRow(children: [
-                          //           Text('Obat'),
-                          //           Text('Jumlah'),
-                          //           Text('Dosis'),
-                          //         ]),
-                          //         TableRow(children: [
-                          //           Text(
-                          //             'Insto',
-                          //           ),
-                          //           Text('3'),
-                          //           Text('3x1'),
-                          //         ]),
-                          //         TableRow(children: [
-                          //           Text('Catarlent'),
-                          //           Text('3'),
-                          //           Text('3x1'),
-                          //         ]),
-                          //       ]),
-                          // ),
+                          widgetKeranjangObatHeader(),
+                          widgetKeranjangObatBody(),
                         ],
                       ),
                     ),
                   ),
-                  // widgetBuildPanel(),
                 ],
               ),
             ],
