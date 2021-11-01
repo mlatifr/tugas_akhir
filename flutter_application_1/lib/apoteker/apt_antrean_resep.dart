@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/apoteker/apt_input_obat.dart';
-import 'package:flutter_application_1/apoteker/apt_list_stok_obat.dart';
-import 'package:flutter_application_1/apoteker/tab_bar.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_application_1/dokter/dr_get_list_tindakan.dart';
+import 'package:flutter_application_1/dokter/dr_riwayat_periksa.dart';
 import '../main.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class AptAntreanPasien extends StatefulWidget {
   const AptAntreanPasien({Key key}) : super(key: key);
@@ -11,57 +14,127 @@ class AptAntreanPasien extends StatefulWidget {
   _AptAntreanPasienState createState() => _AptAntreanPasienState();
 }
 
+class ApotekerVAntrean {
+  var visitId,
+      vhuId,
+      pasienId,
+      tglVisit,
+      userName,
+      nomorAntrean,
+      statusAntrean,
+      keluhan;
+  ApotekerVAntrean(
+      {this.visitId,
+      this.vhuId,
+      this.pasienId,
+      this.tglVisit,
+      this.userName,
+      this.nomorAntrean,
+      this.statusAntrean,
+      this.keluhan});
+
+  // untuk convert dari jSon
+  factory ApotekerVAntrean.fromJson(Map<String, dynamic> json) {
+    return new ApotekerVAntrean(
+      visitId: json['visit_id'],
+      vhuId: json['vhu_id'],
+      pasienId: json['pasien_id'],
+      tglVisit: json['tgl_visit'],
+      userName: json['username'],
+      nomorAntrean: json['nomor_antrean'],
+      statusAntrean: json['status_antrean'],
+      keluhan: json['keluhan'],
+    );
+  }
+}
+
+var controllerdate = TextEditingController();
+// ignore: non_constant_identifier_names
+List<ApotekerVAntrean> DVAs = [];
+
 class _AptAntreanPasienState extends State<AptAntreanPasien> {
+  // ignore: unused_field
+  Timer _timerForInter; // <- Put this line on top of _MyAppState class
+  void functionTimerRefresh() {
+    _timerForInter = Timer.periodic(Duration(seconds: 15), (result) {
+      setState(() {
+        DokterBacaDataAntrean();
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    DateTime now = new DateTime.now();
+    DateTime date = new DateTime(now.year, now.month, now.day);
+    print(date);
+    controllerdate.text = date.toString().substring(0, 10);
+    DokterBacaDataAntrean();
+    DVAs = [];
+    functionTimerRefresh();
+    super.initState();
+  }
+
+  Future<String> fetchDataDokterAntreanPasien() async {
+    final response =
+        await http.post(Uri.parse(APIurl + "dokter_v_antrean.php"), body: {
+      'tgl_visit': controllerdate.text.toString().substring(0, 10),
+      // 'tgl_visit': '2021-10-21',
+    });
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('Failed to read API');
+    }
+  }
+
+  // ignore: non_constant_identifier_names
+  DokterBacaDataAntrean() {
+    DVAs.clear();
+    Future<String> data = fetchDataDokterAntreanPasien();
+    data.then((value) {
+      //Mengubah json menjadi Array
+      // ignore: unused_local_variable
+      Map json = jsonDecode(value);
+      for (var i in json['data']) {
+        print(i);
+        ApotekerVAntrean dva = ApotekerVAntrean.fromJson(i);
+        DVAs.add(dva);
+      }
+      setState(() {});
+    });
+  }
+
   Widget widgetDrawer() {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Text('Selamat datang: ' + username),
+            child: Text(
+              'Selamat datang: \n ' + username,
+              style: TextStyle(
+                backgroundColor: Colors.white.withOpacity(0.85),
+                fontSize: 20,
+              ),
+            ),
             decoration: BoxDecoration(
-                // image: DecorationImage(
-                //   fit: BoxFit.cover,
-                //   image: AssetImage('assets/images/clinic.jpg'),
-                // ),
-                ),
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: AssetImage('./asset/image/clinic_text.jpg'),
+              ),
+            ),
           ),
           ListTile(
-            title: Text('Daftar Stok Obat'),
+            title: Text('Cari Pasien'),
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AptListObat()));
-              // Navigator.push(context,MaterialPageRoute(builder: (context) => SecondRoute()),);
-              // Navigator.pop(context);
-              // Navigator.of(context).pop();
-              // Navigator.of(context).maybePop();
-            },
-          ),
-          ListTile(
-            title: Text('Tab Bar'),
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => TabBarTest()));
-              // Navigator.push(context,MaterialPageRoute(builder: (context) => SecondRoute()),);
-              // Navigator.pop(context);
-              // Navigator.of(context).pop();
-              // Navigator.of(context).maybePop();
-            },
-          ),
-          ListTile(
-            title: Text('Input Obat'),
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AptInputObat()));
-              // Navigator.push(context,MaterialPageRoute(builder: (context) => SecondRoute()),);
-              // Navigator.pop(context);
-              // Navigator.of(context).pop();
-              // Navigator.of(context).maybePop();
+              Navigator.of(context).pop();
             },
           ),
           ListTile(
             title: Text('Logout'),
             onTap: () {
+              _timerForInter.cancel();
               doLogout();
             },
           ),
@@ -70,38 +143,127 @@ class _AptAntreanPasienState extends State<AptAntreanPasien> {
     );
   }
 
-  Widget lsTile(int index) {
-    if (index <= 4) {
-      return ListTile(
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => AptInputObat(
-                        namaPasien: '$index',
-                      )));
-        },
-        leading: CircleAvatar(),
-        title: Text('Pasien ${index + 1}'),
-        subtitle: Text('sub judul'),
-        trailing: Icon(Icons.check_box),
+  onGoBack(dynamic value) {
+    functionTimerRefresh();
+    print('timer start');
+    setState(() {
+      DokterBacaDataAntrean();
+      widgetLsTile();
+    });
+  }
+
+  Widget widgetStatusAntrean(int index) {
+    if (DVAs[index].statusAntrean.toString() == 'belum') {
+      return CircleAvatar(radius: 15, child: Icon(Icons.watch_later_outlined));
+    } else if (DVAs[index].statusAntrean.toString() == 'sudah') {
+      return CircleAvatar(radius: 15, child: Icon(Icons.check));
+    } else if (DVAs[index].statusAntrean.toString() == 'batal') {
+      return CircleAvatar(
+          radius: 15,
+          backgroundColor: Colors.red[400],
+          child: Icon(
+            Icons.cancel,
+            color: Colors.white,
+          ));
+    }
+  }
+
+  Widget widgetLsTile() {
+    if (DVAs.length > 0) {
+      return Expanded(
+        child: ListView.builder(
+            itemCount: DVAs.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  child: ListTile(
+                      onTap: () {
+                        _timerForInter.cancel();
+                        print('timer stop');
+                        DokterVListTindakan();
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DrRiwayatPeriksaPasien(
+                                      namaPasien: '${DVAs[index].userName}',
+                                      visitId: '${DVAs[index].visitId}',
+                                      keluhan: '${DVAs[index].keluhan}',
+                                    ))).then((onGoBack));
+                      },
+                      leading: CircleAvatar(
+                        child: Text('${index + 1}'),
+                      ),
+                      title: Text('${DVAs[index].userName}'),
+                      subtitle: Text('sub judul'),
+                      trailing: widgetStatusAntrean(index)));
+            }),
       );
     } else {
-      return ListTile(
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => AptInputObat(
-                        namaPasien: '$index',
-                      )));
-        },
-        leading: CircleAvatar(),
-        title: Text('Pasien ${index + 1}'),
-        subtitle: Text('sub judul'),
-        trailing: Icon(Icons.access_time),
+      return Column(
+        children: [
+          CircularProgressIndicator(),
+          Text('data tidak ditemukan'),
+        ],
       );
     }
+  }
+
+  Widget widgetSelectTgl() {
+    return Padding(
+        padding: EdgeInsets.all(10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+                child: TextFormField(
+              controller: controllerdate,
+              onChanged: (value) {
+                setState(() {
+                  controllerdate.text = value.toString();
+                  controllerdate.selection = TextSelection.fromPosition(
+                      TextPosition(offset: controllerdate.text.length));
+                  print(value.toString());
+                  // AdminBacaDataAntrean();
+                });
+              },
+              enabled: false,
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
+              ],
+              decoration: InputDecoration(
+                labelText: 'Tanggal Visit',
+                fillColor: Colors.white,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.blue,
+                  ),
+                ),
+              ),
+            )),
+            ElevatedButton(
+                onPressed: () {
+                  showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2200))
+                      .then((value) {
+                    setState(() {
+                      controllerdate.text = value.toString().substring(0, 10);
+                      print(value.toString());
+                      DokterBacaDataAntrean();
+                    });
+                  });
+                },
+                child: Icon(
+                  Icons.calendar_today_sharp,
+                  color: Colors.white,
+                  size: 24.0,
+                ))
+          ],
+        ));
   }
 
   @override
@@ -111,39 +273,15 @@ class _AptAntreanPasienState extends State<AptAntreanPasien> {
       home: Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text("Daftar Resep Pasien"),
+            title: Text("Antrean Pasien"),
           ),
           drawer: widgetDrawer(),
-          body: ListView.builder(
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => DrRiwayatPeriksaPasien(
-                    //               namaPasien: '${index + 1}',
-                    //             )));
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => DrRiwayatPeriksaPasien(
-                    //               namaPasien: '${index + 1}',
-                    //             )));
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    child: lsTile(index),
-                    //  ListTile(
-                    //   leading: CircleAvatar(),
-                    //   title: Text('Pasien ${index + 1}'),
-                    //   subtitle: Text('sub judul'),
-                    //   trailing: Icon(Icons.check_box),
-                    // ),
-                  ),
-                );
-              })),
+          body: Column(
+            children: [
+              widgetSelectTgl(),
+              widgetLsTile(),
+            ],
+          )),
     );
   }
 }
