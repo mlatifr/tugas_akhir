@@ -50,7 +50,8 @@ class ApotekerrVListObat {
 
 Future<String> fetchDataApotekerVListObat(pNamaObat) async {
   // print('final: $pVisitId | $pTdkId | $pMtSisi');
-  final response = await http.post(Uri.parse(APIurl + "dokter_v_list_obat.php"),
+  final response = await http.post(
+      Uri.parse(APIurl + "apoteker_v_list_obat.php"),
       body: {'nama_obat': pNamaObat.toString()});
   if (response.statusCode == 200) {
     // print('200: ${response.body}');

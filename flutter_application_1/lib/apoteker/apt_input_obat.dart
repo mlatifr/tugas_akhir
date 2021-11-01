@@ -2,31 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/dokter/dr_get_list_obat.dart';
-import 'package:flutter_application_1/dokter/dr_get_list_tindakan.dart';
-
 import 'apt_get_resep_pasien_detail.dart';
-
-// stores ExpansionPanel state information
-class Item {
-  Item({
-    this.expandedValue,
-    this.headerValue,
-    this.isExpanded = false,
-  });
-
-  String expandedValue;
-  String headerValue;
-  bool isExpanded;
-}
-
-List<Item> generateItems(int numberOfItems) {
-  return List<Item>.generate(numberOfItems, (int index) {
-    return Item(
-      headerValue: 'Tanggal Periksa $index',
-      expandedValue: 'This is item number $index',
-    );
-  });
-}
 
 class AptInputObat extends StatefulWidget {
   final namaPasien, visitId;
@@ -60,14 +36,14 @@ class _AptInputObatState extends State<AptInputObat> {
 
   ApotekerBacaDataVListObat(pNamaObat) {
     AVLOs.clear();
-    Future<String> data = fetchDataDokterVListObat(pNamaObat);
+    Future<String> data = fetchDataApotekerVListObat(pNamaObat);
     data.then((value) {
       //Mengubah json menjadi Array
       // ignore: unused_local_variable
       Map json = jsonDecode(value);
       for (var i in json['data']) {
-        ApotekerrVListObat dvlo = ApotekerrVListObat.fromJson(i);
-        AVLOs.add(dvlo);
+        ApotekerrVListObat avlo = ApotekerrVListObat.fromJson(i);
+        AVLOs.add(avlo);
       }
       setState(() {
         widgetListObats();
@@ -115,7 +91,7 @@ class _AptInputObatState extends State<AptInputObat> {
           flex: 4,
           child: TextButton(
             onPressed: () {
-              // DokterBacaDataVListObat(controllerCariObat.text);
+              ApotekerBacaDataVListObat(controllerCariObat.text);
             },
             child: Text(
               'Cari',
@@ -131,16 +107,19 @@ class _AptInputObatState extends State<AptInputObat> {
     );
   }
 
+  TextEditingController controllerJumlah = TextEditingController();
+  TextEditingController controllerDosis = TextEditingController();
+  TextEditingController controllerCariObat = TextEditingController();
   int selected; //agar yg terbuka hanya bisa 1 ListTile
   // ignore: missing_return
   Widget widgetListObats() {
-    if (5 > 0) {
+    if (AVLOs.length > 0) {
       return ListView.builder(
           key: Key(
               'builder ${selected.toString()}'), //agar yg terbuka hanya bisa 1 ListTile
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemCount: 5,
+          itemCount: AVLOs.length,
           itemBuilder: (context, index) {
             return Row(
               children: [
@@ -164,19 +143,11 @@ class _AptInputObatState extends State<AptInputObat> {
                               });
                           }),
                           title: Text(
-                            'apoteker 1',
+                            '${AVLOs[index].obatNama} : ${AVLOs[index].obatStok}',
                             textAlign: TextAlign.center,
                             style: TextStyle(),
                           ),
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                '2',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(),
-                              ),
-                            ),
                             Row(
                               children: [
                                 Expanded(
@@ -259,6 +230,52 @@ class _AptInputObatState extends State<AptInputObat> {
                                 )
                               ],
                             ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextButton(
+                                onPressed: () {
+                                  fetchDataDokterInputResepObat(
+                                          DVLOs[index].obatId,
+                                          controllerDosis.text,
+                                          controllerJumlah.text,
+                                          widget.visitId)
+                                      .then((value) => showDialog<String>(
+                                            context: context,
+                                            builder: (BuildContext context) =>
+                                                AlertDialog(
+                                              title: Text(
+                                                'Obat berhasil ditambah ke resep',
+                                                style: TextStyle(fontSize: 14),
+                                              ),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                    onPressed: () {
+                                                      controllerJumlah.clear();
+                                                      controllerDosis.clear();
+                                                      setState(() {
+                                                        widgetListObats();
+                                                      });
+                                                      Navigator.pop(
+                                                        context,
+                                                        'ok',
+                                                      );
+                                                    },
+                                                    child: Text('ok')),
+                                              ],
+                                            ),
+                                          ));
+                                  // DokterBacaDataVKeranjangObat(widget.visitId);
+                                },
+                                child: Text('tambah'),
+                                style: TextButton.styleFrom(
+                                    primary: Colors.white,
+                                    backgroundColor: Colors.blue,
+                                    minimumSize: Size(
+                                        MediaQuery.of(context).size.width,
+                                        MediaQuery.of(context).size.height *
+                                            0.01)),
+                              ),
+                            ),
                           ])
                     ],
                   ),
@@ -267,22 +284,6 @@ class _AptInputObatState extends State<AptInputObat> {
             );
           });
     }
-  }
-
-  TextEditingController controllerJumlah = TextEditingController();
-  TextEditingController controllerDosis = TextEditingController();
-  TextEditingController controllerCariObat = TextEditingController();
-  final List<Item> _data = generateItems(8);
-
-  @override
-  void initState() {
-    ApotekerBacaDataVKeranjangObat(widget.visitId);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   Widget widgetKeranjangObatHeader() {
@@ -316,7 +317,7 @@ class _AptInputObatState extends State<AptInputObat> {
       child: ListView.builder(
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemCount: DVLKOs.length,
+          itemCount: AVLKOs.length,
           itemBuilder: (context, index) {
             return Table(
                 border: TableBorder
@@ -324,21 +325,34 @@ class _AptInputObatState extends State<AptInputObat> {
                 children: [
                   TableRow(children: [
                     Text(
-                      '${DVLKOs[index].obatNama}',
+                      '${AVLKOs[index].nama}',
                       textAlign: TextAlign.center,
                     ),
                     Text(
-                      '${DVLKOs[index].obatJumlah}',
+                      '${AVLKOs[index].jumlah}',
                       textAlign: TextAlign.center,
                     ),
                     Text(
-                      '${DVLKOs[index].obatDosis}',
+                      '${AVLKOs[index].dosis}',
                       textAlign: TextAlign.center,
                     ),
                   ]),
                 ]);
           }),
     );
+  }
+
+  @override
+  void initState() {
+    ApotekerBacaDataVKeranjangObat(widget.visitId);
+    controllerCariObat.clear();
+    ApotekerBacaDataVListObat(controllerCariObat.text);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
