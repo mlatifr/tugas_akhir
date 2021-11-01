@@ -7,6 +7,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import 'apt_input_obat.dart';
+
 class AptAntreanPasien extends StatefulWidget {
   const AptAntreanPasien({Key key}) : super(key: key);
 
@@ -15,23 +17,16 @@ class AptAntreanPasien extends StatefulWidget {
 }
 
 class ApotekerVAntrean {
-  var visitId,
-      vhuId,
-      pasienId,
-      tglVisit,
-      userName,
-      nomorAntrean,
-      statusAntrean,
-      keluhan;
-  ApotekerVAntrean(
-      {this.visitId,
-      this.vhuId,
-      this.pasienId,
-      this.tglVisit,
-      this.userName,
-      this.nomorAntrean,
-      this.statusAntrean,
-      this.keluhan});
+  var visitId, vhuId, pasienId, tglVisit, userName, nomorAntrean, statusAntrean;
+  ApotekerVAntrean({
+    this.visitId,
+    this.vhuId,
+    this.pasienId,
+    this.tglVisit,
+    this.userName,
+    this.nomorAntrean,
+    this.statusAntrean,
+  });
 
   // untuk convert dari jSon
   factory ApotekerVAntrean.fromJson(Map<String, dynamic> json) {
@@ -43,14 +38,13 @@ class ApotekerVAntrean {
       userName: json['username'],
       nomorAntrean: json['nomor_antrean'],
       statusAntrean: json['status_antrean'],
-      keluhan: json['keluhan'],
     );
   }
 }
 
 var controllerdate = TextEditingController();
 // ignore: non_constant_identifier_names
-List<ApotekerVAntrean> DVAs = [];
+List<ApotekerVAntrean> AptkrVAs = [];
 
 class _AptAntreanPasienState extends State<AptAntreanPasien> {
   // ignore: unused_field
@@ -58,7 +52,7 @@ class _AptAntreanPasienState extends State<AptAntreanPasien> {
   void functionTimerRefresh() {
     _timerForInter = Timer.periodic(Duration(seconds: 15), (result) {
       setState(() {
-        DokterBacaDataAntrean();
+        ApotekerBacaDataAntrean();
       });
     });
   }
@@ -69,13 +63,13 @@ class _AptAntreanPasienState extends State<AptAntreanPasien> {
     DateTime date = new DateTime(now.year, now.month, now.day);
     print(date);
     controllerdate.text = date.toString().substring(0, 10);
-    DokterBacaDataAntrean();
-    DVAs = [];
+    ApotekerBacaDataAntrean();
+    AptkrVAs = [];
     functionTimerRefresh();
     super.initState();
   }
 
-  Future<String> fetchDataDokterAntreanPasien() async {
+  Future<String> fetchDataApotekerAntreanPasien() async {
     final response =
         await http.post(Uri.parse(APIurl + "dokter_v_antrean.php"), body: {
       'tgl_visit': controllerdate.text.toString().substring(0, 10),
@@ -89,9 +83,9 @@ class _AptAntreanPasienState extends State<AptAntreanPasien> {
   }
 
   // ignore: non_constant_identifier_names
-  DokterBacaDataAntrean() {
-    DVAs.clear();
-    Future<String> data = fetchDataDokterAntreanPasien();
+  ApotekerBacaDataAntrean() {
+    AptkrVAs.clear();
+    Future<String> data = fetchDataApotekerAntreanPasien();
     data.then((value) {
       //Mengubah json menjadi Array
       // ignore: unused_local_variable
@@ -99,7 +93,7 @@ class _AptAntreanPasienState extends State<AptAntreanPasien> {
       for (var i in json['data']) {
         print(i);
         ApotekerVAntrean dva = ApotekerVAntrean.fromJson(i);
-        DVAs.add(dva);
+        AptkrVAs.add(dva);
       }
       setState(() {});
     });
@@ -147,17 +141,18 @@ class _AptAntreanPasienState extends State<AptAntreanPasien> {
     functionTimerRefresh();
     print('timer start');
     setState(() {
-      DokterBacaDataAntrean();
+      ApotekerBacaDataAntrean();
       widgetLsTile();
     });
   }
 
+  // ignore: missing_return
   Widget widgetStatusAntrean(int index) {
-    if (DVAs[index].statusAntrean.toString() == 'belum') {
+    if (AptkrVAs[index].statusAntrean.toString() == 'belum') {
       return CircleAvatar(radius: 15, child: Icon(Icons.watch_later_outlined));
-    } else if (DVAs[index].statusAntrean.toString() == 'sudah') {
+    } else if (AptkrVAs[index].statusAntrean.toString() == 'sudah') {
       return CircleAvatar(radius: 15, child: Icon(Icons.check));
-    } else if (DVAs[index].statusAntrean.toString() == 'batal') {
+    } else if (AptkrVAs[index].statusAntrean.toString() == 'batal') {
       return CircleAvatar(
           radius: 15,
           backgroundColor: Colors.red[400],
@@ -169,33 +164,32 @@ class _AptAntreanPasienState extends State<AptAntreanPasien> {
   }
 
   Widget widgetLsTile() {
-    if (DVAs.length > 0) {
+    if (AptkrVAs.length > 0) {
       return Expanded(
         child: ListView.builder(
-            itemCount: DVAs.length,
+            itemCount: AptkrVAs.length,
             itemBuilder: (context, index) {
               return Padding(
                   padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: ListTile(
-                      onTap: () {
-                        _timerForInter.cancel();
-                        print('timer stop');
-                        DokterVListTindakan();
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DrRiwayatPeriksaPasien(
-                                      namaPasien: '${DVAs[index].userName}',
-                                      visitId: '${DVAs[index].visitId}',
-                                      keluhan: '${DVAs[index].keluhan}',
-                                    ))).then((onGoBack));
-                      },
-                      leading: CircleAvatar(
-                        child: Text('${index + 1}'),
-                      ),
-                      title: Text('${DVAs[index].userName}'),
-                      subtitle: Text('sub judul'),
-                      trailing: widgetStatusAntrean(index)));
+                    onTap: () {
+                      _timerForInter.cancel();
+                      print('timer stop');
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AptInputObat(
+                                    namaPasien: AptkrVAs[index].userName,
+                                    visitId: AptkrVAs[index].visitId,
+                                  ))).then((onGoBack));
+                    },
+                    leading: CircleAvatar(
+                      child: Text('${index + 1}'),
+                    ),
+                    title: Text('${AptkrVAs[index].userName}'),
+                    subtitle: Text('sub judul'),
+                    // trailing: widgetStatusAntrean(index)
+                  ));
             }),
       );
     } else {
@@ -253,7 +247,7 @@ class _AptAntreanPasienState extends State<AptAntreanPasien> {
                     setState(() {
                       controllerdate.text = value.toString().substring(0, 10);
                       print(value.toString());
-                      DokterBacaDataAntrean();
+                      ApotekerBacaDataAntrean();
                     });
                   });
                 },
