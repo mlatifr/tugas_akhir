@@ -16,6 +16,52 @@ class AptInputObat extends StatefulWidget {
 }
 
 class _AptInputObatState extends State<AptInputObat> {
+// ignore: non_constant_identifier_names
+  ApotekerBacaDataVKeranjangResep(
+      pRspAptkrId, pObtId, pDosis, pJumlah, pVisitId) {
+    AVKOs.clear();
+    Future<String> data = fetchDataApotekerInputResepObat(
+        pRspAptkrId, pObtId, pDosis, pJumlah, pVisitId);
+    data.then((value) {
+      Map json = jsonDecode(value);
+      if (json['result'].toString() == 'success') {
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: Text(
+              'Obat berhasil ditambah ke resep',
+              style: TextStyle(fontSize: 14),
+            ),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () {
+                    controllerJumlah.clear();
+                    controllerDosis.clear();
+                    setState(() {
+                      widgetListObats();
+                    });
+                    Navigator.pop(
+                      context,
+                      'ok',
+                    );
+                  },
+                  child: Text('ok')),
+            ],
+          ),
+        );
+        for (var i in json['data']) {
+          ApotekerVKeranjangObat keranjangObatDokter =
+              ApotekerVKeranjangObat.fromJson(i);
+          AVKOs.add(keranjangObatDokter);
+          print('AVKOs[length]: ${AVKOs.length}');
+        }
+        setState(() {
+          //widgetKeranjangObatApoteker();
+        });
+      }
+    });
+  }
+
   // ignore: non_constant_identifier_names
   ApotekerBacaDataVKeranjangResepDokter(pVisitId) {
     AVKODrs.clear();
@@ -33,8 +79,9 @@ class _AptInputObatState extends State<AptInputObat> {
         widgetListObats();
       });
     });
-  } // ignore: non_constant_identifier_names
+  }
 
+  // ignore: non_constant_identifier_names
   ApotekerBacaDataVListObat(pNamaObat) {
     AVLOs.clear();
     Future<String> data = fetchDataApotekerVListObat(pNamaObat);
@@ -235,39 +282,19 @@ class _AptInputObatState extends State<AptInputObat> {
                               padding: const EdgeInsets.all(8.0),
                               child: TextButton(
                                 onPressed: () {
+                                  ApotekerBacaDataVKeranjangResep(
+                                      AptkrRspId,
+                                      AVLOs[index].obatId,
+                                      controllerDosis.text,
+                                      controllerJumlah.text,
+                                      widget.visitId);
                                   fetchDataApotekerInputResepObat(
                                           AptkrRspId,
                                           AVLOs[index].obatId,
                                           controllerDosis.text,
                                           controllerJumlah.text,
                                           widget.visitId)
-                                      .then((value) {
-                                    showDialog<String>(
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          AlertDialog(
-                                        title: Text(
-                                          'Obat berhasil ditambah ke resep',
-                                          style: TextStyle(fontSize: 14),
-                                        ),
-                                        actions: <Widget>[
-                                          TextButton(
-                                              onPressed: () {
-                                                controllerJumlah.clear();
-                                                controllerDosis.clear();
-                                                setState(() {
-                                                  widgetListObats();
-                                                });
-                                                Navigator.pop(
-                                                  context,
-                                                  'ok',
-                                                );
-                                              },
-                                              child: Text('ok')),
-                                        ],
-                                      ),
-                                    );
-                                  });
+                                      .then((value) {});
                                   // DokterBacaDataVKeranjangObat(widget.visitId);
                                 },
                                 child: Text('tambah'),

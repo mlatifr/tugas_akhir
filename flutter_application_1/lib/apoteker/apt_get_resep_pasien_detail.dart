@@ -7,25 +7,23 @@ import 'package:http/http.dart' as http;
 
 List<ApotekerrVListObat> AVLOs = [];
 List<ApotekerVKeranjangObatDokter> AVKODrs = [];
-
+List<ApotekerVKeranjangObat> AVKOs = [];
 class ApotekerVKeranjangObat {
-  var resep_dokter_id, obat_id, nama, dosis, jumlah;
+  var stok, nama, dosis, jumlah;
   ApotekerVKeranjangObat({
-    this.resep_dokter_id,
-    this.obat_id,
     this.nama,
-    this.dosis,
     this.jumlah,
+    this.stok,
+    this.dosis,
   });
 
   // untuk convert dari jSon
   factory ApotekerVKeranjangObat.fromJson(Map<String, dynamic> json) {
     return new ApotekerVKeranjangObat(
-      resep_dokter_id: json['resep_dokter_id'],
-      obat_id: json['obat_id'],
       nama: json['nama'],
+      jumlah: json['jumlah'],
+      stok: json['stok'],
       dosis: json['dosis'],
-      jumlah: json['dosis'],
     );
   }
 }
