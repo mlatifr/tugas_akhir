@@ -258,7 +258,6 @@ class _DrRiwayatPeriksaPasienState extends State<DrRiwayatPeriksaPasien> {
                                                     TextPosition(
                                                         offset: controllerJumlah
                                                             .text.length));
-                                            // print(value.toString());
                                           });
                                         },
                                         decoration: InputDecoration(
