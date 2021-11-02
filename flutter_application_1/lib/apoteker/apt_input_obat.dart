@@ -288,14 +288,6 @@ class _AptInputObatState extends State<AptInputObat> {
                                       controllerDosis.text,
                                       controllerJumlah.text,
                                       widget.visitId);
-                                  fetchDataApotekerInputResepObat(
-                                          AptkrRspId,
-                                          AVLOs[index].obatId,
-                                          controllerDosis.text,
-                                          controllerJumlah.text,
-                                          widget.visitId)
-                                      .then((value) {});
-                                  // DokterBacaDataVKeranjangObat(widget.visitId);
                                 },
                                 child: Text('tambah'),
                                 style: TextButton.styleFrom(
