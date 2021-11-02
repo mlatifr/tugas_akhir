@@ -13,6 +13,8 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'kasir/kasir_antrean_pasien.dart';
+
 DateTime now = new DateTime.now();
 DateTime date = new DateTime(now.year, now.month, now.day);
 // ignore: non_constant_identifier_names
@@ -85,6 +87,9 @@ void main() {
     } else if (result.contains('apoteker')) {
       username = result;
       runApp(MaterialApp(home: AptAntreanPasien()));
+    } else if (result.contains('kasir')) {
+      username = result;
+      runApp(MaterialApp(home: KsrAntreanPasien()));
     } else if (result != null || result != '') {
       username = result;
       runApp(MyApp());
