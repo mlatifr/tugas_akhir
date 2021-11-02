@@ -17,6 +17,26 @@ class AptInputObat extends StatefulWidget {
 
 class _AptInputObatState extends State<AptInputObat> {
 // ignore: non_constant_identifier_names
+  ApotekerBacaDataVKeranjangResepApoteker(pVisitId) {
+    AVKOs.clear();
+    Future<String> data = fetchDataApotekerVKeranjangResepApotekerId(pVisitId);
+    data.then((value) {
+      Map json = jsonDecode(value);
+      if (json['result'].toString() == 'success') {
+        for (var i in json['data']) {
+          ApotekerVKeranjangObat keranjangObatDokter =
+              ApotekerVKeranjangObat.fromJson(i);
+          AVKOs.add(keranjangObatDokter);
+          print('AVKOs[length]: ${AVKOs.length}');
+        }
+        setState(() {
+          widgetKeranjangObatApotekerBody();
+        });
+      }
+    });
+  }
+
+// ignore: non_constant_identifier_names
   ApotekerBacaDataVKeranjangResep(
       pRspAptkrId, pObtId, pDosis, pJumlah, pVisitId) {
     AVKOs.clear();
@@ -56,7 +76,7 @@ class _AptInputObatState extends State<AptInputObat> {
           print('AVKOs[length]: ${AVKOs.length}');
         }
         setState(() {
-          //widgetKeranjangObatApoteker();
+          widgetKeranjangObatApotekerBody();
         });
       }
     });
@@ -299,7 +319,7 @@ class _AptInputObatState extends State<AptInputObat> {
                                             0.01)),
                               ),
                             ),
-                          ])
+                          ]),
                     ],
                   ),
                 ),
@@ -334,7 +354,38 @@ class _AptInputObatState extends State<AptInputObat> {
     );
   }
 
-  Widget widgetKeranjangObatBody() {
+  Widget widgetKeranjangObatApotekerBody() {
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: AVKOs.length,
+          itemBuilder: (context, index) {
+            return Table(
+                border: TableBorder
+                    .all(), // Allows to add a border decoration around your table
+                children: [
+                  TableRow(children: [
+                    Text(
+                      '${AVKOs[index].nama}',
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      '${AVKOs[index].jumlah}',
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      '${AVKOs[index].dosis}',
+                      textAlign: TextAlign.center,
+                    ),
+                  ]),
+                ]);
+          }),
+    );
+  }
+
+  Widget widgetKeranjangObatDokterBody() {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: ListView.builder(
@@ -410,6 +461,7 @@ class _AptInputObatState extends State<AptInputObat> {
   @override
   void initState() {
     ApotekerBacaDataRspVst();
+    ApotekerBacaDataVKeranjangResepApoteker(widget.visitId);
     ApotekerBacaDataVKeranjangResepDokter(widget.visitId);
     controllerCariObat.clear();
     ApotekerBacaDataVListObat(controllerCariObat.text);
@@ -454,7 +506,7 @@ class _AptInputObatState extends State<AptInputObat> {
                                 style: TextStyle(fontSize: 22),
                               )),
                           widgetKeranjangObatHeader(),
-                          widgetKeranjangObatBody(),
+                          widgetKeranjangObatDokterBody(),
                           Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: ExpansionTile(
@@ -465,8 +517,10 @@ class _AptInputObatState extends State<AptInputObat> {
                                   ),
                                   children: [
                                     widgetCariObat(),
-                                    widgetListObats()
+                                    widgetListObats(),
                                   ])),
+                          widgetKeranjangObatHeader(),
+                          widgetKeranjangObatApotekerBody()
                         ],
                       ),
                     ),

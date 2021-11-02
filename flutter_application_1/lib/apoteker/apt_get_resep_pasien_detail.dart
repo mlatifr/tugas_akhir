@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 List<ApotekerrVListObat> AVLOs = [];
 List<ApotekerVKeranjangObatDokter> AVKODrs = [];
 List<ApotekerVKeranjangObat> AVKOs = [];
+
 class ApotekerVKeranjangObat {
   var stok, nama, dosis, jumlah;
   ApotekerVKeranjangObat({
@@ -121,7 +122,7 @@ Future<String> fetchDataApotekerInputResepObat(
   }
 }
 
-Future<String> fetchDataApotekerKeranjangObat(pVisitId) async {
+Future<String> fetchDataApotekerKeranjangObatDokter(pVisitId) async {
   // print('final:$pVisitId');
   final response =
       await http.post(Uri.parse(APIurl + "apoteker_v_rsp_dr.php"), body: {
@@ -129,6 +130,22 @@ Future<String> fetchDataApotekerKeranjangObat(pVisitId) async {
   });
   if (response.statusCode == 200) {
     print('200: ${response.body}');
+    return response.body;
+  } else {
+    // print('else: ${response.body}');
+    throw Exception('Failed to read API');
+  }
+}
+
+Future<String> fetchDataApotekerVKeranjangResepApotekerId(pVisit_id) async {
+  // print('final:$pVisitId');
+  final response = await http.post(
+      Uri.parse(APIurl + "apoteker_v_keranjang_resep_obat_apoteker.php"),
+      body: {
+        "visit_id": pVisit_id.toString(),
+      });
+  if (response.statusCode == 200) {
+    print('apoteker_v_keranjang_resep_obat 200: ${response.body}');
     return response.body;
   } else {
     // print('else: ${response.body}');
