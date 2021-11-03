@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'kasir_get_resep.dart';
@@ -178,101 +177,95 @@ class _KasirDetailPasienState extends State<KasirDetailPasien> {
   }
 
   Widget widgetInputPembayaran() {
-    if (KVKRs.length > 0) {
-      return Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-                enabled: true,
-                controller: controllerBiayaAdmin,
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly
-                ],
-                onChanged: (value) {
-                  setState(() {
-                    controllerBiayaAdmin.text = value.toString();
-                    controllerBiayaAdmin.selection = TextSelection.fromPosition(
-                        TextPosition(offset: controllerBiayaAdmin.text.length));
-                    widgetTextTotalPembayaran();
-                  });
-                },
-                decoration: InputDecoration(
-                  labelText: "Biaya Admin",
-                  fillColor: Colors.white,
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide(
-                      color: Colors.blue,
-                    ),
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TextFormField(
+              enabled: true,
+              controller: controllerBiayaAdmin,
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
+              ],
+              onChanged: (value) {
+                setState(() {
+                  controllerBiayaAdmin.text = value.toString();
+                  controllerBiayaAdmin.selection = TextSelection.fromPosition(
+                      TextPosition(offset: controllerBiayaAdmin.text.length));
+                  widgetTextTotalPembayaran();
+                });
+              },
+              decoration: InputDecoration(
+                labelText: "Biaya Admin",
+                fillColor: Colors.white,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.blue,
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide(
-                      color: Colors.blue,
-                    ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.blue,
                   ),
-                )),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-                enabled: true,
-                controller: controllerBiayaJasaMedis,
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly
-                ],
-                onChanged: (value) {
-                  setState(() {
-                    controllerBiayaJasaMedis.text = value.toString();
-                    controllerBiayaJasaMedis.selection =
-                        TextSelection.fromPosition(TextPosition(
-                            offset: controllerBiayaJasaMedis.text.length));
-                    widgetTextTotalPembayaran();
-                  });
-                },
-                decoration: InputDecoration(
-                  labelText: "Biaya Jasa Medis",
-                  fillColor: Colors.white,
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide(
-                      color: Colors.blue,
-                    ),
+                ),
+              )),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TextFormField(
+              enabled: true,
+              controller: controllerBiayaJasaMedis,
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
+              ],
+              onChanged: (value) {
+                setState(() {
+                  controllerBiayaJasaMedis.text = value.toString();
+                  controllerBiayaJasaMedis.selection =
+                      TextSelection.fromPosition(TextPosition(
+                          offset: controllerBiayaJasaMedis.text.length));
+                  widgetTextTotalPembayaran();
+                });
+              },
+              decoration: InputDecoration(
+                labelText: "Biaya Jasa Medis",
+                fillColor: Colors.white,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.blue,
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide(
-                      color: Colors.blue,
-                    ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.blue,
                   ),
-                )),
-          ),
-          Table(
-              border: TableBorder
-                  .all(), // Allows to add a border decoration around your table
-              children: [
-                TableRow(children: [
-                  Text(
-                    'Total Pembayaran: ',
-                    textAlign: TextAlign.center,
-                  ),
-                  widgetTextTotalPembayaran(),
-                ]),
+                ),
+              )),
+        ),
+        Table(
+            border: TableBorder
+                .all(), // Allows to add a border decoration around your table
+            children: [
+              TableRow(children: [
+                Text(
+                  'Total Pembayaran: ',
+                  textAlign: TextAlign.center,
+                ),
+                widgetTextTotalPembayaran(),
               ]),
-          Divider(
-            color: Colors.black,
-            thickness: 2,
-          ),
-        ],
-      );
-    } else {
-      return Row(
-        children: [Text('Input Pembayaran: '), CircularProgressIndicator()],
-      );
-    }
+            ]),
+        Divider(
+          color: Colors.black,
+          thickness: 2,
+        ),
+      ],
+    );
   }
 
   int totalBiayaTindakan = 0;
