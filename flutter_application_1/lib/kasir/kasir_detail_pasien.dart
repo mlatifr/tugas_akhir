@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'kasir_get_resep.dart';
 import 'kasir_get_tindakan.dart';
 import 'package:intl/intl.dart';
@@ -161,10 +162,94 @@ class _KasirDetailPasienState extends State<KasirDetailPasien> {
     }
   }
 
+  TextEditingController controllerBiayaAdmin = TextEditingController(text: "0");
+  TextEditingController controllerBiayaJasaMedis =
+      TextEditingController(text: "0");
+  var totalAdmin, totalMedis, TotalTdknRspAdmMdis;
+  Widget widgetTextTotalPembayaran() {
+    totalAdmin = int.parse(controllerBiayaAdmin.text);
+    totalMedis = int.parse(controllerBiayaJasaMedis.text);
+    TotalTdknRspAdmMdis =
+        totalBiayaTindakan + totalBiayaObat + totalAdmin + totalMedis;
+    return Text(
+      'Rp ${numberFormatRpResep.format(TotalTdknRspAdmMdis)}',
+      textAlign: TextAlign.center,
+    );
+  }
+
   Widget widgetInputPembayaran() {
     if (KVKRs.length > 0) {
       return Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextFormField(
+                enabled: true,
+                controller: controllerBiayaAdmin,
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    controllerBiayaAdmin.text = value.toString();
+                    controllerBiayaAdmin.selection = TextSelection.fromPosition(
+                        TextPosition(offset: controllerBiayaAdmin.text.length));
+                    widgetTextTotalPembayaran();
+                  });
+                },
+                decoration: InputDecoration(
+                  labelText: "Biaya Admin",
+                  fillColor: Colors.white,
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide(
+                      color: Colors.blue,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide(
+                      color: Colors.blue,
+                    ),
+                  ),
+                )),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextFormField(
+                enabled: true,
+                controller: controllerBiayaJasaMedis,
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    controllerBiayaJasaMedis.text = value.toString();
+                    controllerBiayaJasaMedis.selection =
+                        TextSelection.fromPosition(TextPosition(
+                            offset: controllerBiayaJasaMedis.text.length));
+                    widgetTextTotalPembayaran();
+                  });
+                },
+                decoration: InputDecoration(
+                  labelText: "Biaya Jasa Medis",
+                  fillColor: Colors.white,
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide(
+                      color: Colors.blue,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide(
+                      color: Colors.blue,
+                    ),
+                  ),
+                )),
+          ),
           Table(
               border: TableBorder
                   .all(), // Allows to add a border decoration around your table
@@ -174,10 +259,7 @@ class _KasirDetailPasienState extends State<KasirDetailPasien> {
                     'Total Pembayaran: ',
                     textAlign: TextAlign.center,
                   ),
-                  Text(
-                    'Rp ${numberFormatRpResep.format(totalBiayaTindakan + totalBiayaObat)}',
-                    textAlign: TextAlign.center,
-                  ),
+                  widgetTextTotalPembayaran(),
                 ]),
               ]),
           Divider(
