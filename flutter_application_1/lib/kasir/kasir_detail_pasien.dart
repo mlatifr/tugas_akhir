@@ -37,7 +37,11 @@ class _KasirDetailPasienState extends State<KasirDetailPasien> {
   }
 
   Widget widgetKeranjangTindakan() {
+    int totalBiayaTindakan = 0;
     if (KVKTs.length > 0) {
+      for (var i = 0; i < KVKTs.length; i++) {
+        totalBiayaTindakan = totalBiayaTindakan + KVKTs[i].harga;
+      }
       return Column(
         children: [
           Table(
@@ -51,6 +55,10 @@ class _KasirDetailPasienState extends State<KasirDetailPasien> {
                   ),
                   Text(
                     'Tindakan',
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    'Harga',
                     textAlign: TextAlign.center,
                   ),
                 ]),
@@ -80,6 +88,25 @@ class _KasirDetailPasienState extends State<KasirDetailPasien> {
                       ]),
                     ]);
               }),
+          Table(
+              border: TableBorder
+                  .all(), // Allows to add a border decoration around your table
+              children: [
+                TableRow(children: [
+                  Text(
+                    '',
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    'Total: ',
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    '$totalBiayaTindakan',
+                    textAlign: TextAlign.center,
+                  ),
+                ]),
+              ]),
           Divider(
             color: Colors.black,
             thickness: 2,
