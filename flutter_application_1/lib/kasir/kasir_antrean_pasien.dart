@@ -3,9 +3,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application_1/kasir/kasir_detail_pasien.dart';
 
 import '../main.dart';
 import 'kasir_get_antrean.dart';
+import 'kasir_get_tindakan.dart';
 
 class KsrAntreanPasien extends StatefulWidget {
   const KsrAntreanPasien({Key key}) : super(key: key);
@@ -145,6 +147,15 @@ class _KsrAntreanPasienState extends State<KsrAntreanPasien> {
     super.initState();
   }
 
+  onGoBack(dynamic value) {
+    functionTimerRefresh();
+    print('timer start');
+    setState(() {
+      KasirBacaDataVAntrean(controllerdate.text);
+      widgetLsTile();
+    });
+  }
+
   Widget widgetLsTile() {
     if (KVAs.length > 0) {
       return Expanded(
@@ -157,15 +168,12 @@ class _KsrAntreanPasienState extends State<KsrAntreanPasien> {
                     onTap: () {
                       _timerForInter.cancel();
                       print('timer stop');
-                      // DokterVListTindakan();
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => DrRiwayatPeriksaPasien(
-                      //               namaPasien: '${KVAs[index].userName}',
-                      //               visitId: '${KVAs[index].visitId}',
-                      //               keluhan: '${KVAs[index].keluhan}',
-                      //             ))).then((onGoBack));
+                      Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => KasirDetailPasien(
+                                      visitId: KVAs[index].visitId)))
+                          .then((onGoBack));
                     },
                     leading: CircleAvatar(
                       child: Text('${index + 1}'),

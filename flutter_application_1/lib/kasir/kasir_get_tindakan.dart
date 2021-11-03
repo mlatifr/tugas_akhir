@@ -5,19 +5,19 @@ import 'dart:convert';
 import 'package:flutter_application_1/main.dart';
 import 'package:http/http.dart' as http;
 
-List<KasirVKeranjangTindakan> DVKTs = [];
+List<KasirVKeranjangTindakan> KVKTs = [];
 
 class KasirVKeranjangTindakan {
-  var visitHasTdknId, tdknId, vstId, mtSisi;
+  var visitHasTdknId, nama, harga, mtSisi;
   KasirVKeranjangTindakan(
-      {this.visitHasTdknId, this.tdknId, this.vstId, this.mtSisi});
+      {this.visitHasTdknId, this.nama, this.harga, this.mtSisi});
 
   // untuk convert dari jSon
   factory KasirVKeranjangTindakan.fromJson(Map<String, dynamic> json) {
     return new KasirVKeranjangTindakan(
-      visitHasTdknId: json['id'],
-      tdknId: json['tindakan_id'],
-      vstId: json['visit_id'],
+      visitHasTdknId: json['visit_has_tindakan_id'],
+      nama: json['nama'],
+      harga: json['harga'],
       mtSisi: json['mt_sisi'],
     );
   }
