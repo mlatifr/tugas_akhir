@@ -42,10 +42,10 @@ Future<String> fetchDataKasirInputNotaJual(
     "total_harga": pTotal_harga.toString(),
   });
   if (response.statusCode == 200) {
-    print('keranjang tindakan: ${response.body}');
+    print('kasir_input_nota_jual tindakan: ${response.body}');
     return response.body;
   } else {
-    print('else: ${response.body}');
+    print('kasir_input_nota_jual else: ${response.body}');
     throw Exception('Failed to read API');
   }
 }

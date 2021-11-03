@@ -24,14 +24,14 @@ class KasirVKeranjangTindakan {
 }
 
 Future<String> fetchDataDokterVKeranjangTindakan(pVisitId) async {
-  print('final: $pVisitId');
+  // print('fetchDataDokterVKeranjangTindakan : $pVisitId');
   final response = await http.post(Uri.parse(APIurl + "kasir_v_tindakan.php"),
       body: {"visit_id": pVisitId.toString()});
   if (response.statusCode == 200) {
-    print('keranjang tindakan: ${response.body}');
+    // print('fetchDataDokterVKeranjangTindakan: ${response.body}');
     return response.body;
   } else {
-    print('else: ${response.body}');
+    // print(' fetchDataDokterVKeranjangTindakan else: ${response.body}');
     throw Exception('Failed to read API');
   }
 }

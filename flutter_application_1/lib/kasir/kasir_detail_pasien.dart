@@ -6,6 +6,7 @@ import 'kasir_get_tindakan.dart';
 import 'package:intl/intl.dart';
 
 var numberFormatRpResep, numberFormatRpTindakan;
+var cekInitState = 1;
 
 class KasirDetailPasien extends StatefulWidget {
   var visitId, namaPasien;
@@ -18,6 +19,7 @@ class KasirDetailPasien extends StatefulWidget {
 class _KasirDetailPasienState extends State<KasirDetailPasien> {
   @override
   void initState() {
+    print('init state $cekInitState');
     KasirBacaDataVListTindakan(widget.visitId);
     KasirBacaDataVResep(widget.visitId);
     super.initState();
@@ -66,6 +68,7 @@ class _KasirDetailPasienState extends State<KasirDetailPasien> {
   var hargaKaliObat = [];
   Widget widgetKeranjangResep() {
     hargaKaliObat.clear();
+    totalBiayaObat = 0;
     if (KVKRs.length > 0) {
       for (var i = 0; i < KVKRs.length; i++) {
         hargaKaliObat
@@ -192,6 +195,7 @@ class _KasirDetailPasienState extends State<KasirDetailPasien> {
 
   int totalBiayaTindakan = 0;
   Widget widgetKeranjangTindakan() {
+    totalBiayaTindakan = 0;
     if (KVKTs.length > 0) {
       for (var i = 0; i < KVKTs.length; i++) {
         totalBiayaTindakan = totalBiayaTindakan + KVKTs[i].harga;
