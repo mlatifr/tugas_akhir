@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'kasir_get_resep.dart';
 import 'kasir_get_tindakan.dart';
 
 class KasirDetailPasien extends StatefulWidget {
@@ -15,7 +16,27 @@ class _KasirDetailPasienState extends State<KasirDetailPasien> {
   @override
   void initState() {
     KasirBacaDataVListTindakan(widget.visitId);
+    KasirBacaDataVResep(widget.visitId);
     super.initState();
+  }
+
+  // ignore: non_constant_identifier_names
+  KasirBacaDataVResep(pVisitId) {
+    KVKRs.clear();
+    Future<String> data = fetchDataDokterVKeranjangResep(pVisitId);
+    data.then((value) {
+      //Mengubah json menjadi Array
+      // ignore: unused_local_variable
+      Map json = jsonDecode(value);
+      for (var i in json['data']) {
+        print('fetchDataDokterVKeranjangTindakan: ${i.toString()}');
+        KasirVKeranjangResep kvt = KasirVKeranjangResep.fromJson(i);
+        KVKRs.add(kvt);
+      }
+      setState(() {
+        widgetKeranjangResep();
+      });
+    });
   }
 
   KasirBacaDataVListTindakan(pVisitId) {
@@ -34,6 +55,96 @@ class _KasirDetailPasienState extends State<KasirDetailPasien> {
         widgetKeranjangTindakan();
       });
     });
+  }
+
+  Widget widgetKeranjangResep() {
+    int totalBiayaTindakan = 0;
+    int hargaKaliObat = 0;
+    if (KVKRs.length > 0) {
+      for (var i = 0; i < KVKRs.length; i++) {
+        hargaKaliObat = KVKRs[i].hargaJual * KVKRs[i].jumlah;
+        totalBiayaTindakan = totalBiayaTindakan + KVKRs[i].jumlah;
+      }
+      return Column(
+        children: [
+          Table(
+              border: TableBorder
+                  .all(), // Allows to add a border decoration around your table
+              children: [
+                TableRow(children: [
+                  Text(
+                    'Nama',
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    'Jumlah',
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    'Harga Satuan',
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    'Harga Total',
+                    textAlign: TextAlign.center,
+                  ),
+                ]),
+              ]),
+          ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: KVKRs.length,
+              itemBuilder: (context, index) {
+                return Table(
+                    border: TableBorder
+                        .all(), // Allows to add a border decoration around your table
+                    children: [
+                      TableRow(children: [
+                        Text(
+                          ' $index| ${KVKRs[index].namaObat}',
+                          textAlign: TextAlign.left,
+                        ),
+                        Text(
+                          '${KVKRs[index].jumlah}',
+                          textAlign: TextAlign.center,
+                        ),
+                        Text(
+                          '${KVKRs[index].hargaJual}',
+                          textAlign: TextAlign.center,
+                        ),
+                        // Text(
+                        //   '${hargaKaliObat.toString()}',
+                        //   textAlign: TextAlign.center,
+                        // ),
+                      ]),
+                    ]);
+              }),
+          Table(
+              border: TableBorder
+                  .all(), // Allows to add a border decoration around your table
+              children: [
+                TableRow(children: [
+                  Text(
+                    'Total: ',
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    '$totalBiayaTindakan',
+                    textAlign: TextAlign.center,
+                  ),
+                ]),
+              ]),
+          Divider(
+            color: Colors.black,
+            thickness: 2,
+          ),
+        ],
+      );
+    } else {
+      return Row(
+        children: [Text('Keranjang Tindakan: '), CircularProgressIndicator()],
+      );
+    }
   }
 
   Widget widgetKeranjangTindakan() {
@@ -171,12 +282,7 @@ class _KasirDetailPasienState extends State<KasirDetailPasien> {
                                   textAlign: TextAlign.center,
                                   style: TextStyle(),
                                 ),
-                                children: [
-                                  // widgetCariObat(),
-                                  // widgetListObats()
-                                ])),
-                        // widgetKeranjangObatHeader(),
-                        // widgetKeranjangObatBody(),
+                                children: [widgetKeranjangResep()])),
                       ],
                     ),
                   ),
