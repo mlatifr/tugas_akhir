@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'kasir_get_resep.dart';
 import 'kasir_get_tindakan.dart';
+import 'package:intl/intl.dart';
+
+var numberFormatRpResep, numberFormatRpTindakan;
 
 class KasirDetailPasien extends StatefulWidget {
   var visitId;
@@ -25,6 +28,7 @@ class _KasirDetailPasienState extends State<KasirDetailPasien> {
     KVKRs.clear();
     Future<String> data = fetchDataDokterVKeranjangResep(pVisitId);
     data.then((value) {
+      numberFormatRpResep = new NumberFormat("#,##0", "id_ID");
       //Mengubah json menjadi Array
       // ignore: unused_local_variable
       Map json = jsonDecode(value);
@@ -43,6 +47,7 @@ class _KasirDetailPasienState extends State<KasirDetailPasien> {
     KVKTs.clear();
     Future<String> data = fetchDataDokterVKeranjangTindakan(pVisitId);
     data.then((value) {
+      numberFormatRpTindakan = new NumberFormat("#,##0", "id_ID");
       //Mengubah json menjadi Array
       // ignore: unused_local_variable
       Map json = jsonDecode(value);
@@ -58,12 +63,17 @@ class _KasirDetailPasienState extends State<KasirDetailPasien> {
   }
 
   Widget widgetKeranjangResep() {
-    int totalBiayaTindakan = 0;
-    int hargaKaliObat = 0;
+    int totalBiayaObat = 0;
+    var hargaKaliObat = [];
     if (KVKRs.length > 0) {
       for (var i = 0; i < KVKRs.length; i++) {
-        hargaKaliObat = KVKRs[i].hargaJual * KVKRs[i].jumlah;
-        totalBiayaTindakan = totalBiayaTindakan + KVKRs[i].jumlah;
+        hargaKaliObat
+            .add(int.parse(KVKRs[i].hargaJual) * int.parse(KVKRs[i].jumlah));
+        // totalBiayaObat = totalBiayaObat + hargaKaliObat[i];
+      }
+      for (var i = 0; i < hargaKaliObat.length; i++) {
+        // hargaKaliObat.add(KVKRs[i].hargaJual * KVKRs[i].jumlah);
+        totalBiayaObat = totalBiayaObat + hargaKaliObat[i];
       }
       return Column(
         children: [
@@ -109,13 +119,13 @@ class _KasirDetailPasienState extends State<KasirDetailPasien> {
                           textAlign: TextAlign.center,
                         ),
                         Text(
-                          '${KVKRs[index].hargaJual}',
+                          '${numberFormatRpResep.format(int.parse(KVKRs[index].hargaJual))}',
                           textAlign: TextAlign.center,
                         ),
-                        // Text(
-                        //   '${hargaKaliObat.toString()}',
-                        //   textAlign: TextAlign.center,
-                        // ),
+                        Text(
+                          '${numberFormatRpResep.format(hargaKaliObat[index])}',
+                          textAlign: TextAlign.center,
+                        ),
                       ]),
                     ]);
               }),
@@ -129,7 +139,7 @@ class _KasirDetailPasienState extends State<KasirDetailPasien> {
                     textAlign: TextAlign.center,
                   ),
                   Text(
-                    '$totalBiayaTindakan',
+                    '${numberFormatRpResep.format(totalBiayaObat)}',
                     textAlign: TextAlign.center,
                   ),
                 ]),
@@ -193,7 +203,7 @@ class _KasirDetailPasienState extends State<KasirDetailPasien> {
                           textAlign: TextAlign.center,
                         ),
                         Text(
-                          '${KVKTs[index].harga}',
+                          '${numberFormatRpTindakan.format(KVKTs[index].harga)}',
                           textAlign: TextAlign.center,
                         ),
                       ]),
@@ -213,7 +223,7 @@ class _KasirDetailPasienState extends State<KasirDetailPasien> {
                     textAlign: TextAlign.center,
                   ),
                   Text(
-                    '$totalBiayaTindakan',
+                    '${numberFormatRpTindakan.format(totalBiayaTindakan)}',
                     textAlign: TextAlign.center,
                   ),
                 ]),
