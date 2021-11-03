@@ -8,8 +8,8 @@ import 'package:intl/intl.dart';
 var numberFormatRpResep, numberFormatRpTindakan;
 
 class KasirDetailPasien extends StatefulWidget {
-  var visitId;
-  KasirDetailPasien({Key key, this.visitId}) : super(key: key);
+  var visitId, namaPasien;
+  KasirDetailPasien({Key key, this.visitId, this.namaPasien}) : super(key: key);
 
   @override
   _KasirDetailPasienState createState() => _KasirDetailPasienState();
@@ -62,9 +62,10 @@ class _KasirDetailPasienState extends State<KasirDetailPasien> {
     });
   }
 
+  int totalBiayaObat = 0;
+  var hargaKaliObat = [];
   Widget widgetKeranjangResep() {
-    int totalBiayaObat = 0;
-    var hargaKaliObat = [];
+    hargaKaliObat.clear();
     if (KVKRs.length > 0) {
       for (var i = 0; i < KVKRs.length; i++) {
         hargaKaliObat
@@ -157,8 +158,40 @@ class _KasirDetailPasienState extends State<KasirDetailPasien> {
     }
   }
 
+  Widget widgetInputPembayaran() {
+    if (KVKRs.length > 0) {
+      return Column(
+        children: [
+          Table(
+              border: TableBorder
+                  .all(), // Allows to add a border decoration around your table
+              children: [
+                TableRow(children: [
+                  Text(
+                    'Total Pembayaran: ',
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    'Rp ${numberFormatRpResep.format(totalBiayaTindakan + totalBiayaObat)}',
+                    textAlign: TextAlign.center,
+                  ),
+                ]),
+              ]),
+          Divider(
+            color: Colors.black,
+            thickness: 2,
+          ),
+        ],
+      );
+    } else {
+      return Row(
+        children: [Text('Input Pembayaran: '), CircularProgressIndicator()],
+      );
+    }
+  }
+
+  int totalBiayaTindakan = 0;
   Widget widgetKeranjangTindakan() {
-    int totalBiayaTindakan = 0;
     if (KVKTs.length > 0) {
       for (var i = 0; i < KVKTs.length; i++) {
         totalBiayaTindakan = totalBiayaTindakan + KVKTs[i].harga;
@@ -248,7 +281,7 @@ class _KasirDetailPasienState extends State<KasirDetailPasien> {
       home: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text('Input Pemeriksaan'),
+          title: Text('Detail Biaya'),
           leading: new IconButton(
             icon: new Icon(Icons.arrow_back),
             onPressed: () {
@@ -269,7 +302,7 @@ class _KasirDetailPasienState extends State<KasirDetailPasien> {
                         Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              '',
+                              '${widget.namaPasien}',
                               style: TextStyle(fontSize: 22),
                             )),
                         Padding(
@@ -293,6 +326,9 @@ class _KasirDetailPasienState extends State<KasirDetailPasien> {
                                   style: TextStyle(),
                                 ),
                                 children: [widgetKeranjangResep()])),
+                        Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: widgetInputPembayaran()),
                       ],
                     ),
                   ),

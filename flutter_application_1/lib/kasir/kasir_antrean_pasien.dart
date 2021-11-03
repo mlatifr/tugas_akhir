@@ -172,6 +172,7 @@ class _KsrAntreanPasienState extends State<KsrAntreanPasien> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => KasirDetailPasien(
+                                      namaPasien: KVAs[index].userName,
                                       visitId: KVAs[index].visitId)))
                           .then((onGoBack));
                     },
