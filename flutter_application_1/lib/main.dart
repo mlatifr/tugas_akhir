@@ -18,7 +18,7 @@ import 'kasir/kasir_antrean_pasien.dart';
 DateTime now = new DateTime.now();
 DateTime date = new DateTime(now.year, now.month, now.day);
 // ignore: non_constant_identifier_names
-String username, userid = "";
+String username, useridMainDart = "";
 var keluhan = TextEditingController();
 // ignore: non_constant_identifier_names
 String status_antrean, navigateToNomorAntrean;
@@ -27,15 +27,15 @@ String APIurl = "https://192.168.1.8/tugas_akhir/";
 // String APIurl = "https://192.168.43.5/tugas_akhir/";
 void getUserId() async {
   final prefs = await SharedPreferences.getInstance();
-  userid = prefs.getString("userid");
-  print('user id main: $userid');
+  useridMainDart = prefs.getString("userid");
+  print('user id main: $useridMainDart');
 }
 
 void doLogout() async {
   final prefs = await SharedPreferences.getInstance();
   prefs.remove("_username");
   prefs.remove("userid");
-  print('user id doLogout(): $userid');
+  print('user id doLogout(): $useridMainDart');
   main();
 }
 
@@ -137,7 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
         await http.post(Uri.parse(APIurl + "pasien_input_keluhan.php"), body: {
       'keluhan': keluhan.text,
       'no_antrean': antrean_terakhir.toString(),
-      'user_klinik_id': userid.toString()
+      'user_klinik_id': useridMainDart.toString()
     });
     if (response.statusCode == 200) {
       return response.body;
@@ -161,7 +161,7 @@ class _MyHomePageState extends State<MyHomePage> {
             context,
             MaterialPageRoute(
                 builder: (context) => AntreanPasien(
-                    user_klinik_id: userid,
+                    user_klinik_id: useridMainDart,
                     tgl_visit: date.toString().substring(0, 10),
                     antrean_sekarang: antrean_sekarang.toString())));
         setState(() {
@@ -233,13 +233,13 @@ class _MyHomePageState extends State<MyHomePage> {
               getUserId();
               print('onTap');
               print(
-                  "userid: $userid | tgl_visit: ${date.toString().substring(0, 10)} | antrean_sekarang: $antrean_sekarang");
+                  "userid: $useridMainDart | tgl_visit: ${date.toString().substring(0, 10)} | antrean_sekarang: $antrean_sekarang");
               // Navigator.pop(context);
               Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => AntreanPasien(
-                          user_klinik_id: userid,
+                          user_klinik_id: useridMainDart,
                           tgl_visit: date.toString().substring(0, 10),
                           antrean_sekarang: antrean_sekarang.toString())));
             },
@@ -334,7 +334,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       backgroundColor: Colors.blue,
                     ),
                     onPressed: () {
-                      print('userid: $userid');
+                      print('userid: $useridMainDart');
                       getUserId();
                       bacaDataAntrean();
                       print(

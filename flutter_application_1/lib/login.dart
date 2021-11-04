@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 // ignore: unused_element
-String username, password, userid;
+String username, password, useridLoginDart;
 Future<String> fetchDataLogin() async {
   // print('cek login function');
   final response = await http.post(Uri.parse(APIurl + "login.php"), body: {
@@ -27,7 +27,7 @@ void doLogin() async {
   final prefs = await SharedPreferences.getInstance();
   prefs.setString("_username", username);
   // print('$userid: milik login');
-  prefs.setString("userid", userid);
+  prefs.setString("userid", useridLoginDart);
   // print('$userid: milik login2');
   main();
 }
@@ -58,13 +58,13 @@ class _LoginPageState extends State<LoginPage> {
       if (json['result'].toString().contains('success')) {
         // print(json);
         setState(() {
-          userid = json['id'].toString();
+          useridLoginDart = json['id'].toString();
         });
         print(username.toString() +
             ' ' +
             password.toString() +
             ' ' +
-            userid.toString());
+            useridLoginDart.toString());
         doLogin();
       } else {
         showDialog<String>(
@@ -95,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     username = null;
-    userid = null;
+    useridLoginDart = null;
     password = null;
   }
 
@@ -169,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                             ' ' +
                             password.toString() +
                             ' ' +
-                            userid.toString());
+                            useridLoginDart.toString());
                         if (password == null) {
                           showDialog<String>(
                             context: context,
