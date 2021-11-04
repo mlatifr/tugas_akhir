@@ -61,14 +61,14 @@ class _AptAntreanPasienState extends State<AptAntreanPasien> {
 
   void getUserIdApoteker() async {
     final prefs = await SharedPreferences.getInstance();
-    userid = prefs.getString("userid");
+    useridMainDart = prefs.getString("userid");
     setState(() {});
   }
 
   @override
   void initState() {
     getUserIdApoteker();
-    print('user id apoteker $userid');
+    print('user id apoteker $useridMainDart');
     DateTime now = new DateTime.now();
     DateTime date = new DateTime(now.year, now.month, now.day);
     // print(date);
@@ -194,7 +194,7 @@ class _AptAntreanPasienState extends State<AptAntreanPasien> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => AptInputObat(
-                                    AptkrId: userid,
+                                    AptkrId: useridMainDart,
                                     namaPasien: AptkrVAs[index].userName,
                                     visitId: AptkrVAs[index].visitId,
                                   ))).then((onGoBack));

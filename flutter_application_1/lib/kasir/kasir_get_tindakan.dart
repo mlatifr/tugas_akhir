@@ -23,7 +23,7 @@ class KasirVKeranjangTindakan {
   }
 }
 
-Future<String> fetchDataDokterVKeranjangTindakan(pVisitId) async {
+Future<String> fetchDataKasirVKeranjangTindakan(pVisitId) async {
   // print('fetchDataDokterVKeranjangTindakan : $pVisitId');
   final response = await http.post(Uri.parse(APIurl + "kasir_v_tindakan.php"),
       body: {"visit_id": pVisitId.toString()});

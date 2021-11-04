@@ -1,16 +1,21 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application_1/kasir/kasir_get_tindakan.dart';
+import 'package:flutter_application_1/login.dart';
+import 'package:flutter_application_1/main.dart';
 import 'kasir_get_resep.dart';
-import 'kasir_get_tindakan.dart';
 import 'package:intl/intl.dart';
+
+import 'kasir_send_nota_penjualan.dart';
 
 var numberFormatRpResep, numberFormatRpTindakan;
 var cekInitState = 1;
 
 class KasirDetailPasien extends StatefulWidget {
-  var visitId, namaPasien;
-  KasirDetailPasien({Key key, this.visitId, this.namaPasien}) : super(key: key);
+  var visitId, namaPasien, visitDate;
+  KasirDetailPasien({Key key, this.visitId, this.namaPasien, this.visitDate})
+      : super(key: key);
 
   @override
   _KasirDetailPasienState createState() => _KasirDetailPasienState();
@@ -19,6 +24,7 @@ class KasirDetailPasien extends StatefulWidget {
 class _KasirDetailPasienState extends State<KasirDetailPasien> {
   @override
   void initState() {
+    getUserId();
     print('init state $cekInitState');
     KasirBacaDataVListTindakan(widget.visitId);
     KasirBacaDataVResep(widget.visitId);
@@ -47,7 +53,7 @@ class _KasirDetailPasienState extends State<KasirDetailPasien> {
 
   KasirBacaDataVListTindakan(pVisitId) {
     KVKTs.clear();
-    Future<String> data = fetchDataDokterVKeranjangTindakan(pVisitId);
+    Future<String> data = fetchDataKasirVKeranjangTindakan(pVisitId);
     data.then((value) {
       numberFormatRpTindakan = new NumberFormat("#,##0", "id_ID");
       //Mengubah json menjadi Array
@@ -408,6 +414,50 @@ class _KasirDetailPasienState extends State<KasirDetailPasien> {
                         Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: widgetInputPembayaran()),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextButton(
+                            onPressed: () {
+                              fetchDataKasirInputNotaJual(
+                                      useridMainDart,
+                                      widget.visitId,
+                                      widget.visitDate,
+                                      controllerBiayaJasaMedis.text,
+                                      controllerBiayaAdmin.text,
+                                      TotalTdknRspAdmMdis)
+                                  .then((value) => showDialog<String>(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            AlertDialog(
+                                          title: Text(
+                                            '{$value}',
+                                            style: TextStyle(fontSize: 14),
+                                          ),
+                                          actions: <Widget>[
+                                            TextButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    widgetTextTotalPembayaran();
+                                                  });
+                                                  Navigator.pop(
+                                                    context,
+                                                    'ok',
+                                                  );
+                                                },
+                                                child: Text('ok')),
+                                          ],
+                                        ),
+                                      ));
+                            },
+                            child: Text('Bayar'),
+                            style: TextButton.styleFrom(
+                                primary: Colors.white,
+                                backgroundColor: Colors.blue,
+                                minimumSize: Size(
+                                    MediaQuery.of(context).size.width,
+                                    MediaQuery.of(context).size.height * 0.01)),
+                          ),
+                        ),
                       ],
                     ),
                   ),

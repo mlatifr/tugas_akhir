@@ -169,12 +169,14 @@ class _KsrAntreanPasienState extends State<KsrAntreanPasien> {
                       _timerForInter.cancel();
                       print('timer stop');
                       Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => KasirDetailPasien(
-                                      namaPasien: KVAs[index].userName,
-                                      visitId: KVAs[index].visitId)))
-                          .then((onGoBack));
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => KasirDetailPasien(
+                                  namaPasien: KVAs[index].userName,
+                                  visitId: KVAs[index].visitId,
+                                  visitDate: controllerdate.text
+                                      .toString()
+                                      .substring(0, 10)))).then((onGoBack));
                     },
                     leading: CircleAvatar(
                       child: Text('${index + 1}'),
