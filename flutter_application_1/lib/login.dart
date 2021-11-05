@@ -67,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
             useridLoginDart.toString());
         doLogin();
       } else {
-        showDialog<String>(
+        return showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
             title: Text(
