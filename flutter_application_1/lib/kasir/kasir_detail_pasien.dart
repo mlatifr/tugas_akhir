@@ -329,7 +329,7 @@ class _KasirDetailPasienState extends State<KasirDetailPasien> {
               }),
           Table(
               border: TableBorder
-                  .all(), // Allows to add a border decoration around your table e
+                  .all(), // Allows to add a border decoration around your table
               children: [
                 TableRow(children: [
                   Text(
