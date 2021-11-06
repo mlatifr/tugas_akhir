@@ -53,7 +53,7 @@ class _AkuntanMainPageState extends State<AkuntanMainPage> {
     );
   }
 
-  var transaksi_array = {
+  var bodyPost = {
     'transaksi_array': {
       'transaksi_1': {
         'penjurnalan_id': '1',
@@ -73,36 +73,18 @@ class _AkuntanMainPageState extends State<AkuntanMainPage> {
       },
     }
   };
-  Map<String, String> headerz = {
-    HttpHeaders.contentTypeHeader: "application/json"
-  };
   Future<String> fetchDataAkuntanInputTransaksiPenjurnalan() async {
     final response =
         await http.post(Uri.parse(APIurl + "akuntan_inpt_penjurnalan_akun.php"),
-            headers: {
-              'Content-type': 'application/json',
-              "Accept": "application/json",
-            },
-            body: json.encode({
-              'transaksi_array': {
-                'transaksi_1': {
-                  'penjurnalan_id': '1',
-                  'daftar_akun_id': '4',
-                  'tgl_catat': '2021-10-01',
-                  'debet': '1000000',
-                  'kredit': '',
-                  'ket_transaksi': 'pendapatan jasa medis'
-                },
-                'transaksi_2': {
-                  'penjurnalan_id': '1',
-                  'daftar_akun_id': '1',
-                  'tgl_catat': '2021-10-01',
-                  'debet': '',
-                  'kredit': '1000000',
-                  'ket_transaksi': 'pendapatan jasa medis'
-                },
-              }
-            }));
+            // body: {'bodyPost': '1'});
+            body: {
+          'penjurnalan_id': '1',
+          'daftar_akun_id': '4',
+          'tgl_catat': '2021-10-01',
+          'debet': '1000000',
+          'kredit': '',
+          'ket_transaksi': 'pendapatan jasa medis'
+        });
     // body: jsonEncode({transaksi_array}));
     if (response.statusCode == 200) {
       print('fetchDataAkuntanInputTransaksiPenjurnalan: ${response.body}');
