@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/akuntan/akuntan_v_nota_penjualan.dart';
 import 'package:http/http.dart' as http;
 import '../main.dart';
+import 'akuntan_get_daftar_akun.dart';
 
 class AkuntanMainPage extends StatefulWidget {
   const AkuntanMainPage({Key key}) : super(key: key);
@@ -53,45 +54,65 @@ class _AkuntanMainPageState extends State<AkuntanMainPage> {
     );
   }
 
-  var bodyPost = {
-    'transaksi_array': {
-      'transaksi_1': {
-        'penjurnalan_id': '1',
-        'daftar_akun_id': '4',
-        'tgl_catat': '2021-10-01',
-        'debet': '1000000',
-        'kredit': '',
-        'ket_transaksi': 'pendapatan jasa medis'
-      },
-      'transaksi_2': {
-        'penjurnalan_id': '1',
-        'daftar_akun_id': '1',
-        'tgl_catat': '2021-10-01',
-        'debet': '',
-        'kredit': '1000000',
-        'ket_transaksi': 'pendapatan jasa medis'
-      },
-    }
-  };
-  Future<String> fetchDataAkuntanInputTransaksiPenjurnalan() async {
-    final response =
-        await http.post(Uri.parse(APIurl + "akuntan_inpt_penjurnalan_akun.php"),
-            // body: {'bodyPost': '1'});
-            body: {
-          'penjurnalan_id': '1',
-          'daftar_akun_id': '4',
-          'tgl_catat': '2021-10-01',
-          'debet': '1000000',
-          'kredit': '',
-          'ket_transaksi': 'pendapatan jasa medis'
-        });
-    // body: jsonEncode({transaksi_array}));
-    if (response.statusCode == 200) {
-      print('fetchDataAkuntanInputTransaksiPenjurnalan: ${response.body}');
-      return response.body;
-    } else {
-      throw Exception('Failed to read API');
-    }
+  String _valGender;
+  String _valFriends;
+  List _listGender = ["Male", "Female"];
+  List _myFriends = [
+    "Clara",
+    "John",
+    "Rizal",
+    "Steve",
+    "Laurel",
+    "Bernard",
+    "Miechel"
+  ];
+  List<String> selectedItemValue;
+  Widget widgetDropDownButton() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          DropdownButton(
+            hint: Text("Pilih Akun"),
+            value: valueNamaAkun,
+            items: AkntVDftrAkns.map((value) {
+              return DropdownMenuItem(
+                child: Text(value.namaAkun),
+                value: value.idAkun,
+              );
+            }).toList(),
+            onChanged: (value) {
+              setState(() {
+                valIdAkun = value;
+                print('id akun yg dipilih : ${valIdAkun}');
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    DateTime now = new DateTime.now();
+    DateTime date = new DateTime(now.year, now.month, now.day);
+    fetchDataAkuntanVDftrAkun().then((value) {
+      AkntVDftrAkns.clear();
+      //Mengubah json menjadi Array
+      // ignore: unused_local_variable
+      Map json = jsonDecode(value);
+      for (var i in json['data']) {
+        // print('DokterBacaDataVListTindakan: ${i}');
+        AkuntanVDftrAkun dvlt = AkuntanVDftrAkun.fromJson(i);
+        AkntVDftrAkns.add(dvlt);
+      }
+      setState(() {
+        widgetDropDownButton();
+      });
+    });
+    super.initState();
   }
 
   @override
@@ -109,12 +130,24 @@ class _AkuntanMainPageState extends State<AkuntanMainPage> {
               Center(
                   child: ElevatedButton(
                       onPressed: () {
-                        fetchDataAkuntanInputTransaksiPenjurnalan();
-                        // var jE = jsonEncode(transaksi_array);
-                        // var jD = jsonDecode(jE);
-                        // print(transaksi_array.toString());
+                        fetchDataAkuntanVDftrAkun().then((value) {
+                          AkntVDftrAkns.clear();
+                          //Mengubah json menjadi Array
+                          // ignore: unused_local_variable
+                          Map json = jsonDecode(value);
+                          for (var i in json['data']) {
+                            AkuntanVDftrAkun dvlt =
+                                AkuntanVDftrAkun.fromJson(i);
+                            AkntVDftrAkns.add(dvlt);
+                          }
+                          setState(() {
+                            widgetDropDownButton();
+                          });
+                        });
+                        ;
                       },
-                      child: Text('Ok')))
+                      child: Text('Ok'))),
+              Expanded(child: widgetDropDownButton())
               // widgetSelectTgl(),
               // widgetLsTile(),
             ],
