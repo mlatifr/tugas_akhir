@@ -84,6 +84,7 @@ class _AkuntanMainPageState extends State<AkuntanMainPage> {
             }).toList(),
             onChanged: (value) {
               setState(() {
+                valueNamaAkun = value;
                 valIdAkun = value;
                 print('id akun yg dipilih : ${valIdAkun}');
               });
@@ -144,10 +145,9 @@ class _AkuntanMainPageState extends State<AkuntanMainPage> {
                             widgetDropDownButton();
                           });
                         });
-                        ;
                       },
                       child: Text('Ok'))),
-              Expanded(child: widgetDropDownButton())
+              widgetDropDownButton(),
               // widgetSelectTgl(),
               // widgetLsTile(),
             ],

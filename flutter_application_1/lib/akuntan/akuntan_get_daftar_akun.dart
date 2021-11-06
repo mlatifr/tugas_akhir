@@ -6,7 +6,7 @@ import 'package:flutter_application_1/main.dart';
 import 'package:http/http.dart' as http;
 
 List<AkuntanVDftrAkun> AkntVDftrAkns = [];
-var valIdAkun,valueNamaAkun;
+var valIdAkun, valueNamaAkun;
 
 class AkuntanVDftrAkun {
   var idAkun, namaAkun;
