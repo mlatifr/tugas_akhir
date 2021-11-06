@@ -73,22 +73,23 @@ class _AkuntanMainPageState extends State<AkuntanMainPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          DropdownButton(
-            hint: Text("Pilih Akun"),
-            value: valueNamaAkun,
-            items: AkntVDftrAkns.map((value) {
-              return DropdownMenuItem(
-                child: Text(value.namaAkun),
-                value: value.idAkun,
-              );
-            }).toList(),
-            onChanged: (value) {
-              setState(() {
-                valueNamaAkun = value;
-                valIdAkun = value;
-                print('id akun yg dipilih : ${valIdAkun}');
-              });
-            },
+          Center(
+            child: DropdownButton(
+              hint: Text("Pilih Akun"),
+              value: valIdAkun,
+              items: AkntVDftrAkns.map((value) {
+                return DropdownMenuItem(
+                  child: Text(value.namaAkun),
+                  value: value.idAkun,
+                );
+              }).toList(),
+              onChanged: (value) {
+                setState(() {
+                  valIdAkun = value;
+                  print('${valIdAkun}\n${valueNamaAkun.runtimeType}');
+                });
+              },
+            ),
           ),
         ],
       ),
