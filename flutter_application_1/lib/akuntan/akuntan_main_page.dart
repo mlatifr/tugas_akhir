@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/akuntan/akuntan_input_penjurnalan.dart';
 import 'package:flutter_application_1/akuntan/akuntan_v_nota_penjualan.dart';
 import 'package:http/http.dart' as http;
 import '../main.dart';
@@ -36,10 +37,19 @@ class _AkuntanMainPageState extends State<AkuntanMainPage> {
             ),
           ),
           ListTile(
-            title: Text('Input Daftar Akun'),
+            title: Text('Daftar Nota Penjualan'),
             onTap: () {
-              Navigator.push(context,
+              Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => AkuntanVNotaPjln()));
+            },
+          ),
+          ListTile(
+            title: Text('Input Penjurnalan'),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AkuntanInputPenjurnalan()));
             },
           ),
           ListTile(
@@ -48,48 +58,6 @@ class _AkuntanMainPageState extends State<AkuntanMainPage> {
               // _timerForInter.cancel();
               doLogout();
             },
-          ),
-        ],
-      ),
-    );
-  }
-
-  String _valGender;
-  String _valFriends;
-  List _listGender = ["Male", "Female"];
-  List _myFriends = [
-    "Clara",
-    "John",
-    "Rizal",
-    "Steve",
-    "Laurel",
-    "Bernard",
-    "Miechel"
-  ];
-  List<String> selectedItemValue;
-  Widget widgetDropDownButton() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Center(
-            child: DropdownButton(
-              hint: Text("Pilih Akun"),
-              value: valIdAkun,
-              items: AkntVDftrAkns.map((value) {
-                return DropdownMenuItem(
-                  child: Text(value.namaAkun),
-                  value: value.idAkun,
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  valIdAkun = value;
-                  print('${valIdAkun}\n${valueNamaAkun.runtimeType}');
-                });
-              },
-            ),
           ),
         ],
       ),
@@ -110,9 +78,7 @@ class _AkuntanMainPageState extends State<AkuntanMainPage> {
         AkuntanVDftrAkun dvlt = AkuntanVDftrAkun.fromJson(i);
         AkntVDftrAkns.add(dvlt);
       }
-      setState(() {
-        widgetDropDownButton();
-      });
+      setState(() {});
     });
     super.initState();
   }
@@ -124,31 +90,11 @@ class _AkuntanMainPageState extends State<AkuntanMainPage> {
       home: Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text("List Nota"),
+            title: Text("Halaman Utama"),
           ),
           drawer: widgetDrawer(),
           body: Column(
             children: [
-              Center(
-                  child: ElevatedButton(
-                      onPressed: () {
-                        fetchDataAkuntanVDftrAkun().then((value) {
-                          AkntVDftrAkns.clear();
-                          //Mengubah json menjadi Array
-                          // ignore: unused_local_variable
-                          Map json = jsonDecode(value);
-                          for (var i in json['data']) {
-                            AkuntanVDftrAkun dvlt =
-                                AkuntanVDftrAkun.fromJson(i);
-                            AkntVDftrAkns.add(dvlt);
-                          }
-                          setState(() {
-                            widgetDropDownButton();
-                          });
-                        });
-                      },
-                      child: Text('Ok'))),
-              widgetDropDownButton(),
               // widgetSelectTgl(),
               // widgetLsTile(),
             ],

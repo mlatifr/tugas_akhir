@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/akuntan/akuntan_input_penjurnalan.dart';
+import 'package:flutter_application_1/akuntan/akuntan_main_page.dart';
 
 import '../main.dart';
 
@@ -31,9 +33,19 @@ class _AkuntanVNotaPjlnState extends State<AkuntanVNotaPjln> {
             ),
           ),
           ListTile(
+            title: Text('Halaman Utama'),
+            onTap: () {
+              Navigator.of(context).pop(
+                  MaterialPageRoute(builder: (context) => AkuntanMainPage()));
+            },
+          ),
+          ListTile(
             title: Text('Input Penjurnalan'),
             onTap: () {
-              Navigator.of(context).pop();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AkuntanInputPenjurnalan()));
             },
           ),
           ListTile(
@@ -55,7 +67,7 @@ class _AkuntanVNotaPjlnState extends State<AkuntanVNotaPjln> {
       home: Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text("Daftar Akun"),
+            title: Text("Nota Penjualan"),
           ),
           drawer: widgetDrawer(),
           body: Column(
