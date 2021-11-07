@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/akuntan/akuntan_get_daftar_akun.dart';
+import 'package:flutter_application_1/akuntan/akuntan_keranjang_penjurnalan.dart';
 import 'package:flutter_application_1/akuntan/akuntan_main_page.dart';
 import 'package:flutter_application_1/main.dart';
 
@@ -62,8 +63,8 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
     );
   }
 
-  List<String> selectedItemValue;
-  Widget widgetDropDownButton() {
+  List<String> selectedItemTindakan;
+  Widget widgetDropDownTindakan() {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -82,7 +83,7 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
               onChanged: (value) {
                 setState(() {
                   valIdAkun = value;
-                  print('${valIdAkun}');
+                  print('$valIdAkun');
                 });
               },
             ),
@@ -93,39 +94,54 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
   }
 
   @override
+  void initState() {
+    DateTime now = new DateTime.now();
+    DateTime date = new DateTime(now.year, now.month, now.day);
+    fetchDataAkuntanVDftrAkun().then((value) {
+      AkntVDftrAkns.clear();
+      //Mengubah json menjadi Array
+      // ignore: unused_local_variable
+      Map json = jsonDecode(value);
+      for (var i in json['data']) {
+        // print('DokterBacaDataVListTindakan: ${i}');
+        AkuntanVDftrAkun dvlt = AkuntanVDftrAkun.fromJson(i);
+        AkntVDftrAkns.add(dvlt);
+      }
+      setState(() {});
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text("List Nota"),
+            title: Text("Input Penjurnalan"),
           ),
           drawer: widgetDrawer(),
           body: Column(
             children: [
-              Center(
-                  child: ElevatedButton(
-                      onPressed: () {
-                        fetchDataAkuntanVDftrAkun().then((value) {
-                          AkntVDftrAkns.clear();
-                          //Mengubah json menjadi Array
-                          // ignore: unused_local_variable
-                          Map json = jsonDecode(value);
-                          for (var i in json['data']) {
-                            AkuntanVDftrAkun dvlt =
-                                AkuntanVDftrAkun.fromJson(i);
-                            AkntVDftrAkns.add(dvlt);
-                          }
-                          setState(() {
-                            widgetDropDownButton();
-                          });
-                        });
-                      },
-                      child: Text('Ok'))),
-              widgetDropDownButton(),
-              // widgetSelectTgl(),
-              // widgetLsTile(),
+              widgetDropDownTindakan(),
+              ElevatedButton(
+                  onPressed: () {
+                    AkuntanKeranjangPenjurnalan krjgPnjrnl =
+                        AkuntanKeranjangPenjurnalan(
+                            penjurnalan_id: 'penjurnalan_id',
+                            daftar_akun_id: '2',
+                            tgl_catat: 'tgl_catat',
+                            debet: 'debet',
+                            kredit: 'kredit',
+                            ket_transaksi: 'ket_transaksi');
+
+                    ListAkuntanKeranjangPenjurnalans.add(krjgPnjrnl);
+                    for (var item in ListAkuntanKeranjangPenjurnalans) {
+                      print(item.daftar_akun_id);
+                    }
+                  },
+                  child: Text('simpan'))
             ],
           )),
     );
