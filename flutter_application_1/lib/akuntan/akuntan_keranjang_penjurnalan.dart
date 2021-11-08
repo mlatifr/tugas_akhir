@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:flutter_application_1/main.dart';
 import 'package:http/http.dart' as http;
 
-List<AkuntanKeranjangPenjurnalan> ListAkuntanKeranjangPenjurnalans = [];
+List<AkuntanKeranjangPenjurnalan> KeranjangTransaksiPenjurnalans = [];
 
 class AkuntanKeranjangPenjurnalan {
   var penjurnalan_id, daftar_akun_id, tgl_catat, debet, kredit, ket_transaksi;
@@ -19,19 +19,19 @@ class AkuntanKeranjangPenjurnalan {
   });
 }
 
-var transaksi_array = [];
-LKrjgPenjurnalanToArray() {
-  transaksi_array.clear();
-  for (var item in ListAkuntanKeranjangPenjurnalans) {
-    transaksi_array.add('penjurnalan_id[$item]: ${item.penjurnalan_id},'
-        'daftar_akun_id[$item]: ${item.daftar_akun_id},'
-        'tgl_catat[$item]: ${item.tgl_catat},'
-        'debet[$item]: ${item.debet},'
-        'kredit[$item]: ${item.kredit},'
-        'ket_transaksi[$item]: ${item.ket_transaksi},');
-  }
-  print(transaksi_array.toString());
-}
+// var transaksi_array = [];
+// LKrjgPenjurnalanToArray() {
+//   transaksi_array.clear();
+//   for (var item in ListAkuntanKeranjangPenjurnalans) {
+//     transaksi_array.add('penjurnalan_id[$item]: ${item.penjurnalan_id},'
+//         'daftar_akun_id[$item]: ${item.daftar_akun_id},'
+//         'tgl_catat[$item]: ${item.tgl_catat},'
+//         'debet[$item]: ${item.debet},'
+//         'kredit[$item]: ${item.kredit},'
+//         'ket_transaksi[$item]: ${item.ket_transaksi},');
+//   }
+//   print(transaksi_array.toString());
+// }
 
 Future<String> fetchDataInputKeranjangPenjurnalan(
   p_penjurnalan_id,

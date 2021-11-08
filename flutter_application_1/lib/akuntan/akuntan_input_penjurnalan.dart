@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/akuntan/akuntan_get_daftar_akun.dart';
+import 'package:flutter_application_1/akuntan/akuntan_keranjang_penjurnalan.dart';
 import 'package:flutter_application_1/akuntan/akuntan_main_page.dart';
 import 'package:flutter_application_1/main.dart';
 
@@ -142,6 +143,7 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
   }
 
   TextEditingController controllerNilaiAkun = TextEditingController();
+  TextEditingController controllerKeterangan = TextEditingController();
   Widget widgetFormTransaksi() {
     return Column(
       children: [
@@ -180,6 +182,35 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
                 ),
               )),
         ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TextFormField(
+              enabled: true,
+              controller: controllerKeterangan,
+              onChanged: (value) {
+                setState(() {
+                  controllerKeterangan.text = value.toString();
+                  controllerKeterangan.selection = TextSelection.fromPosition(
+                      TextPosition(offset: controllerKeterangan.text.length));
+                });
+              },
+              decoration: InputDecoration(
+                labelText: "Keterangan",
+                fillColor: Colors.white,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.blue,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.blue,
+                  ),
+                ),
+              )),
+        ),
       ],
     );
   }
@@ -195,7 +226,36 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
           ),
           drawer: widgetDrawer(),
           body: Column(
-            children: [widgetFormTransaksi()],
+            children: [
+              widgetFormTransaksi(),
+              ElevatedButton(
+                  onPressed: () {
+                    AkuntanKeranjangPenjurnalan AIP =
+                        AkuntanKeranjangPenjurnalan();
+                    AIP.penjurnalan_id = '1';
+                    AIP.daftar_akun_id = valIdAkun.toString();
+                    AIP.tgl_catat = '2021-11-08';
+                    if (valueDebetKredit.toString() == 'debet') {
+                      AIP.kredit = '0';
+                      AIP.debet = controllerNilaiAkun.text;
+                    } else if (valueDebetKredit.toString() == 'kredit') {
+                      AIP.debet = '0';
+                      AIP.kredit = controllerNilaiAkun.text;
+                    }
+                    AIP.ket_transaksi = controllerKeterangan.text;
+                    KeranjangTransaksiPenjurnalans.add(AIP);
+                    for (var i in KeranjangTransaksiPenjurnalans) {
+                      print(
+                          'penjurnalan_id:i.penjurnalan_id${i.penjurnalan_id} \ndaftar_akun_id:${i.daftar_akun_id}\ntgl_catat:${i.tgl_catat}\ndebet:${i.debet}\nkredit:${i.kredit}\nket_transaksi${i.ket_transaksi}');
+                    }
+                  },
+                  child: Text('Tambah')),
+              ElevatedButton(
+                  onPressed: () {
+                    KeranjangTransaksiPenjurnalans.clear();
+                  },
+                  child: Icon(Icons.delete_outline))
+            ],
           )),
     );
   }
