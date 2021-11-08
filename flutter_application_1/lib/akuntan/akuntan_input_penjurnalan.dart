@@ -323,7 +323,17 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
                     style: TextStyle(),
                   ),
                   children: [widgetFormTransaksi()]),
-              widgetTextKeranjangTransaksi()
+              ExpansionTile(
+                  title: Text(
+                    'Keranjang Transaksi',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(),
+                  ),
+                  children: [widgetTextKeranjangTransaksi()]),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(onPressed: () {}, child: Text('simpan')),
+              )
             ],
           )),
     );
