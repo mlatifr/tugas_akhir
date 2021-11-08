@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_application_1/akuntan/akuntan_get_daftar_akun.dart';
-import 'package:flutter_application_1/akuntan/akuntan_keranjang_penjurnalan.dart';
 import 'package:flutter_application_1/akuntan/akuntan_main_page.dart';
 import 'package:flutter_application_1/main.dart';
 
@@ -66,7 +66,7 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
   List<String> selectedItemTindakan;
   Widget widgetDropDownTindakan() {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -84,6 +84,35 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
                 setState(() {
                   valIdAkun = value;
                   print('$valIdAkun');
+                });
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget widgetDropDownDebetKredit() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Center(
+            child: DropdownButton(
+              hint: Text("Debet/Kredit"),
+              value: valueDebetKredit,
+              items: DebetKredit.map((value) {
+                return DropdownMenuItem(
+                  child: Text(value),
+                  value: value,
+                );
+              }).toList(),
+              onChanged: (value) {
+                setState(() {
+                  valueDebetKredit = value;
+                  print('$valueDebetKredit');
                 });
               },
             ),
@@ -112,6 +141,49 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
     super.initState();
   }
 
+  TextEditingController controllerNilaiAkun = TextEditingController();
+  Widget widgetFormTransaksi() {
+    return Column(
+      children: [
+        widgetDropDownTindakan(),
+        widgetDropDownDebetKredit(),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TextFormField(
+              enabled: true,
+              controller: controllerNilaiAkun,
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
+              ],
+              onChanged: (value) {
+                setState(() {
+                  controllerNilaiAkun.text = value.toString();
+                  controllerNilaiAkun.selection = TextSelection.fromPosition(
+                      TextPosition(offset: controllerNilaiAkun.text.length));
+                });
+              },
+              decoration: InputDecoration(
+                labelText: "Jumlah",
+                fillColor: Colors.white,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.blue,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.blue,
+                  ),
+                ),
+              )),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -123,45 +195,7 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
           ),
           drawer: widgetDrawer(),
           body: Column(
-            children: [
-              widgetDropDownTindakan(),
-              ElevatedButton(
-                  onPressed: () {
-                    // ListAkuntanKeranjangPenjurnalans.clear();
-                    // AkuntanKeranjangPenjurnalan krjgPnjrnl;
-                    // krjgPnjrnl = AkuntanKeranjangPenjurnalan(
-                    //     penjurnalan_id: 'penjurnalan_id $valIdAkun',
-                    //     daftar_akun_id: '$valIdAkun',
-                    //     tgl_catat: 'tgl_catat $valIdAkun',
-                    //     debet: 'debet $valIdAkun',
-                    //     kredit: 'kredit $valIdAkun',
-                    //     ket_transaksi: 'ket_transaksi $valIdAkun');
-                    // ListAkuntanKeranjangPenjurnalans.add(krjgPnjrnl);
-
-                    for (var i = 0; i < 10; i++) {
-                      // print('print i $i');
-                      fetchDataInputKeranjangPenjurnalan(
-                              1, i + 1, i + 1, i + 1, i + 1, i + 1
-                              // ListAkuntanKeranjangPenjurnalans[0].penjurnalan_id,
-                              // ListAkuntanKeranjangPenjurnalans[0].daftar_akun_id,
-                              // ListAkuntanKeranjangPenjurnalans[0].tgl_catat,
-                              // ListAkuntanKeranjangPenjurnalans[0].debet,
-                              // ListAkuntanKeranjangPenjurnalans[0].kredit,
-                              // ListAkuntanKeranjangPenjurnalans[0].ket_transaksi,
-                              )
-                          .then((value) => print(value));
-                      // print(
-                      //     '${ListAkuntanKeranjangPenjurnalans[i].penjurnalan_id}');
-                    }
-                  },
-                  child: Text('simpan')),
-              ElevatedButton(
-                  onPressed: () {
-                    // LKrjgPenjurnalanToArray();
-                    ListAkuntanKeranjangPenjurnalans.clear();
-                  },
-                  child: Text('Keranjang Print')),
-            ],
+            children: [widgetFormTransaksi()],
           )),
     );
   }
