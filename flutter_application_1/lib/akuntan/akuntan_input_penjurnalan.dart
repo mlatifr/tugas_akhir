@@ -77,14 +77,15 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
               value: valIdAkun,
               items: AkntVDftrAkns.map((value) {
                 return DropdownMenuItem(
-                  child: Text(value.namaAkun),
                   value: value.idAkun,
+                  child: Text(value.namaAkun),
                 );
               }).toList(),
               onChanged: (value) {
                 setState(() {
                   valIdAkun = value;
-                  print('$valIdAkun');
+                  valueNamaAkun = AkntVDftrAkns[value - 1].namaAkun;
+                  print('$valueNamaAkun');
                 });
               },
             ),
@@ -216,6 +217,7 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
               AkuntanKeranjangPenjurnalan AIP = AkuntanKeranjangPenjurnalan();
               AIP.penjurnalan_id = '1';
               AIP.daftar_akun_id = valIdAkun.toString();
+              AIP.daftar_akun_nama = valueNamaAkun.toString();
               AIP.tgl_catat = '2021-11-08';
               if (valueDebetKredit.toString() == 'debet') {
                 AIP.kredit = '0';
@@ -237,6 +239,21 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
     );
   }
 
+  Widget widgetTxtDebetKredit(debet, kredit, i) {
+    if (debet > 0) {
+      return Text(
+        'debet: ${KeranjangTransaksiPenjurnalans[i].debet.toString()}',
+        style:
+            TextStyle(backgroundColor: Colors.blueAccent, color: Colors.white),
+      );
+    } else if (kredit > 0) {
+      return Text(
+        'Kredit: ${KeranjangTransaksiPenjurnalans[i].kredit.toString()}',
+        style: TextStyle(backgroundColor: Colors.red, color: Colors.white),
+      );
+    }
+  }
+
   Widget widgetTextKeranjangTransaksi() {
     if (KeranjangTransaksiPenjurnalans.length > 0) {
       return Column(
@@ -246,20 +263,29 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
               shrinkWrap: true,
               itemCount: KeranjangTransaksiPenjurnalans.length,
               itemBuilder: (context, i) {
-                return Column(
+                return Row(
                   children: [
-                    Text(
-                        'penjurnalan_id: ${KeranjangTransaksiPenjurnalans[i].penjurnalan_id}'),
-                    Text(
-                        'daftar_akun_id: ${KeranjangTransaksiPenjurnalans[i].daftar_akun_id}'),
-                    Text(
-                        'tgl_catat: ${KeranjangTransaksiPenjurnalans[i].tgl_catat}'),
-                    Text(
-                        'debet: ${KeranjangTransaksiPenjurnalans[i].debet.toString()}'),
-                    Text(
-                        'kredit: ${KeranjangTransaksiPenjurnalans[i].kredit.toString()}'),
-                    Text(
-                        'ket_transaksi: ${KeranjangTransaksiPenjurnalans[i].ket_transaksi}'),
+                    Expanded(
+                      child: ListTile(
+                        subtitle: Column(
+                          children: [
+                            Text(
+                                '${KeranjangTransaksiPenjurnalans[i].daftar_akun_nama}'),
+                            Text(
+                                'tgl ${KeranjangTransaksiPenjurnalans[i].tgl_catat}'),
+                            widgetTxtDebetKredit(
+                                int.parse(
+                                    KeranjangTransaksiPenjurnalans[i].debet),
+                                int.parse(
+                                    KeranjangTransaksiPenjurnalans[i].kredit),
+                                i),
+                            Text(
+                                'ket_transaksi: ${KeranjangTransaksiPenjurnalans[i].ket_transaksi}'),
+                            Divider()
+                          ],
+                        ),
+                      ),
+                    ),
                     ElevatedButton(
                         onPressed: () {
                           KeranjangTransaksiPenjurnalans.removeAt(i);
