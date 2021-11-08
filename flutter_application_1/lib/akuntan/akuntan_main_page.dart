@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/akuntan/akuntan_input_penjurnalan.dart';
+import 'package:flutter_application_1/akuntan/akuntan_send_transaksi_penjurnalan.dart';
 import 'package:flutter_application_1/akuntan/akuntan_v_nota_penjualan.dart';
 import 'package:http/http.dart' as http;
 import '../main.dart';
@@ -95,6 +96,11 @@ class _AkuntanMainPageState extends State<AkuntanMainPage> {
           drawer: widgetDrawer(),
           body: Column(
             children: [
+              ElevatedButton(
+                  onPressed: () {
+                    fetchDataAkuntanInputTransaksiPenjurnalanArray();
+                  },
+                  child: Text('From Postman'))
               // widgetSelectTgl(),
               // widgetLsTile(),
             ],
