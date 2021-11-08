@@ -305,7 +305,7 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
     }
   }
 
-  Function functionSimpanPenjurnalna() {
+  Function functionSimpanPenjurnalan() {
     if (KeranjangTransaksiPenjurnalans.isNotEmpty) {
       for (var i = 0; i < KeranjangTransaksiPenjurnalans.length; i++) {
         fetchDataAkuntanInputTransaksiPenjurnalan(
@@ -394,7 +394,28 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
                     onPressed: () {
-                      functionSimpanPenjurnalna();
+                      showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: Text(
+                            'WARNING!\nData yg sudah di simpan tidak bisa di edit lagi',
+                            style: TextStyle(fontSize: 14),
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                                onPressed: () {
+                                  functionSimpanPenjurnalan();
+                                  Navigator.pop(context);
+                                },
+                                child: Text('ok')),
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text('Cancel')),
+                          ],
+                        ),
+                      );
                     },
                     child: Text('simpan')),
               )
