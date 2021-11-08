@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_application_1/akuntan/akuntan_get_daftar_akun.dart';
 import 'package:flutter_application_1/akuntan/akuntan_keranjang_penjurnalan.dart';
 import 'package:flutter_application_1/akuntan/akuntan_main_page.dart';
+import 'package:flutter_application_1/akuntan/akuntan_send_transaksi_penjurnalan.dart';
 import 'package:flutter_application_1/main.dart';
 
 import 'akuntan_v_nota_penjualan.dart';
@@ -304,11 +305,53 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
     }
   }
 
+  Function functionSimpanPenjurnalna() {
+    if (KeranjangTransaksiPenjurnalans.isNotEmpty) {
+      for (var i = 0; i < KeranjangTransaksiPenjurnalans.length; i++) {
+        fetchDataAkuntanInputTransaksiPenjurnalan(
+                KeranjangTransaksiPenjurnalans[i].penjurnalan_id,
+                KeranjangTransaksiPenjurnalans[i].daftar_akun_id,
+                KeranjangTransaksiPenjurnalans[i].tgl_catat,
+                KeranjangTransaksiPenjurnalans[i].debet,
+                KeranjangTransaksiPenjurnalans[i].kredit,
+                KeranjangTransaksiPenjurnalans[i].ket_transaksi)
+            .then((value) {
+          Map json = jsonDecode(value);
+          if (json['result'].toString() == 'success') {
+            _scaffoldKey.currentState.showSnackBar(SnackBar(
+              content: Text(value),
+              duration: Duration(milliseconds: 100),
+            ));
+            // showDialog<String>(
+            //   context: context,
+            //   builder: (BuildContext context) => AlertDialog(
+            //     title: Text(
+            //       '$value',
+            //       style: TextStyle(fontSize: 14),
+            //     ),
+            //     actions: <Widget>[
+            //       TextButton(
+            //           onPressed: () {
+            //             Navigator.pop(context);
+            //           },
+            //           child: Text('ok')),
+            //     ],
+            //   ),
+            // );
+          }
+        });
+      }
+    }
+  }
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+          key: _scaffoldKey,
           appBar: AppBar(
             centerTitle: true,
             title: Text("Input Penjurnalan"),
@@ -332,7 +375,11 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
                   children: [widgetTextKeranjangTransaksi()]),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(onPressed: () {}, child: Text('simpan')),
+                child: ElevatedButton(
+                    onPressed: () {
+                      functionSimpanPenjurnalna();
+                    },
+                    child: Text('simpan')),
               )
             ],
           )),
