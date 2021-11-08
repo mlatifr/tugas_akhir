@@ -215,6 +215,33 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
     );
   }
 
+  Widget widgetTextKeranjangTransaksi() {
+    if (KeranjangTransaksiPenjurnalans.length > 0) {
+      return ListView.builder(
+          itemCount: KeranjangTransaksiPenjurnalans.length,
+          itemBuilder: (context, i) {
+            return Column(
+              children: [
+                Text(
+                    'penjurnalan_id: ${KeranjangTransaksiPenjurnalans[i].penjurnalan_id}'),
+                Text(
+                    'daftar_akun_id: ${KeranjangTransaksiPenjurnalans[i].daftar_akun_id}'),
+                Text(
+                    'tgl_catat: ${KeranjangTransaksiPenjurnalans[i].tgl_catat}'),
+                Text(
+                    'debet: ${KeranjangTransaksiPenjurnalans[i].debet.toString()}'),
+                Text(
+                    'kredit: ${KeranjangTransaksiPenjurnalans[i].kredit.toString()}'),
+                Text(
+                    'ket_transaksi: ${KeranjangTransaksiPenjurnalans[i].ket_transaksi}'),
+              ],
+            );
+          });
+    } else {
+      return Text('Keranjang masih kosong');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -248,13 +275,19 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
                       print(
                           'penjurnalan_id:i.penjurnalan_id${i.penjurnalan_id} \ndaftar_akun_id:${i.daftar_akun_id}\ntgl_catat:${i.tgl_catat}\ndebet:${i.debet}\nkredit:${i.kredit}\nket_transaksi${i.ket_transaksi}');
                     }
+                    setState(() {});
                   },
                   child: Text('Tambah')),
               ElevatedButton(
                   onPressed: () {
                     KeranjangTransaksiPenjurnalans.clear();
+                    setState(() {
+                      widgetTextKeranjangTransaksi();
+                    });
                   },
-                  child: Icon(Icons.delete_outline))
+                  child: Icon(Icons.delete_outline)),
+              Divider(),
+              Expanded(child: widgetTextKeranjangTransaksi())
             ],
           )),
     );
