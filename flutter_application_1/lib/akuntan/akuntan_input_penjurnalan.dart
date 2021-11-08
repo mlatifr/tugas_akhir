@@ -211,34 +211,70 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
                 ),
               )),
         ),
+        ElevatedButton(
+            onPressed: () {
+              AkuntanKeranjangPenjurnalan AIP = AkuntanKeranjangPenjurnalan();
+              AIP.penjurnalan_id = '1';
+              AIP.daftar_akun_id = valIdAkun.toString();
+              AIP.tgl_catat = '2021-11-08';
+              if (valueDebetKredit.toString() == 'debet') {
+                AIP.kredit = '0';
+                AIP.debet = controllerNilaiAkun.text;
+              } else if (valueDebetKredit.toString() == 'kredit') {
+                AIP.debet = '0';
+                AIP.kredit = controllerNilaiAkun.text;
+              }
+              AIP.ket_transaksi = controllerKeterangan.text;
+              KeranjangTransaksiPenjurnalans.add(AIP);
+              for (var i in KeranjangTransaksiPenjurnalans) {
+                print(
+                    'penjurnalan_id:i.penjurnalan_id${i.penjurnalan_id} \ndaftar_akun_id:${i.daftar_akun_id}\ntgl_catat:${i.tgl_catat}\ndebet:${i.debet}\nkredit:${i.kredit}\nket_transaksi${i.ket_transaksi}');
+              }
+              setState(() {});
+            },
+            child: Text('Tambah')),
       ],
     );
   }
 
   Widget widgetTextKeranjangTransaksi() {
     if (KeranjangTransaksiPenjurnalans.length > 0) {
-      return ListView.builder(
-          itemCount: KeranjangTransaksiPenjurnalans.length,
-          itemBuilder: (context, i) {
-            return Column(
-              children: [
-                Text(
-                    'penjurnalan_id: ${KeranjangTransaksiPenjurnalans[i].penjurnalan_id}'),
-                Text(
-                    'daftar_akun_id: ${KeranjangTransaksiPenjurnalans[i].daftar_akun_id}'),
-                Text(
-                    'tgl_catat: ${KeranjangTransaksiPenjurnalans[i].tgl_catat}'),
-                Text(
-                    'debet: ${KeranjangTransaksiPenjurnalans[i].debet.toString()}'),
-                Text(
-                    'kredit: ${KeranjangTransaksiPenjurnalans[i].kredit.toString()}'),
-                Text(
-                    'ket_transaksi: ${KeranjangTransaksiPenjurnalans[i].ket_transaksi}'),
-              ],
-            );
-          });
+      return Column(
+        children: [
+          ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: KeranjangTransaksiPenjurnalans.length,
+              itemBuilder: (context, i) {
+                return Column(
+                  children: [
+                    Text(
+                        'penjurnalan_id: ${KeranjangTransaksiPenjurnalans[i].penjurnalan_id}'),
+                    Text(
+                        'daftar_akun_id: ${KeranjangTransaksiPenjurnalans[i].daftar_akun_id}'),
+                    Text(
+                        'tgl_catat: ${KeranjangTransaksiPenjurnalans[i].tgl_catat}'),
+                    Text(
+                        'debet: ${KeranjangTransaksiPenjurnalans[i].debet.toString()}'),
+                    Text(
+                        'kredit: ${KeranjangTransaksiPenjurnalans[i].kredit.toString()}'),
+                    Text(
+                        'ket_transaksi: ${KeranjangTransaksiPenjurnalans[i].ket_transaksi}'),
+                    ElevatedButton(
+                        onPressed: () {
+                          KeranjangTransaksiPenjurnalans.removeAt(i);
+                          setState(() {
+                            widgetTextKeranjangTransaksi();
+                          });
+                        },
+                        child: Icon(Icons.delete))
+                  ],
+                );
+              }),
+        ],
+      );
     } else {
-      return Text('Keranjang masih kosong');
+      return Expanded(child: Center(child: Text('Keranjang masih kosong')));
     }
   }
 
@@ -252,42 +288,16 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
             title: Text("Input Penjurnalan"),
           ),
           drawer: widgetDrawer(),
-          body: Column(
+          body: ListView(
             children: [
-              widgetFormTransaksi(),
-              ElevatedButton(
-                  onPressed: () {
-                    AkuntanKeranjangPenjurnalan AIP =
-                        AkuntanKeranjangPenjurnalan();
-                    AIP.penjurnalan_id = '1';
-                    AIP.daftar_akun_id = valIdAkun.toString();
-                    AIP.tgl_catat = '2021-11-08';
-                    if (valueDebetKredit.toString() == 'debet') {
-                      AIP.kredit = '0';
-                      AIP.debet = controllerNilaiAkun.text;
-                    } else if (valueDebetKredit.toString() == 'kredit') {
-                      AIP.debet = '0';
-                      AIP.kredit = controllerNilaiAkun.text;
-                    }
-                    AIP.ket_transaksi = controllerKeterangan.text;
-                    KeranjangTransaksiPenjurnalans.add(AIP);
-                    for (var i in KeranjangTransaksiPenjurnalans) {
-                      print(
-                          'penjurnalan_id:i.penjurnalan_id${i.penjurnalan_id} \ndaftar_akun_id:${i.daftar_akun_id}\ntgl_catat:${i.tgl_catat}\ndebet:${i.debet}\nkredit:${i.kredit}\nket_transaksi${i.ket_transaksi}');
-                    }
-                    setState(() {});
-                  },
-                  child: Text('Tambah')),
-              ElevatedButton(
-                  onPressed: () {
-                    KeranjangTransaksiPenjurnalans.clear();
-                    setState(() {
-                      widgetTextKeranjangTransaksi();
-                    });
-                  },
-                  child: Icon(Icons.delete_outline)),
-              Divider(),
-              Expanded(child: widgetTextKeranjangTransaksi())
+              ExpansionTile(
+                  title: Text(
+                    'Input Transaksi',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(),
+                  ),
+                  children: [widgetFormTransaksi()]),
+              widgetTextKeranjangTransaksi()
             ],
           )),
     );
