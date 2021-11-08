@@ -338,6 +338,23 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
             //     ],
             //   ),
             // );
+          } else if (json['result'].toString() == 'fail') {
+            showDialog<String>(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                title: Text(
+                  '$value',
+                  style: TextStyle(fontSize: 14),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text('ok')),
+                ],
+              ),
+            );
           }
         });
       }
