@@ -127,21 +127,40 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
               widgetDropDownTindakan(),
               ElevatedButton(
                   onPressed: () {
-                    AkuntanKeranjangPenjurnalan krjgPnjrnl =
-                        AkuntanKeranjangPenjurnalan(
-                            penjurnalan_id: 'penjurnalan_id',
-                            daftar_akun_id: '2',
-                            tgl_catat: 'tgl_catat',
-                            debet: 'debet',
-                            kredit: 'kredit',
-                            ket_transaksi: 'ket_transaksi');
+                    // ListAkuntanKeranjangPenjurnalans.clear();
+                    // AkuntanKeranjangPenjurnalan krjgPnjrnl;
+                    // krjgPnjrnl = AkuntanKeranjangPenjurnalan(
+                    //     penjurnalan_id: 'penjurnalan_id $valIdAkun',
+                    //     daftar_akun_id: '$valIdAkun',
+                    //     tgl_catat: 'tgl_catat $valIdAkun',
+                    //     debet: 'debet $valIdAkun',
+                    //     kredit: 'kredit $valIdAkun',
+                    //     ket_transaksi: 'ket_transaksi $valIdAkun');
+                    // ListAkuntanKeranjangPenjurnalans.add(krjgPnjrnl);
 
-                    ListAkuntanKeranjangPenjurnalans.add(krjgPnjrnl);
-                    for (var item in ListAkuntanKeranjangPenjurnalans) {
-                      print(item.daftar_akun_id);
+                    for (var i = 0; i < 10; i++) {
+                      // print('print i $i');
+                      fetchDataInputKeranjangPenjurnalan(
+                              1, i + 1, i + 1, i + 1, i + 1, i + 1
+                              // ListAkuntanKeranjangPenjurnalans[0].penjurnalan_id,
+                              // ListAkuntanKeranjangPenjurnalans[0].daftar_akun_id,
+                              // ListAkuntanKeranjangPenjurnalans[0].tgl_catat,
+                              // ListAkuntanKeranjangPenjurnalans[0].debet,
+                              // ListAkuntanKeranjangPenjurnalans[0].kredit,
+                              // ListAkuntanKeranjangPenjurnalans[0].ket_transaksi,
+                              )
+                          .then((value) => print(value));
+                      // print(
+                      //     '${ListAkuntanKeranjangPenjurnalans[i].penjurnalan_id}');
                     }
                   },
-                  child: Text('simpan'))
+                  child: Text('simpan')),
+              ElevatedButton(
+                  onPressed: () {
+                    // LKrjgPenjurnalanToArray();
+                    ListAkuntanKeranjangPenjurnalans.clear();
+                  },
+                  child: Text('Keranjang Print')),
             ],
           )),
     );
