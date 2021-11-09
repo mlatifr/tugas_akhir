@@ -5,10 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_application_1/akuntan/akuntan_get_daftar_akun.dart';
 import 'package:flutter_application_1/akuntan/akuntan_keranjang_penjurnalan.dart';
 import 'package:flutter_application_1/akuntan/akuntan_main_page.dart';
+import 'package:flutter_application_1/akuntan/akuntan_page_nota_penjualan.dart';
 import 'package:flutter_application_1/akuntan/akuntan_send_transaksi_penjurnalan.dart';
 import 'package:flutter_application_1/main.dart';
-
-import 'akuntan_v_nota_penjualan.dart';
 
 class AkuntanInputPenjurnalan extends StatefulWidget {
   const AkuntanInputPenjurnalan({Key key}) : super(key: key);
@@ -19,52 +18,6 @@ class AkuntanInputPenjurnalan extends StatefulWidget {
 }
 
 class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
-  Widget widgetDrawer() {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            child: Text(
-              'Selamat datang: \n ' + username,
-              style: TextStyle(
-                backgroundColor: Colors.white.withOpacity(0.85),
-                fontSize: 20,
-              ),
-            ),
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.fill,
-                image: AssetImage('./asset/image/clinic_text.jpg'),
-              ),
-            ),
-          ),
-          ListTile(
-            title: Text('Halaman Utama'),
-            onTap: () {
-              Navigator.pop(context,
-                  MaterialPageRoute(builder: (context) => AkuntanMainPage()));
-            },
-          ),
-          ListTile(
-            title: Text('Nota Penjualan'),
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AkuntanVNotaPjln()));
-            },
-          ),
-          ListTile(
-            title: Text('Logout'),
-            onTap: () {
-              // _timerForInter.cancel();
-              doLogout();
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
   List<String> selectedItemTindakan;
   Widget widgetDropDownTindakan() {
     return Padding(
@@ -483,8 +436,13 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
           appBar: AppBar(
             centerTitle: true,
             title: Text("Input Penjurnalan"),
+            leading: new IconButton(
+              icon: new Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
           ),
-          drawer: widgetDrawer(),
           body: widgetListViewBodyPage()),
     );
   }

@@ -17,53 +17,6 @@ class AkuntanVNotaPjln extends StatefulWidget {
 
 class _AkuntanVNotaPjlnState extends State<AkuntanVNotaPjln> {
   var numberFormatRp = new NumberFormat("#,##0", "id_ID");
-  Widget widgetDrawer() {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            child: Text(
-              'Selamat datang: \n ' + username,
-              style: TextStyle(
-                backgroundColor: Colors.white.withOpacity(0.85),
-                fontSize: 20,
-              ),
-            ),
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.fill,
-                image: AssetImage('./asset/image/clinic_text.jpg'),
-              ),
-            ),
-          ),
-          ListTile(
-            title: Text('Halaman Utama'),
-            onTap: () {
-              Navigator.of(context).pop(
-                  MaterialPageRoute(builder: (context) => AkuntanMainPage()));
-            },
-          ),
-          ListTile(
-            title: Text('Input Penjurnalan'),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AkuntanInputPenjurnalan()));
-            },
-          ),
-          ListTile(
-            title: Text('Logout'),
-            onTap: () {
-              // _timerForInter.cancel();
-              doLogout();
-            },
-          ),
-        ],
-      ),
-    );
-  }
 
 // ignore: non_constant_identifier_names
   AkunanBacaDataPenjualanObat(tgl) {
@@ -152,8 +105,13 @@ class _AkuntanVNotaPjlnState extends State<AkuntanVNotaPjln> {
           appBar: AppBar(
             centerTitle: true,
             title: Text("Nota Penjualan"),
+            leading: new IconButton(
+              icon: new Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
           ),
-          drawer: widgetDrawer(),
           body: ListView(
             children: [
               Center(
