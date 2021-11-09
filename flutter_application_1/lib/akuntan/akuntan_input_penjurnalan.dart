@@ -125,10 +125,68 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
     );
   }
 
+  Widget widgetSelectTgl() {
+    return Padding(
+        padding: EdgeInsets.all(10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+                child: TextFormField(
+              controller: controllerdate,
+              onChanged: (value) {
+                setState(() {
+                  controllerdate.text = value.toString();
+                  controllerdate.selection = TextSelection.fromPosition(
+                      TextPosition(offset: controllerdate.text.length));
+                  print('TextFormField controllerdate $value');
+                });
+              },
+              enabled: false,
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
+              ],
+              decoration: InputDecoration(
+                labelText: 'Tanggal Transaksi',
+                fillColor: Colors.white,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.blue,
+                  ),
+                ),
+              ),
+            )),
+            ElevatedButton(
+                onPressed: () {
+                  showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2200))
+                      .then((value) {
+                    setState(() {
+                      controllerdate.text = value.toString().substring(0, 10);
+                      print('showDatePicker : $value');
+                    });
+                  });
+                },
+                child: Icon(
+                  Icons.calendar_today_sharp,
+                  color: Colors.white,
+                  size: 24.0,
+                ))
+          ],
+        ));
+  }
+
+  var controllerdate = TextEditingController();
   @override
   void initState() {
     DateTime now = new DateTime.now();
     DateTime date = new DateTime(now.year, now.month, now.day);
+    controllerdate.text = date.toString().substring(0, 10);
     fetchDataAkuntanVDftrAkun().then((value) {
       AkntVDftrAkns.clear();
       //Mengubah json menjadi Array
@@ -141,6 +199,7 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
       }
       setState(() {});
     });
+
     super.initState();
   }
 
@@ -149,6 +208,7 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
   Widget widgetFormTransaksi() {
     return Column(
       children: [
+        widgetSelectTgl(),
         widgetDropDownTindakan(),
         widgetDropDownDebetKredit(),
         Padding(
