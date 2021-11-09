@@ -5,6 +5,20 @@ import 'dart:convert';
 import 'package:flutter_application_1/main.dart';
 import 'package:http/http.dart' as http;
 
+Future<String> fetchDataAkuntanInputBukaBukuPenjurnalan(pId_Akuntan) async {
+  final response =
+      await http.post(Uri.parse(APIurl + "akuntan_inpt_penjurnalan.php"),
+          // body: {'bodyPost': '1'});
+          body: {'user_klinik': pId_Akuntan.toString()});
+  // body: jsonEncode({transaksi_array}));
+  if (response.statusCode == 200) {
+    print('fetchDataAkuntanInputTransaksiPenjurnalan: ${response.body}');
+    return response.body;
+  } else {
+    throw Exception('Failed to read API');
+  }
+}
+
 Future<String> fetchDataAkuntanInputTransaksiPenjurnalan(pPenjurnalan_id,
     pDaftar_akun_id, pTgl_catat, pDebet, pKredit, pKet_transaksi) async {
   final response =

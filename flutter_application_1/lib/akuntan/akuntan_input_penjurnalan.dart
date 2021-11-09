@@ -182,23 +182,30 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
   }
 
   var controllerdate = TextEditingController();
+  int idPenjurnalan = 0;
   @override
   void initState() {
     DateTime now = new DateTime.now();
     DateTime date = new DateTime(now.year, now.month, now.day);
     controllerdate.text = date.toString().substring(0, 10);
-    fetchDataAkuntanVDftrAkun().then((value) {
-      AkntVDftrAkns.clear();
+    getUserId();
+    fetchDataAkuntanInputBukaBukuPenjurnalan(useridMainDart).then((value) {
       //Mengubah json menjadi Array
       // ignore: unused_local_variable
       Map json = jsonDecode(value);
-      for (var i in json['data']) {
-        // print('DokterBacaDataVListTindakan: ${i}');
-        AkuntanVDftrAkun dvlt = AkuntanVDftrAkun.fromJson(i);
-        AkntVDftrAkns.add(dvlt);
-      }
-      setState(() {});
-    });
+      idPenjurnalan = json['penjurnalan_id'];
+      print('id_penjurnalan: $idPenjurnalan');
+    }).then((value) => fetchDataAkuntanVDftrAkun().then((value) {
+          AkntVDftrAkns.clear();
+          //Mengubah json menjadi Array
+          // ignore: unused_local_variable
+          Map json = jsonDecode(value);
+          for (var i in json['data']) {
+            AkuntanVDftrAkun dvlt = AkuntanVDftrAkun.fromJson(i);
+            AkntVDftrAkns.add(dvlt);
+          }
+          setState(() {});
+        }));
 
     super.initState();
   }
@@ -246,7 +253,7 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: TextFormField(
+          child: TextField(
               enabled: true,
               controller: controllerKeterangan,
               onChanged: (value) {
@@ -276,10 +283,10 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
         ElevatedButton(
             onPressed: () {
               AkuntanKeranjangPenjurnalan AIP = AkuntanKeranjangPenjurnalan();
-              AIP.penjurnalan_id = '1';
+              AIP.penjurnalan_id = idPenjurnalan.toString();
               AIP.daftar_akun_id = valIdAkun.toString();
               AIP.daftar_akun_nama = valueNamaAkun.toString();
-              AIP.tgl_catat = '2021-11-08';
+              AIP.tgl_catat = controllerdate.text;
               if (valueDebetKredit.toString() == 'debet') {
                 AIP.kredit = '0';
                 AIP.debet = controllerNilaiAkun.text;
@@ -293,7 +300,12 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
                 print(
                     'penjurnalan_id:i.penjurnalan_id${i.penjurnalan_id} \ndaftar_akun_id:${i.daftar_akun_id}\ntgl_catat:${i.tgl_catat}\ndebet:${i.debet}\nkredit:${i.kredit}\nket_transaksi${i.ket_transaksi}');
               }
-              setState(() {});
+              setState(() {
+                _scaffoldKey.currentState.showSnackBar(SnackBar(
+                  content: Text('$valueNamaAkun berhasil!'),
+                  duration: Duration(seconds: 2),
+                ));
+              });
             },
             child: Text('Tambah')),
       ],
@@ -382,22 +394,11 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
               content: Text(value),
               duration: Duration(milliseconds: 100),
             ));
-            // showDialog<String>(
-            //   context: context,
-            //   builder: (BuildContext context) => AlertDialog(
-            //     title: Text(
-            //       '$value',
-            //       style: TextStyle(fontSize: 14),
-            //     ),
-            //     actions: <Widget>[
-            //       TextButton(
-            //           onPressed: () {
-            //             Navigator.pop(context);
-            //           },
-            //           child: Text('ok')),
-            //     ],
-            //   ),
-            // );
+            KeranjangTransaksiPenjurnalans.clear();
+            setState(() {
+              widgetTextKeranjangTransaksi();
+              Navigator.pop(context);
+            });
           } else if (json['result'].toString() == 'fail') {
             showDialog<String>(
               context: context,
@@ -423,6 +424,56 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
+  Widget widgetListViewBodyPage() {
+    return ListView(
+      children: [
+        ExpansionTile(
+            title: Text(
+              'Input Transaksi',
+              textAlign: TextAlign.center,
+              style: TextStyle(),
+            ),
+            children: [widgetFormTransaksi()]),
+        ExpansionTile(
+            title: Text(
+              'Keranjang Transaksi',
+              textAlign: TextAlign.center,
+              style: TextStyle(),
+            ),
+            children: [widgetTextKeranjangTransaksi()]),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton(
+              onPressed: () {
+                showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                    title: Text(
+                      'WARNING!\nData yg sudah di simpan tidak bisa di edit lagi',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                          onPressed: () {
+                            functionSimpanPenjurnalan();
+                            Navigator.pop(context);
+                          },
+                          child: Text('ok')),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text('Cancel')),
+                    ],
+                  ),
+                );
+              },
+              child: Text('simpan')),
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -434,53 +485,7 @@ class _AkuntanInputPenjurnalanState extends State<AkuntanInputPenjurnalan> {
             title: Text("Input Penjurnalan"),
           ),
           drawer: widgetDrawer(),
-          body: ListView(
-            children: [
-              ExpansionTile(
-                  title: Text(
-                    'Input Transaksi',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(),
-                  ),
-                  children: [widgetFormTransaksi()]),
-              ExpansionTile(
-                  title: Text(
-                    'Keranjang Transaksi',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(),
-                  ),
-                  children: [widgetTextKeranjangTransaksi()]),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                    onPressed: () {
-                      showDialog<String>(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                          title: Text(
-                            'WARNING!\nData yg sudah di simpan tidak bisa di edit lagi',
-                            style: TextStyle(fontSize: 14),
-                          ),
-                          actions: <Widget>[
-                            TextButton(
-                                onPressed: () {
-                                  functionSimpanPenjurnalan();
-                                  Navigator.pop(context);
-                                },
-                                child: Text('ok')),
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text('Cancel')),
-                          ],
-                        ),
-                      );
-                    },
-                    child: Text('simpan')),
-              )
-            ],
-          )),
+          body: widgetListViewBodyPage()),
     );
   }
 }
