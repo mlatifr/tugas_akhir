@@ -1,6 +1,7 @@
 import 'dart:convert';
-
+import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_application_1/akuntan/akuntan_fetch_penjualanObat.dart';
 import 'package:flutter_application_1/akuntan/akuntan_input_penjurnalan.dart';
 import 'package:flutter_application_1/akuntan/akuntan_main_page.dart';
@@ -31,7 +32,10 @@ class _AkuntanVNotaPjlnState extends State<AkuntanVNotaPjln> {
         AkuntanVPenjualanObat pjlnObtNota = AkuntanVPenjualanObat.fromJson(i);
         ListPenjualanObat.add(pjlnObtNota);
       }
-      setState(() {});
+      setState(() {
+        widgetLsPjlnObat();
+        widgetTextTotalPenjualanObat();
+      });
     });
   }
 
@@ -55,18 +59,13 @@ class _AkuntanVNotaPjlnState extends State<AkuntanVNotaPjln> {
                       ),
                     ),
                     child: ListTile(
-                      onTap: () {
-                        // _timerForInter.cancel();
-                        // print('timer stop');
-                        // DokterVListTindakan();
-                      },
+                      onTap: () {},
                       leading: CircleAvatar(
                         child: Text('${index + 1}'),
                       ),
                       title: Text('${ListPenjualanObat[index].nama}'),
                       subtitle: Text(
                           '${ListPenjualanObat[index].tgl_resep.substring(0, 10)}\n${ListPenjualanObat[index].jumlah} x ${numberFormatRp.format(int.parse(ListPenjualanObat[index].harga))} |  Total:Rp ${numberFormatRp.format(ListPenjualanObat[index].total_harga)}'),
-                      // trailing: widgetStatusAntrean(index)
                     ),
                   ));
             }),
@@ -81,13 +80,11 @@ class _AkuntanVNotaPjlnState extends State<AkuntanVNotaPjln> {
     }
   }
 
-  Widget widgetTotalPenjualanObat() {
+  Widget widgetTextTotalPenjualanObat() {
     int total = 0;
     if (ListPenjualanObat.length > 0) {
       print('ListPenjualanObat.length: ${ListPenjualanObat.length}');
       for (var i = 0; i < ListPenjualanObat.length; i++) {
-        // print(
-        //     'ListPenjualanObat[i].total_harga: ${ListPenjualanObat[i].total_harga}');
         total += ListPenjualanObat[i].total_harga;
       }
       print(total.toString());
@@ -95,6 +92,64 @@ class _AkuntanVNotaPjlnState extends State<AkuntanVNotaPjln> {
           title:
               Text('Total Penjualan Obat Rp ${numberFormatRp.format(total)}'));
     }
+  }
+
+  var controllerdate = TextEditingController();
+  Widget widgetSelectTgl() {
+    return Padding(
+        padding: EdgeInsets.all(10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+                child: TextFormField(
+              controller: controllerdate,
+              onChanged: (value) {
+                setState(() {
+                  controllerdate.text = value.toString();
+                  controllerdate.selection = TextSelection.fromPosition(
+                      TextPosition(offset: controllerdate.text.length));
+                  print('TextFormField controllerdate $value');
+                });
+              },
+              enabled: false,
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
+              ],
+              decoration: InputDecoration(
+                labelText: 'Bulan Transaksi',
+                fillColor: Colors.white,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.blue,
+                  ),
+                ),
+              ),
+            )),
+            ElevatedButton(
+                onPressed: () {
+                  showMonthPicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2200))
+                      .then((value) {
+                    setState(() {
+                      controllerdate.text = value.toString().substring(0, 7);
+                      AkunanBacaDataPenjualanObat(controllerdate.text);
+                      print('showDatePicker : ${controllerdate.text}');
+                    });
+                  });
+                },
+                child: Icon(
+                  Icons.calendar_today_sharp,
+                  color: Colors.white,
+                  size: 24.0,
+                ))
+          ],
+        ));
   }
 
   @override
@@ -114,27 +169,12 @@ class _AkuntanVNotaPjlnState extends State<AkuntanVNotaPjln> {
           ),
           body: ListView(
             children: [
-              Center(
-                child: ElevatedButton(
-                    onPressed: () {
-                      AkunanBacaDataPenjualanObat('2021-');
-                    },
-                    child: Text('lihat penjualan obat')),
-              ),
+              widgetSelectTgl(),
               widgetLsPjlnObat(),
-              // Center(
-              //   child: ElevatedButton(
-              //       onPressed: () {
-              //         widgetTotalPenjualanObat();
-              //       },
-              //       child: Text('total penjualan obat')),
-              // ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Center(child: widgetTotalPenjualanObat()),
+                child: Center(child: widgetTextTotalPenjualanObat()),
               ),
-              // widgetSelectTgl(),
-              // widgetLsTile(),
             ],
           )),
     );
